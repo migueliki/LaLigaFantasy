@@ -18,10 +18,10 @@ ini_set('display_errors', 1);
 
 <div class="formulario">
     <form action="procesar_form.php" method="post">
-        <input type="text" name="nombre" placeholder="nombre"><br>
-        <input type="email" name="email" placeholder="email"><br>
-        <input type="password" name="contraseña" placeholder="contraseña"><br>
-        <input type="text" name="equipo_favorito" placeholder="equipo favorito"><br>
+        <input type="text" name="nombre" placeholder="nombre" required><br>
+        <input type="email" name="email" placeholder="email" required><br>
+        <input type="password" name="contraseña" placeholder="contraseña" required><br>
+        <input type="text" name="equipo_favorito" placeholder="equipo favorito"> required<br>
         <button type="submit">Enviar</button>
     </form>
 </div>

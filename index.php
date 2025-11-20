@@ -2,7 +2,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
 ?>
 
 <!DOCTYPE html>
@@ -15,14 +14,15 @@ ini_set('display_errors', 1);
 </head>
 <body>
 
-<h1>Registro de Jugadores</h1>
+<h1>Iniciar Sesión</h1>
 
 <div class="formulario">
-    <form action="post">
+    <form action="procesar_form.php" method="post">
         <input type="text" name="nombre" placeholder="nombre"><br>
-        <input type="text" name="apellido" placeholder="apellidos"><br>
-        <input type="text" name="equipo favorito" placeholder="equipo favorito"><br>
-        <input type="submit" value="Iniciar Sesión">
+        <input type="email" name="email" placeholder="email"><br>
+        <input type="password" name="contraseña" placeholder="contraseña"><br>
+        <input type="text" name="equipo_favorito" placeholder="equipo favorito"><br>
+        <button type="submit">Enviar</button>
     </form>
 </div>
 

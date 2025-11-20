@@ -1,4 +1,9 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -12,13 +17,14 @@
 
 <h1>Registro de Jugadores</h1>
 
-<form action="post">
-<input type="text" name="nombre" placeholder="nombre"><br>
-<input type="text" name="apellido" placeholder="apellidos"><br>
-<input type="submit" value="Iniciar Sesión">
-
-</form>
-
+<div class="formulario">
+    <form action="post">
+        <input type="text" name="nombre" placeholder="nombre"><br>
+        <input type="text" name="apellido" placeholder="apellidos"><br>
+        <input type="text" name="equipo favorito" placeholder="equipo favorito"><br>
+        <input type="submit" value="Iniciar Sesión">
+    </form>
+</div>
 
 
 

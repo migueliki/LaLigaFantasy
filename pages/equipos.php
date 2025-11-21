@@ -1,22 +1,16 @@
 <?php
-
-include '../app/mostrar.php';
+include '../app/listar_equipos.php';
 
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista De Jugadores</title>
-    <link rel="stylesheet" href="/css/lista_jugadores.css">
+    <title>Document</title>
 </head>
 <body>
-    
-
-
-
 
 </body>
 </html>

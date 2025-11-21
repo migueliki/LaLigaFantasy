@@ -4,20 +4,14 @@ $include = include ('conexion.php');
 
 if ($include) {
     // Conexión exitosa
-    $consulta = "SELECT nombre, dorsal, equipo FROM jugadores";
+    $consulta = "SELECT nombre FROM fantasy.equipos;";
     $resultado = $pdo->query($consulta);
     if ($resultado) {
         while ($row = $resultado->fetch()) {
-            $nombre = $row['nombre'];
-            $dorsal = $row['dorsal'];
-            $equipo = $row['equipo'];
+            $equipo = $row['nombre'];
         ?>
         <div>
-            <h2>Nombre: <?php echo $nombre; ?></h2>
-            <p>
-                <b>Dorsal: <?php echo $dorsal; ?></b>
-                <b>Equipo: <?php echo $equipo; ?></b>
-            </p>
+            <h2>Equipo: <?php echo $equipo; ?></h2>
             <hr>
         </div>
         <?php

@@ -28,7 +28,7 @@ $list_pages = ['lista_jugadores','documentacion'];
 
 if (in_array($public, $list_pages)) {
     
-    header("Location: public/{$public}.php");
+    header("Location: ../public/{$public}.php");
 }
     else {
         http_response_code(404);

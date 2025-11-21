@@ -1,6 +1,6 @@
 <?php
 
-include '../mostrar.php';
+include '../app/mostrar.php';
 
 ?>
 

@@ -14,7 +14,7 @@ if ($include) {
         ?>
         <div>
             <h2>Equipo: <?php echo $equipo; ?></h2>
-            <button href="">Ver jugadores</button>
+            <a href="../app/redirigir_equipos.php" class="btn">Ver jugadores</a>
             <hr>
         </div>
 <?php

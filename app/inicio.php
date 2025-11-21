@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$public = $_GET['public'] ?? 'inicio';
+$pages = $_GET['pages'] ?? 'inicio';
 $list_pages = ['lista_jugadores','documentacion'];
 ?>
 
@@ -19,16 +19,16 @@ $list_pages = ['lista_jugadores','documentacion'];
 
 <div class="navegacion">
     <nav>
-        <a href="inicio.php?public=lista_jugadores">Lista de Jugadores</a>
-        <a href="inicio.php?public=documentacion">Documentacion</a>
+        <a href="inicio.php?pages=lista_jugadores">Lista de Jugadores</a>
+        <a href="inicio.php?pages=documentacion">Documentacion</a>
     </nav>
 </div>
 
 <?php
 
-if (in_array($public, $list_pages)) {
+if (in_array($pages, $list_pages)) {
     
-    header("Location: ../public/{$public}.php");
+    header("Location: ../pages/{$pages}.php");
 }
     else {
         http_response_code(404);

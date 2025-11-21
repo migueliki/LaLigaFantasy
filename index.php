@@ -19,14 +19,23 @@ ini_set('display_errors', 1);
 <div class="formulario">
     <form action="login.php" method="post">
         <input type="text" name="usuario" placeholder="nombre" required><br>
-        <input type="email" name="email" placeholder="email" required><br>
         <input type="password" name="contraseña" placeholder="contraseña" required><br>
-        <input type="text" name="equipo_favorito" placeholder="equipo favorito" required><br>
-        <button type="submit">Enviar</button>
+        <button type="submit">Iniciar Sesión</button>
     </form>
 </div>
 
 
+<h1>Registrar usuario </h1>
+
+<div class="formulario">
+    <form action="register.php" method="post">
+        <input type="text" name="usuario" placeholder="nombre" required><br>
+        <input type="email" name="email" placeholder="email" required><br>
+        <input type="password" name="contraseña" placeholder="contraseña" required><br>
+        <input type="text" name="equipo_favorito" placeholder="equipo favorito" required><br>
+        <button type="submit">Registrar</button>
+    </form>
+</div>
 
 
 </body>

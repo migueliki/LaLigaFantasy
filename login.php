@@ -15,14 +15,12 @@ $stmt->execute([$usuario]); // ejecuta la consulta con el parametro usuario reem
 $datos = $stmt->fetch(); // recupera los datos si existe el usuario
 
 if ($datos && $contraseña === $datos['contraseña']) {
-    echo "Bienvenido, $usuario";
-    header("Location: inicio.php"); // Redirigir a inicio.php
-    exit(); 
+    header("Location: inicio.php"); // Redirigir a public/inicio.php
+    exit();
 
 } else {
-    echo "Usuario o contraseña incorrectos";
-    header("Location: index.php"); // Redirigir al formulario de inicio de sesión para volver a intentarlo
-    exit(); 
+    header("Location: index.php"); // Redirigir al formulario en public/index.php
+    exit();
 }
 
 ?>

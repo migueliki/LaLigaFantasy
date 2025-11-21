@@ -12,6 +12,7 @@ if ($include) {
         ?>
         <div>
             <h2>Equipo: <?php echo $equipo; ?></h2>
+            <button href="">Ver jugadores</button>
             <hr>
         </div>
         <?php

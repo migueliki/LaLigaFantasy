@@ -2,6 +2,8 @@
 
 $include = include ('conexion.php');
 
+
+
 if ($include) {
     // Conexión exitosa
     $consulta = "SELECT nombre FROM fantasy.equipos;";
@@ -15,7 +17,7 @@ if ($include) {
             <button href="">Ver jugadores</button>
             <hr>
         </div>
-        <?php
+<?php
         }
     }
 

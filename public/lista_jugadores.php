@@ -1,3 +1,9 @@
+<?php
+
+include '../mostrar.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,8 +14,6 @@
 </head>
 <body>
     
-<h1>Estas en lista de jugadores</h1>
-
 
 
 

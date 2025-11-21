@@ -26,7 +26,7 @@ CREATE TABLE jugadores (
     edad INT,
     nacionalidad VARCHAR(50),
     equipo_id INT,
-    media_fifa DECIMAL(4,2),
+    media_fifa INT,
     posicion VARCHAR(50),
     dorsal INT,
     es_titular BOOLEAN DEFAULT TRUE,  -- TRUE=titular, FALSE=suplente

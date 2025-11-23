@@ -11,9 +11,9 @@ RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/app|g' /etc/
     sed -i 's|<Directory /var/www/html>|<Directory /var/www/html/app>|g' /etc/apache2/sites-available/000-default.conf
 
 # Habilitar mod_rewrite
-RUN a2enmod rewrite
+RUN a2enmod ssl && a2ensite default-ssl
 
 # Dar permisos
 RUN chown -R www-data:www-data /var/www/html
 
-EXPOSE 80
+EXPOSE 443

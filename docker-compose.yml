@@ -4,9 +4,7 @@ services:
   web:
     build: .
     ports:
-      - "8081:80"
-    volumes:
-      - .:/var/www/html
+      - "443:443"
     depends_on:
       - db
     networks:

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    volumes:
+      - .:/var/www/html
+    networks:
+      - red1
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ""   # o la contraseña que quieras
+      MYSQL_DATABASE: fantasy
+    networks:
+      - red1
+
+networks:
+  red1:
+    external: true

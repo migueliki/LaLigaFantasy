@@ -670,5 +670,3 @@ INSERT INTO entrenadores (nombre, edad, nacionalidad, equipo_id, estilo_juego) V
 -- Rayo Vallecano
 ('Iñigo Pérez', 37, 'Española', (SELECT id FROM equipos WHERE nombre = 'Rayo Vallecano'), 'Posesión y juego combinativo');
 
-
-

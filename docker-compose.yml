@@ -5,21 +5,27 @@ services:
     build: .
     ports:
       - "8081:80"
-    depends_on:
-      - db
     volumes:
       - .:/var/www/html
+    depends_on:
+      - db
     networks:
       - red1
 
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: ""   # o la contraseña que quieras
+      MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: fantasy
+    volumes:
+      - ./database/fantasy.sql:/docker-entrypoint-initdb.d/01-fantasy.sql
     networks:
       - red1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
 
 networks:
   red1:
-    external: true
+    driver: bridge

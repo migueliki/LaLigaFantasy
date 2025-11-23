@@ -4,16 +4,18 @@ ini_set('display_errors', 1);
 
 include 'conexion.php';
 
-// Obtener datos del formulario
-$usuario = $_POST['usuario'];
-$email = $_POST['email'];
-$contraseña = $_POST['contraseña'];
+if (isset($_POST['username'], $_POST['email'], $_POST['password'])) {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    
 
-// Buscar usuario
-$sql = "INSERT INTO register (usuario,email,contraseña) VALUES (?, ?, ?)"; // los ? son parametros que se van a reemplazar despues para prevenir injeccion sql
-$stmt = $pdo->prepare($sql); // le esta diciendo que use la conexion $pdo para preparar el insert sql
-$stmt->execute([$usuario, $email, $contraseña]); // ejecuta el insert con el parametro usuario y contraseña reemplazando los ? 
+    $sql = "INSERT INTO register (username, email, password) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$username, $email, $password]);
 
-echo "Usuario registrado exitosamente";
-
-?>
+    header("Location: index.php");
+    exit();
+} else {
+    echo "Faltan datos del formulario.";
+}

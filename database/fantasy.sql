@@ -9,15 +9,12 @@ CREATE TABLE equipos (
     estadio VARCHAR(100)
 );
 
+
 CREATE TABLE register (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-	usuario VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    contraseña VARCHAR(255) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    equipo_favorito_id INT,
-    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (equipo_favorito_id) REFERENCES equipos(id)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE jugadores (

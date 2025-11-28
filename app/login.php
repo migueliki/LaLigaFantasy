@@ -21,7 +21,7 @@ $stmt = $pdo->prepare($sql); // le esta diciendo que use la conexion $pdo para p
 $stmt->execute([$username]); // ejecuta la consulta con el parametro usuario reemplazando el ?
 $datos = $stmt->fetch(); // recupera los datos si existe el usuario
 
-if ($datos && $password === $datos['password']) {
+if ($datos && password_verify($password, $datos['password'])) { // toma la contraseña que pusiste en el form y la comprueba con el hash de la bd
     
     $_SESSION['usuario_id'] = $datos['id'];     
     $_SESSION['usuario'] = $datos['username']; 

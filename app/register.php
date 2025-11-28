@@ -13,7 +13,7 @@ if (isset($_POST['username'], $_POST['email'], $_POST['password'])) {
     
     $sql = "INSERT INTO register (username, email, password) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$username, $email, $password]);
+    $stmt->execute([$username, $email, $passwordHash]);
 
     header("Location: index.php");
     exit();

@@ -8,6 +8,8 @@ if (isset($_POST['username'], $_POST['email'], $_POST['password'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT); // Hashear la contraseña
     
     $sql = "INSERT INTO register (username, email, password) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);

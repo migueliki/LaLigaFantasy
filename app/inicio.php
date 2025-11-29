@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $pages = $_GET['pages'] ?? 'inicio';
-$list_pages = ['jugadores','documentacion', 'equipos'];
+$list_pages = ['jugadores','documentacion', 'plantilla'];
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $list_pages = ['jugadores','documentacion', 'equipos'];
     <nav>
         <a href="inicio.php?pages=jugadores">Lista de Jugadores</a>
         <a href="inicio.php?pages=documentacion">Documentacion</a>
-        <a href="inicio.php?pages=equipos">Equipos</a>
+        <a href="inicio.php?pages=plantilla">Plantilla</a>
     </nav>
 </div>
 

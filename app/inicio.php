@@ -39,6 +39,5 @@ if (in_array($pages, $list_pages)) {
 ?>
 
 
-
 </body>
 </html>

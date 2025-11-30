@@ -36,4 +36,3 @@ if ($datos && password_verify($password, $datos['password'])) {
 }
 
 ?>
-

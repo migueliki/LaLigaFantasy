@@ -25,7 +25,7 @@ include '../app/plantilla/delete.php';
 
 <div class="container-fluid row">
 
-<form class="col-4" method="POST" action="plantilla.php">
+<form class="col-4" method="POST">
 <h3>Registrar de jugadores</h3>
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nombre de jugador</label>
@@ -36,7 +36,6 @@ include '../app/plantilla/delete.php';
     <label for="exampleInputEmail1" class="form-label">Equipo</label>
     <input type="text" class="form-control" name="equipo">
 </div>
-
 
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Posición</label>
@@ -82,7 +81,7 @@ include '../app/plantilla/delete.php';
     <td><?= $datos->nacionalidad ?></td>
     <td><?= $datos->dorsal ?></td>
     <td>
-        <a href="" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a href="plantilla.php?editar=<?= $datos->nombre ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
         <a href="" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
     </td>
     </tr>

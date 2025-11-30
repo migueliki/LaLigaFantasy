@@ -81,8 +81,8 @@ include '../app/plantilla/delete.php';
     <td><?= $datos->nacionalidad ?></td>
     <td><?= $datos->dorsal ?></td>
     <td>
-        <a href="plantilla.php?editar=<?= $datos->ID ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-        <a href="delete.php?id=<?= $datos->ID ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
+        <a href="plantilla.php?ID=<?= $datos->ID ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a href="delete.php?ID=<?= $datos->ID ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
     </td>
     </tr>
 

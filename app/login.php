@@ -31,7 +31,7 @@ if ($datos && password_verify($password, $datos['password'])) {
     exit();
 
 } else {
-   header("Location: index.php?error=login_fallido");
+    header("Location: index.php?error=login_fallido");
     exit();
 }
 

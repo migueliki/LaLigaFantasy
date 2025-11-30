@@ -1,6 +1,19 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: /app/index.php'); // o login
+    exit;
+}
+// Control de timeout por inactividad
+$timeout = 3600; // 1 hora
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
+    session_unset(); session_destroy();
+    header('Location: /app/index.php?timeout=1');
+    exit;
+}
+$_SESSION['last_activity'] = time(); // actualizar actividad
 
-include '../app/listar_jugadores.php';
+
 
 ?>
 
@@ -15,8 +28,8 @@ include '../app/listar_jugadores.php';
 <body>
     
 
-
-
+<?php include '../app/listar_jugadores.php';
+?>
 
 </body>
 </html>

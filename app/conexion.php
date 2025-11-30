@@ -5,11 +5,12 @@ while ($intentos > 0) {
         $pdo = new PDO("mysql:host=localhost;port=3306;dbname=fantasy", "root", "");
         break;
     } catch (PDOException $e) {
-        sleep(2); // espera 2 segundos
+        echo "Intento fallido: " . $e->getMessage() . "<br>";
+        sleep(2);
         $intentos--;
     }
 }
 if (!isset($pdo)) {
-    die("No se pudo conectar a la base de datos.");
+    die(" No se pudo conectar a la base de datos.");
 }
 ?>

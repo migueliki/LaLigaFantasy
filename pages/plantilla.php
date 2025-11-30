@@ -4,6 +4,9 @@ ini_set('display_errors', 1);
 
 include '../app/conexion.php';
 
+include '../app/plantilla/insert.php';
+include '../app/plantilla/modify.php';
+include '../app/plantilla/delete.php';
 
 ?>
 
@@ -23,31 +26,31 @@ include '../app/conexion.php';
 <div class="container-fluid row">
 
 <form class="col-4" method="POST" action="plantilla.php">
-<h3>Registro de jugadores</h3>
+<h3>Registrar de jugadores</h3>
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nombre de jugador</label>
-    <input type="text" class="form-control" name="nombre" id="exampleInputEmail1">
+    <input type="text" class="form-control" name="nombre">
 </div>
 
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Equipo</label>
-    <input type="text" class="form-control" name="equipo" id="exampleInputEmail1">
+    <input type="text" class="form-control" name="equipo">
 </div>
 
 
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Posición</label>
-    <input type="text" class="form-control" name="posicion" id="exampleInputEmail1">
+    <input type="text" class="form-control" name="posicion">
 </div>
 
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nacionalidad</label>
-    <input type="text" class="form-control" name="nacionalidad" id="exampleInputEmail1">
+    <input type="text" class="form-control" name="nacionalidad">
 </div>
 
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Dorsal</label>
-    <input type="number" class="form-control" name="dorsal" id="exampleInputEmail1">
+    <input type="number" class="form-control" name="dorsal">
 </div>
 
 <button type="submit" class="btn btn-primary">Insertar</button>
@@ -57,7 +60,7 @@ include '../app/conexion.php';
 <table class="table">
 <thead>
     <tr>
-    <th scope="col"></th>
+    
     <th scope="col">Nombre</th>
     <th scope="col">Equipo</th>
     <th scope="col">Posición</th>
@@ -68,11 +71,10 @@ include '../app/conexion.php';
 </thead>
 <tbody>
     <tr>
-    <th scope="row">1</th>
     
     <?php 
-        $sql = $conexion->query("SELECT * FROM plantilla");
-        while ($datos = $sql->fetch_object()) { ?>
+        $sql = $pdo->query(" SELECT * FROM plantilla ");
+        while($datos = $sql->fetch(PDO::FETCH_OBJ))  { ?>
     
     <td><?= $datos->nombre ?></td>
     <td><?= $datos->equipo ?></td>

@@ -17,15 +17,17 @@ $datos = $stmt->fetch();
 
 if ($datos && password_verify($password, $datos['password'])) { 
     
+    session_regenerate_id(true);// evitar hijacking de sesiones
     $_SESSION['usuario_id'] = $datos['id'];     
     $_SESSION['usuario'] = $datos['username']; 
-    session_regenerate_id(true);  // evitar hijacking de sesiones
+    $_SESSION['login_time'] = time();
+    $_SESSION['last_activity'] = time();  
 
     header("Location: inicio.php"); 
     exit();
 
 } else {
-    header("Location: index.php"); 
+   header("Location: index.php?error=login_fallido");
     exit();
 }
 

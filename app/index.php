@@ -1,7 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
+        echo '<p style="color: red; font-weight: bold;">Usuario o contraseña incorrectos.</p>';
+    }
 ?>
 
 <!DOCTYPE html>

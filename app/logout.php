@@ -2,18 +2,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-
-
+$_SESSION = [];
+session_unset();
+session_destroy();
+setcookie(session_name(), '', time()-3600, '/'); // eliminar cookie de sesión
+header('Location: /app/index.php');
+exit();
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>

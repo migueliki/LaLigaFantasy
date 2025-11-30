@@ -1,7 +1,7 @@
 /* Simplified players stylesheet — minimal & responsive */
 :root{
-	--bg: #0b0f14;       /* dark page background */
-	--card: #0f1720;     /* card surface */
+	--bg: #0c6de4;       /* dark page background */
+	--card: #334d6b;     /* card surface */
 	--primary: #172a4f;  /* navy primary */
 	--muted: #ffffff;    /* text white per request */
 	--text: #ffffff;     /* text color - white */

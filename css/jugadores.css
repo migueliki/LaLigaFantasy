@@ -1,6 +1,40 @@
-body {
-margin: 0%;
-padding: 0%;
-font-family: "roboto", sans-serif;
-
+/* Simplified players stylesheet — minimal & responsive */
+:root{
+	--bg: #0b0f14;       /* dark page background */
+	--card: #0f1720;     /* card surface */
+	--primary: #172a4f;  /* navy primary */
+	--muted: #ffffff;    /* text white per request */
+	--text: #ffffff;     /* text color - white */
 }
+
+*{box-sizing:border-box}
+body{margin:0;font-family:Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#07101a);color:var(--text)}
+
+.container, main, body>div{max-width:980px;margin:28px auto;padding:0 14px}
+
+/* Search */
+form[method="GET"]{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+form[method="GET"] input[type="text"]{flex:1;max-width:640px;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#061018;color:var(--text)}
+form[method="GET"] input[type="text"]::placeholder{color:var(--text);opacity:0.9}
+form[method="GET"] button{padding:8px 12px;border-radius:8px;border:none;background:var(--primary);color:#fff;cursor:pointer}
+
+/* Player cards */
+h2{margin:0;background:var(--card);padding:12px;border-radius:8px 8px 0 0;font-size:1.05rem;color:var(--text);border:1px solid rgba(255,255,255,0.03)}
+h2 + p{margin:8px 0;padding:10px;background:transparent;display:flex;gap:8px;flex-wrap:wrap;color:var(--text)}
+h2 + p b{background:var(--primary);color:var(--text);padding:6px 10px;border-radius:999px;font-weight:700}
+
+/* Pagination: uniform links */
+a[href*="pagina="], .page-link{display:inline-block;margin:6px;padding:8px 10px;border-radius:6px;background:var(--card);border:1px solid rgba(255,255,255,0.03);color:var(--text);text-decoration:none;font-weight:600}
+a[href*="pagina="]:hover, .page-link:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,0.6)}
+
+/* Active page — only highlighted if server adds aria-current="page" or .active class */
+a[href*="pagina="][aria-current="page"], a[href*="pagina="].active, .page-link.active{background:var(--primary);color:#fff;border-color:var(--primary);pointer-events:none}
+
+/* Keyboard & focus */
+a[href*="pagina="]:focus{outline:3px solid rgba(27,93,209,0.15);outline-offset:2px}
+
+@media (max-width:640px){form[method="GET"]{flex-direction:column}h2,p{padding-left:12px;padding-right:12px}}
+
+/* Print */
+@media print{a[href*="pagina="],.page-link{box-shadow:none;border:1px solid #ddd}}
+

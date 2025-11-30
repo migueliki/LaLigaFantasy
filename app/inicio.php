@@ -1,6 +1,14 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+session_start();
+
+if(isset($_SESSION['usuario_id'])) {
+    // El usuario ya ha iniciado sesión
+} else {
+    header("Location: index.php");
+    exit();
+}
 
 $pages = $_GET['pages'] ?? 'inicio';
 $list_pages = ['jugadores','documentacion', 'plantilla'];

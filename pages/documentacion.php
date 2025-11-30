@@ -8,9 +8,11 @@
 </head>
 <body>
 
-<h1>Estas en documentacion</h1>
+<h1> Documentacion Laliga Fantasy</h1>
 
-
+<h2>Introducción</h2>
+<p>La aplicación Laliga Fantasy es una plataforma web diseñada para gestionar y visualizar información sobre jugadores
+ 
 
 </body>
 </html>

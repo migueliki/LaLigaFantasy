@@ -1,5 +1,5 @@
 <?php
-$intentos = 5;
+$intentos = 3;
 while ($intentos > 0) {
     try {
         $pdo = new PDO("mysql:host=localhost;port=3306;dbname=fantasy", "root", "");

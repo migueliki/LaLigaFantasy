@@ -18,8 +18,8 @@ ini_set('display_errors', 1);
 
 <div class="formulario">
     <form action="login.php" method="post">
-        <input type="text" name="username" placeholder="nombre" required><br>
-        <input type="password" name="password" placeholder="contraseña" required><br>
+        <input type="text" name="username" placeholder="nombre" maxlength="20" required><br>
+        <input type="password" name="password" placeholder="contraseña" maxlength="20" required><br>
         <button type="submit">Iniciar Sesión</button>
     </form>
 </div>
@@ -29,9 +29,9 @@ ini_set('display_errors', 1);
 
 <div class="formulario">
     <form action="register.php" method="post">
-        <input type="text" name="username" placeholder="nombre" required><br>
-        <input type="email" name="email" placeholder="email" required><br>
-        <input type="password" name="password" placeholder="contraseña" required><br>
+        <input type="text" name="username" placeholder="nombre" maxlength="20" required><br>
+        <input type="email" name="email" placeholder="email" maxlength="25" required><br>
+        <input type="password" name="password" placeholder="contraseña" maxlength="20" required><br>
         <button type="submit">Registrar</button>
     </form>
 </div>

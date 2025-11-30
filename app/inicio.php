@@ -28,7 +28,7 @@ $list_pages = ['jugadores','documentacion', 'plantilla'];
 <div class="navegacion">
     <nav>
         <a href="inicio.php?pages=jugadores">Lista de Jugadores</a>
-        <a href="inicio.php?pages=documentacion">Documentacion</a>
+        <a href="inicio.php?pages=documentacion">Documentación</a>
         <a href="inicio.php?pages=plantilla">Plantilla</a>
     </nav>
 </div>

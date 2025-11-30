@@ -4,6 +4,10 @@ ini_set('display_errors', 1);
 
 session_start();
 
+if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    die("Error: token CSRF inválido");
+}
+
 include 'conexion.php';
 
 $username = $_POST['username'] ?? null; 
@@ -30,4 +34,3 @@ if ($datos && password_verify($password, $datos['password'])) {
 }
 
 ?>
-

@@ -2,6 +2,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+session_start();
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 ?>
 
 <!DOCTYPE html>
@@ -18,24 +23,24 @@ ini_set('display_errors', 1);
 
 <div class="formulario">
     <form action="login.php" method="post">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <input type="text" name="username" placeholder="nombre" maxlength="20" required><br>
         <input type="password" name="password" placeholder="contraseña" maxlength="20" required><br>
         <button type="submit">Iniciar Sesión</button>
     </form>
 </div>
 
-
-<h1>Registrar usuario </h1>
+<h1>Registrar usuario</h1>
 
 <div class="formulario">
     <form action="register.php" method="post">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <input type="text" name="username" placeholder="nombre" maxlength="20" required><br>
         <input type="email" name="email" placeholder="email" maxlength="25" required><br>
         <input type="password" name="password" placeholder="contraseña" maxlength="20" required><br>
         <button type="submit">Registrar</button>
     </form>
 </div>
-
 
 </body>
 </html>

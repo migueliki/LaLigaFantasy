@@ -4,7 +4,7 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ID = $_POST['ID'] ?? '';
 
-    $sql = "DELETE FROM plantilla";
+    $sql = "DELETE FROM plantilla WHERE ID=$ID";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':nombre' => $nombre,

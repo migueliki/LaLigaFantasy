@@ -32,6 +32,8 @@ Para arrancar la página web:
 * Tendremos que irnos a `/app/index.php`.
 * Abrir el servicio desde el editor **Visual Studio Code** (o tu servidor web local).
 
+![Mi foto](images//readme/extension.png)
+
 ---
 
 ## ✨ Funcionalidades Principales
@@ -41,17 +43,29 @@ Una vez se nos abre nuestra página web en el navegador, veremos:
 1.  **Registro e Inicio de Sesión:**
     * Una vez nos registramos y logueamos accederemos a la página de `inicio.php` donde podremos ver un simple **menú de navegación**.
 
+    ![Mi foto](images//readme/login.png) ![Mi foto](images//readme/menu.png)
+
 2.  **Personalización de Color de Fondo:**
     * Si nos damos cuenta podemos visualizar **dos botones** en la esquina inferior derecha.
     * Al pulsarlos podremos **establecer el color de fondo** de la página, el cual se almacena en una **cookie**.
 
+    ![Mi foto](images//readme/cockie.png)
+
 3.  **Lista de Jugadores:**
     * En el primer enlace a **“lista de jugadores”** veremos un despliegue con todos los jugadores registrados en su correspondiente base de datos.
     * Contaremos con un **buscador** que filtrará por **nombre y equipo**.
+
+    ![Mi foto](images//readme/buscador.png)
+
     * Si *escroleamos* al final de la página podremos ver su **paginación** para los resultados.
+
+    ![Mi foto](images//readme/paginacion.png)
 
 4.  **Gestión de Plantilla (CRUD):**
     * Por último, en la sección de **"plantilla"** tendremos un **registro de jugadores** para nuestro equipo.
+
+    ![Mi foto](images//readme/plantilla.png)
+
     * El cual también podremos **editar y eliminar** los registros.
 
-
+    ![Mi foto](images//readme/plantilla2.png)

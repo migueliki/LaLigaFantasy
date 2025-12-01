@@ -20,7 +20,8 @@ Para empezar a trabajar con el proyecto, necesitarás instalar los siguientes co
 
 3.  **Configuración del Entorno de Desarrollo (Visual Studio Code):**
     * Después en nuestro **Visual Studio** instalaremos la siguiente extensión para **PHP** (Asegúrate de buscar la extensión de soporte para PHP más adecuada).
-     /home/miguel/Imágenes/readme/extension.jpg
+    
+    /images/readme/extension.png
 
 ---
 

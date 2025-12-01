@@ -31,8 +31,9 @@ $_SESSION['last_activity'] = time(); // actualizar actividad
     
 
 <?php include '../app/listar_jugadores.php';
+include '../app/cookie_tema.php';
 ?>
-<?php include 'cookie_tema.php'; ?>
+
 <body class="<?php echo $clase_tema; ?>">    
 
     <div class="widget-temas">

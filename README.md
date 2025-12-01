@@ -1,35 +1,55 @@
 # Proyecto_IAW
+# 🚀 Configuración e Introducción al Proyecto
 
-Lo primero de todo tendremos que tener instalado php, mysql y la extension de phpmyadmin con el siguiente comando:
-sudo apt install mysql-server php php-mysql phpmyadmin apache2
+Este `README` describe los pasos de configuración y las funcionalidades principales de la aplicación web.
 
-Luego en mysql crearemos un usuario llamado 'admin' y con la contraseña '1234' 
+---
 
+## 💻 Requisitos y Configuración Inicial
 
-Despues en nuestro visual studio instaleremos la siguiente extension para php
+Para empezar a trabajar con el proyecto, necesitarás instalar los siguientes componentes:
 
+1.  **Instalación de la pila LAMP (MySQL, PHP, Apache2):**
+    * Lo primero de todo tendremos que tener instalado php, mysql y la extensión de phpmyadmin con el siguiente comando:
+        ```bash
+        sudo apt install mysql-server php php-mysql phpmyadmin apache2
+        ```
 
+2.  **Configuración de la Base de Datos (MySQL):**
+    * Luego en mysql crearemos un usuario llamado **'admin'** y con la contraseña **'1234'**.
 
-Para arrancar la pagina web tendremos que irnos a /app/index.php y abrir el servicio desde el visual studio,
+3.  **Configuración del Entorno de Desarrollo (Visual Studio Code):**
+    * Después en nuestro **Visual Studio** instalaremos la siguiente extensión para **PHP** (Asegúrate de buscar la extensión de soporte para PHP más adecuada).
 
+---
 
+## ▶️ Ejecución y Acceso a la Web
 
-Una vez se nos abre nuestra pagina web en el navegador veremos un registro e inicio de sesión para los usuarios
+Para arrancar la página web:
 
+* Tendremos que irnos a `/app/index.php`.
+* Abrir el servicio desde el editor **Visual Studio Code** (o tu servidor web local).
 
-Una vez nos registramos y loguemos accederemos a la pagina de inicio.php donde podremos ver un simple menu de navegacion
+---
 
+## ✨ Funcionalidades Principales
 
-Si nos damos cuenta podemos visualizar dos botones en la esquina inferior derecha, el cual si pulsamos podremos establecer el color de fondo de la pagina almecanado en una coocke
+Una vez se nos abre nuestra página web en el navegador, veremos:
 
+1.  **Registro e Inicio de Sesión:**
+    * Una vez nos registramos y logueamos accederemos a la página de `inicio.php` donde podremos ver un simple **menú de navegación**.
 
-En el primer enlace a “lista de jugadores” veremos un despliegue con todos los jugadores registrados en su correspondiente base de datos, en el cual contaremos con un buscador que filtrara por nombre y equipo 
+2.  **Personalización de Color de Fondo:**
+    * Si nos damos cuenta podemos visualizar **dos botones** en la esquina inferior derecha.
+    * Al pulsarlos podremos **establecer el color de fondo** de la página, el cual se almacena en una **cookie**.
 
+3.  **Lista de Jugadores:**
+    * En el primer enlace a **“lista de jugadores”** veremos un despliegue con todos los jugadores registrados en su correspondiente base de datos.
+    * Contaremos con un **buscador** que filtrará por **nombre y equipo**.
+    * Si *escroleamos* al final de la página podremos ver su **paginación** para los resultados.
 
-Si escroleamos al final de la pagina podremos ver su paginación para los resultados
-
-
-Por ultimo, en la sección de plantilla tendremos un registro de jugadores para nuestro equipo, el cual tambien podremos editar y eliminar los registros
-
+4.  **Gestión de Plantilla (CRUD):**
+    * Por último, en la sección de **"plantilla"** tendremos un **registro de jugadores** para nuestro equipo.
+    * El cual también podremos **editar y eliminar** los registros.
 
 

@@ -32,7 +32,7 @@ Para arrancar la página web:
 * Tendremos que irnos a `/app/index.php`.
 * Abrir el servicio desde el editor **Visual Studio Code** (o tu servidor web local).
 
-![Mi foto](images//readme/extension.png)
+![Mi foto](images//readme/iniciar.png)
 
 ---
 

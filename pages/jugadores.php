@@ -24,12 +24,26 @@ $_SESSION['last_activity'] = time(); // actualizar actividad
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista De Jugadores</title>
     <link rel="stylesheet" href="/css/jugadores.css">
+    <link rel="stylesheet" href="/css/cookie_tema.css">
+    
 </head>
 <body>
     
 
 <?php include '../app/listar_jugadores.php';
 ?>
+<?php include 'cookie_tema.php'; ?>
+<body class="<?php echo $clase_tema; ?>">    
+
+    <div class="widget-temas">
+        <form method="POST">
+            <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
+            <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+        </form>
+    </div>
+
+    </body>
 
 </body>
+
 </html>

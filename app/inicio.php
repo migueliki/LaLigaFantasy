@@ -20,6 +20,8 @@ $list_pages = ['jugadores','documentacion', 'plantilla', 'cerrar_sesion'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/cookie_tema.css">
+    <?php include 'cookie_tema.php'; ?>
     <title>inicio</title>
 </head>
 <body>
@@ -49,4 +51,14 @@ if (in_array($pages, $list_pages)) {
 
 
 </body>
+<body class="<?php echo $clase_tema; ?>">    
+
+    <div class="widget-temas">
+        <form method="POST">
+            <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
+            <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+        </form>
+    </div>
+
+    </body>
 </html>

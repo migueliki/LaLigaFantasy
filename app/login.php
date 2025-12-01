@@ -7,7 +7,7 @@ session_start();
 if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
     die("Error: token CSRF inválido");
 }
-
+include 'cookie_tema.php';
 include 'conexion.php';
 
 $username = $_POST['username'] ?? null; 

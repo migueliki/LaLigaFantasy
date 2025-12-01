@@ -1,0 +1,81 @@
+/* 1. Override para el INDEX (Formularios) */
+body.tema-claro {
+    background: #f0f2f5 !important; /* Gris muy suave */
+    color: #1c1e21 !important;
+}
+
+body.tema-claro .formulario {
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    border: 1px solid #ddd;
+    backdrop-filter: none !important;
+}
+
+body.tema-claro h1, 
+body.tema-claro h2 {
+    color: #1c1e21 !important;
+}
+
+body.tema-claro input {
+    background: #f0f2f5 !important;
+    border: 1px solid #ccc !important;
+    color: #333 !important;
+}
+body.tema-claro input::placeholder {
+    color: #888 !important;
+}
+
+/* 2. Override para INICIO (Navbar y Logo) */
+body.tema-claro .navegacion {
+    background: #ffffff !important;
+    border-bottom: 4px solid #ddd !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+
+body.tema-claro .navegacion a {
+    color: #333 !important;
+}
+body.tema-claro .navegacion a:hover {
+    background: #eee !important;
+}
+
+/* 3. Override para JUGADORES (Variables CSS) */
+/* Como jugadores.css usa variables, solo redefinimos las variables aquí */
+body.tema-claro {
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --primary: #084fdb; /* Mantenemos el azul para botones/acciones */
+    --muted: #65676b;
+    --text: #050505;
+}
+
+body.tema-claro a[href*="pagina="], 
+body.tema-claro .page-link {
+    background: #fff !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+}
+
+/* ESTILO DE LOS BOTONES DE CAMBIO DE TEMA */
+.widget-temas {
+    position: fixed; /* Flotante fijo */
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(0,0,0,0.5);
+    padding: 8px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    display: flex;
+    gap: 5px;
+}
+.widget-temas button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.widget-temas button:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }

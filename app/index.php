@@ -21,6 +21,9 @@ if (empty($_SESSION['csrf_token'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio De Sesión</title>
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/cookie_tema.css">
+    <?php include 'cookie_tema.php'; ?>
+
 </head>
 <body>
 
@@ -48,4 +51,17 @@ if (empty($_SESSION['csrf_token'])) {
 </div>
 
 </body>
+
+
+
+<body class="<?php echo $clase_tema; ?>">    
+
+    <div class="widget-temas">
+        <form method="POST">
+            <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
+            <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+        </form>
+    </div>
+
+    </body>
 </html>

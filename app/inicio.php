@@ -30,7 +30,7 @@ $list_pages = ['jugadores','documentacion', 'plantilla', 'cerrar_sesion'];
 <div class="navegacion">
     <nav>
         <a href="inicio.php?pages=jugadores">Lista de Jugadores</a>
-        <a href="inicio.php?pages=documentacion">Acerca de</a>
+        <a href="inicio.php?pages=documentacion">Documentacion</a>
         <a href="inicio.php?pages=plantilla">Plantilla</a>
         <a href="logout.php">Cerrar Sesión</a>
     </nav>

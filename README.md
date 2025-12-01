@@ -23,6 +23,9 @@ Para empezar a trabajar con el proyecto, necesitarás instalar los siguientes co
     
     ![Mi foto](images//readme/extension.png)
 
+4.  **Instalación del repositorio de Github**
+    * Por últimp tendremos que clonar nuestro repositorio en la carpeta **/var/www/html** de nuestro sistema linux 
+
 ---
 
 ## ▶️ Ejecución y Acceso a la Web

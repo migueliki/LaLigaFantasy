@@ -8,6 +8,10 @@ include '../app/plantilla/insert.php';
 include '../app/plantilla/modify.php';
 include '../app/plantilla/delete.php';
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +30,7 @@ include '../app/plantilla/delete.php';
 <div class="container-fluid row">
 
 <form class="col-4" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 <h3>Registrar de jugadores</h3>
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nombre de jugador</label>

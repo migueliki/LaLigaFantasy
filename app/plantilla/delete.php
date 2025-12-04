@@ -1,19 +1,12 @@
 <?php
-require_once '../app/conexion.php'; 
+require_once __DIR__ . '/../conexion.php';
 
-if (!empty($_GET["ID"])) {
-    $ID=$_GET["ID"];
-$sql = "DELETE FROM plantilla WHERE ID=$ID";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':ID' => $ID,
-    ]);
+$id = (int)($_GET['ID'] ?? 0);
+if ($id < 1) { echo 'ID inválido'; exit; }
 
-    if ($sql==1) {
-        echo '<div>Jugador eliminado correctamente</div>';
-    } else {
-        echo '<div>Jugador eliminado correctamente</div>';
-    }
-}
+$stmt = $pdo->prepare('DELETE FROM plantilla WHERE ID = :id');
+$stmt->execute([':id' => $id]);
 
+header('Location: ../../pages/plantilla.php'); 
+exit;
 ?>

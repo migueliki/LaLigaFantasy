@@ -6,7 +6,7 @@ include '../app/conexion.php';
 
 include '../app/plantilla/insert.php';
 include '../app/plantilla/modify.php';
-include '../app/plantilla/delete.php';
+// No incluir delete.php aquí para evitar ejecutar sin ID
 
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -86,8 +86,8 @@ if (empty($_SESSION['csrf_token'])) {
     <td><?= $datos->nacionalidad ?></td>
     <td><?= $datos->dorsal ?></td>
     <td>
-        <a href="plantilla.php?ID=<?= $datos->ID ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-        <a href="delete.php?ID=<?= $datos->ID ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
+        <a href="plantilla.php?ID=<?= $datos->id ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a href="../app/plantilla/delete.php?ID=<?= $datos->id ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
     </td>
     </tr>
 

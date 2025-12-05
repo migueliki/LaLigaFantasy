@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/../conexion.php';
+require_once __DIR__ . '/../csrf.php';
 
-// INSERTAR JUGADOR
+// INSERTAR JUGADOR (solo en POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
     $nombre = $_POST['nombre'] ?? '';
     $equipo = $_POST['equipo'] ?? '';
     $posicion = $_POST['posicion'] ?? '';

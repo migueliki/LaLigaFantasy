@@ -3,15 +3,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-include 'csrf.php';
+require_once 'csrf.php';
 
 if (!csrf_validate_token($_POST['csrf_token'] ?? '')) {
     http_response_code(400);
     die("Error: token CSRF inválido");
 }
 
+require_once 'conexion.php';
 include 'cookie_tema.php';
-include 'conexion.php';
 
 $username = $_POST['username'] ?? null; 
 $password = $_POST['password'] ?? null;

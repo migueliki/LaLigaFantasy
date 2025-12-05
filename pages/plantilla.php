@@ -2,15 +2,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include '../app/conexion.php';
-
-include '../app/plantilla/insert.php';
-include '../app/plantilla/modify.php';
-// No incluir delete.php aquí para evitar ejecutar sin ID
-
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+require_once '../app/conexion.php';
+require_once '../app/csrf.php';
+include_once '../app/plantilla/insert.php';
 
 ?>
 
@@ -31,7 +25,6 @@ if (empty($_SESSION['csrf_token'])) {
 
 <form class="col-4" method="POST">
     <?php csrf_echo_input(); ?>
-    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 <h3>Registrar de jugadores</h3>
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Nombre de jugador</label>
@@ -87,7 +80,7 @@ if (empty($_SESSION['csrf_token'])) {
     <td><?= $datos->nacionalidad ?></td>
     <td><?= $datos->dorsal ?></td>
     <td>
-        <a href="plantilla.php?ID=<?= $datos->id ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a href="../app/plantilla/modify.php?ID=<?= $datos->id ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
         <a href="../app/plantilla/delete.php?ID=<?= $datos->id ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
     </td>
     </tr>

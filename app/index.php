@@ -3,11 +3,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-include 'csrf.php';
+require_once 'csrf.php';
 
 if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
         echo '<p style="color: red; font-weight: bold;">Usuario o contraseña incorrectos.</p>';
     }
+
+include 'cookie_tema.php'
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +20,6 @@ if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
     <title>Inicio De Sesión</title>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">
-    <?php include 'cookie_tema.php'; ?>
 
 </head>
 <body>
@@ -47,8 +48,6 @@ if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
 </div>
 
 </body>
-
-
 
 <body class="<?php echo $clase_tema; ?>">    
 

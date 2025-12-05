@@ -24,8 +24,6 @@ include 'cookie_tema.php'
 </head>
 <body>
 
-HACIENDO UN RESETTTTTTT DAFDFDFSA           ADAFFDSFSDFSFSDAF
-
 <h1>Iniciar Sesión</h1>
 
 <div class="formulario">

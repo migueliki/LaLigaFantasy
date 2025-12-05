@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: /app/index.php'); // o login
@@ -13,7 +14,9 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 }
 $_SESSION['last_activity'] = time(); // actualizar actividad
 
-
+include_once '../app/conexion.php';
+require_once '../app/listar_jugadores.php';
+include_once '../app/cookie_tema.php';
 
 ?>
 
@@ -27,12 +30,6 @@ $_SESSION['last_activity'] = time(); // actualizar actividad
     <link rel="stylesheet" href="/css/cookie_tema.css">
     
 </head>
-<body>
-    
-
-<?php include '../app/listar_jugadores.php';
-include '../app/cookie_tema.php';
-?>
 
 <body class="<?php echo $clase_tema; ?>">    
 
@@ -43,8 +40,5 @@ include '../app/cookie_tema.php';
         </form>
     </div>
 
-    </body>
-
 </body>
-
 </html>

@@ -2,6 +2,20 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: /app/index.php'); // o login
+    exit;
+}
+// Control de timeout por inactividad
+$timeout = 3600; // 1 hora
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
+    session_unset(); session_destroy();
+    header('Location: /app/index.php?timeout=1');
+    exit;
+}
+$_SESSION['last_activity'] = time(); // actualizar actividad
+
 require_once '../app/conexion.php';
 require_once '../app/csrf.php';
 include_once '../app/plantilla/insert.php';
@@ -58,13 +72,12 @@ include_once '../app/plantilla/insert.php';
 <table class="table">
 <thead>
     <tr>
-    
-    <th scope="col">Nombre</th>
-    <th scope="col">Equipo</th>
-    <th scope="col">Posición</th>
-    <th scope="col">Nacionalidad</th>
-    <th scope="col">Dorsal</th>
-    <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Equipo</th>
+        <th scope="col">Posición</th>
+        <th scope="col">Nacionalidad</th>
+        <th scope="col">Dorsal</th>
+        <th scope="col"></th>
     </tr>
 </thead>
 <tbody>
@@ -80,7 +93,6 @@ include_once '../app/plantilla/insert.php';
     <td><?= $datos->nacionalidad ?></td>
     <td><?= $datos->dorsal ?></td>
     <td>
-        <a href="../app/plantilla/modify.php?ID=<?= $datos->id ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
         <a href="../app/plantilla/delete.php?ID=<?= $datos->id ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
     </td>
     </tr>

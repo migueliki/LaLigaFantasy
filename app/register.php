@@ -2,11 +2,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+session_start();
 include 'csrf.php';
+
 if (!csrf_validate_token($_POST['csrf_token'] ?? '')) {
     http_response_code(400);
     die("Error: token CSRF inválido");
 }
+
 include 'conexion.php';
 
 if (isset($_POST['username'], $_POST['email'], $_POST['password'])) {

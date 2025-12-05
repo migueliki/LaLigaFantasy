@@ -4,10 +4,12 @@ ini_set('display_errors', 1);
 
 session_start();
 include 'csrf.php';
+
 if (!csrf_validate_token($_POST['csrf_token'] ?? '')) {
     http_response_code(400);
     die("Error: token CSRF inválido");
 }
+
 include 'cookie_tema.php';
 include 'conexion.php';
 

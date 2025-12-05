@@ -30,6 +30,7 @@ if (empty($_SESSION['csrf_token'])) {
 <div class="container-fluid row">
 
 <form class="col-4" method="POST">
+    <?php csrf_echo_input(); ?>
     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 <h3>Registrar de jugadores</h3>
 <div class="mb-3">

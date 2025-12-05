@@ -1,4 +1,4 @@
-# Proyecto_IAW
+# LaLigaFantasy
 # 🚀 Configuración e Introducción al Proyecto
 
 Este `README` describe los pasos de configuración y las funcionalidades principales de la aplicación web.

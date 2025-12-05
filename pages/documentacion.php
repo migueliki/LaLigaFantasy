@@ -148,7 +148,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2024 Proyecto IAW - Laliga Fantasy</p>
+        <p>&copy; 2025 Proyecto IAW - Laliga Fantasy</p>
     </footer>
 </div>
 

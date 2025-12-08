@@ -24,12 +24,12 @@ $datos = $stmt->fetch();
 
 if ($datos && password_verify($password, $datos['password'])) { 
     
-    session_regenerate_id(true);// evitar hijacking de sesiones
     $_SESSION['usuario_id'] = $datos['id'];     
     $_SESSION['usuario'] = $datos['username']; 
     $_SESSION['login_time'] = time();
-    $_SESSION['last_activity'] = time();  
+    $_SESSION['last_activity'] = time();
 
+    session_regenerate_id(true);// evitar hijacking de sesiones
     header("Location: inicio.php"); 
     exit();
 

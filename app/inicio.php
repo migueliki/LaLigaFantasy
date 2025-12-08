@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 session_start();
 
 if(isset($_SESSION['usuario_id'])) {
@@ -26,7 +27,6 @@ $list_pages = ['jugadores', 'plantilla', 'cerrar_sesion'];
 </head>
 <body>
 
-
 <div class="navegacion">
     <nav>
         <a href="inicio.php?pages=jugadores">Lista de Jugadores</a>
@@ -45,9 +45,7 @@ if (in_array($pages, $list_pages)) {
         http_response_code(404);
         echo "";
     }
-
 ?>
-
 
 </body>
 <body class="<?php echo $clase_tema; ?>">    

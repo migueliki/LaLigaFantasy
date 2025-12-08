@@ -1,4 +1,5 @@
 <?php
+// Conexión a la base de datos con PDO y manejo de errores
 $intentos = 3;
 while ($intentos > 0) {
     try {

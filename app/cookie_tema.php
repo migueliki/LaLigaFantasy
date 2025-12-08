@@ -1,6 +1,5 @@
 <?php
 
-
 //  Si pulsan un botón, guardamos la cookie y recargamos
 if (isset($_POST['tema_pref'])) {
     $tema = $_POST['tema_pref']; // 'tema-original' o 'tema-claro'

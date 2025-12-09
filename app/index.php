@@ -15,11 +15,12 @@ include 'cookie_tema.php'
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <!-- <meta charset="UTF-8"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio De Sesión</title>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">
+    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
 
 </head>
 <body>
@@ -28,7 +29,7 @@ include 'cookie_tema.php'
 
 <div class="formulario">
     <form action="login.php" method="post">
-        <?php csrf_echo_input(); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <input type="text" name="username" placeholder="nombre" maxlength="20" required><br>
         <input type="password" name="password" placeholder="contraseña" maxlength="20" required><br>
         <button type="submit">Iniciar Sesión</button>
@@ -39,7 +40,7 @@ include 'cookie_tema.php'
 
 <div class="formulario">
     <form action="register.php" method="post">
-        <?php csrf_echo_input(); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <input type="text" name="username" placeholder="nombre" maxlength="20" required><br>
         <input type="email" name="email" placeholder="email" maxlength="25" required><br>
         <input type="password" name="password" placeholder="contraseña" maxlength="20" required><br>

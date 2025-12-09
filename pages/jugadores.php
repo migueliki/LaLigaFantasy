@@ -17,6 +17,7 @@ $_SESSION['last_activity'] = time(); // actualizar actividad
 include_once '../app/conexion.php';
 require_once '../app/listar_jugadores.php';
 include_once '../app/cookie_tema.php';
+require_once '../app/csrf.php';
 
 ?>
 
@@ -26,15 +27,16 @@ include_once '../app/cookie_tema.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista De Jugadores</title>
+    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/jugadores.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">
-    
 </head>
 
 <body class="<?php echo $clase_tema; ?>">    
 
     <div class="widget-temas">
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
             <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
         </form>

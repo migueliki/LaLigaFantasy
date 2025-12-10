@@ -20,9 +20,9 @@ if (isset($_POST['username'], $_POST['email'], $_POST['password'])) {
 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT); // Hashear la contraseña
     
-    $sql = "INSERT INTO register (username, email, password) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO register (username, password, email) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$username, $email, $passwordHash]);
+    $stmt->execute([$username, $passwordHash, $email]);
 
     header("Location: index.php");
     exit();

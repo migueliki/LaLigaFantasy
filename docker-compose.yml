@@ -40,7 +40,7 @@ services:
       - PMA_HOST=fantasy_mysql
       - PMA_PORT=3306
       - PMA_USER=admin
-      - PMA_PASSWORD=FantasyASIR25
+      - PMA_PASSWORD=fantasyASIR25
       - UPLOAD_LIMIT=128M
     ports:
       - "8091:80"

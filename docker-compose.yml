@@ -13,21 +13,21 @@ services:
       - WEB_DOCUMENT_INDEX=index.php
       - PHP_DISPLAY_ERRORS=1
     volumes:
-      - ./:/app
+      - c:/xampp/htdocs/LaLigaFantasy:/app
 
   mysql:
     image: mysql:8.0
     container_name: fantasy_mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=fantasyASIR25
       - MYSQL_DATABASE=fantasy
       - MYSQL_USER=admin
-      - MYSQL_PASSWORD=FantasyASIR25
+      - MYSQL_PASSWORD=fantasyASIR25
     ports:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./database/fantasy.sql:/docker-entrypoint-initdb.d/01_fantasy.sql:ro
+      - c:/xampp/htdocs/LaLigaFantasy/database/fantasy.sql:/docker-entrypoint-initdb.d/01_fantasy.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s

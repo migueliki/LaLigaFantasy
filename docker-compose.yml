@@ -2,28 +2,50 @@ version: '3.8'
 
 services:
   web:
-    build: .
-    ports:
-      - "443:443"
+    image: webdevops/php-apache:8.2
+    container_name: fantasy_web
     depends_on:
-      - db
-    networks:
-      - red1
-
-  db:
-    image: mysql:8.0
+      - mysql
+    ports:
+      - "8090:80"
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE: fantasy
+      - WEB_DOCUMENT_ROOT=/app/app
+      - WEB_DOCUMENT_INDEX=index.php
+      - PHP_DISPLAY_ERRORS=1
     volumes:
-      - ./database/fantasy.sql:/docker-entrypoint-initdb.d/01-fantasy.sql
-    networks:
-      - red1
+      - ./:/app
+
+  mysql:
+    image: mysql:8.0
+    container_name: fantasy_mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=fantasy
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=FantasyASIR25
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/fantasy.sql:/docker-entrypoint-initdb.d/01_fantasy.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
-      retries: 10
+      retries: 3
 
-networks:
-  red1:
-    driver: bridge
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: fantasy_pma
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=admin
+      - PMA_PASSWORD=FantasyASIR25
+      - UPLOAD_LIMIT=128M
+    ports:
+      - "8091:80"
+    depends_on:
+      - mysql
+
+volumes:
+  db_data:

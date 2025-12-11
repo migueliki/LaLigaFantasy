@@ -17,9 +17,9 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 }
 $_SESSION['last_activity'] = time(); // actualizar actividad
 
-require_once '../app/conexion.php';
-require_once '../app/csrf.php';
-include_once '../app/plantilla/insert.php';
+require_once '../conexion.php';
+require_once '../csrf.php';
+include_once '../plantilla/insert.php';
 
 ?>
 
@@ -30,7 +30,8 @@ include_once '../app/plantilla/insert.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plantilla</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <script src="https://kit.fontawesome.com/d3b044a253.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -95,7 +96,7 @@ include_once '../app/plantilla/insert.php';
     <td><?= $datos->nacionalidad ?></td>
     <td><?= $datos->dorsal ?></td>
     <td>
-        <a href="../app/plantilla/delete.php?id=<?= isset($datos->id) ? $datos->id : (isset($datos->ID) ? $datos->ID : '') ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
+        <a href="../plantilla/delete.php?id=<?= isset($datos->id) ? $datos->id : (isset($datos->ID) ? $datos->ID : '') ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
     </td>
     </tr>
 

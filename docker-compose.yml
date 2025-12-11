@@ -24,7 +24,7 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=FantasyASIR25
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./database/fantasy.sql:/docker-entrypoint-initdb.d/01_fantasy.sql:ro
@@ -37,7 +37,7 @@ services:
     image: phpmyadmin:5
     container_name: fantasy_pma
     environment:
-      - PMA_HOST=mysql
+      - PMA_HOST=fantasy_mysql
       - PMA_PORT=3306
       - PMA_USER=admin
       - PMA_PASSWORD=FantasyASIR25

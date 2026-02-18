@@ -13,4 +13,4 @@ while ($intentos > 0) {
 if (!isset($pdo)) {
     die("No se pudo conectar a la base de datos.");
 }
-?>
+?> 

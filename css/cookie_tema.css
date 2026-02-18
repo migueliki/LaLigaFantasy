@@ -1,13 +1,13 @@
 /* 1. Override para el INDEX (Formularios) */
 body.tema-claro {
-    background: #f0f2f5 !important; /* Gris muy suave */
+    background: #d4e8f7 !important; /* Azul celeste suave */
     color: #1c1e21 !important;
 }
 
 body.tema-claro .formulario {
-    background: #ffffff !important;
+    background: #e3f2fd !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-    border: 1px solid #ddd;
+    border: 1px solid #b3d9f2;
     backdrop-filter: none !important;
 }
 
@@ -17,8 +17,8 @@ body.tema-claro h2 {
 }
 
 body.tema-claro input {
-    background: #f0f2f5 !important;
-    border: 1px solid #ccc !important;
+    background: #e3f2fd !important;
+    border: 1px solid #90caf9 !important;
     color: #333 !important;
 }
 body.tema-claro input::placeholder {
@@ -27,33 +27,33 @@ body.tema-claro input::placeholder {
 
 /* 2. Override para INICIO (Navbar y Logo) */
 body.tema-claro .navegacion {
-    background: #ffffff !important;
-    border-bottom: 4px solid #ddd !important;
+    background: #cfe9f3 !important;
+    border-bottom: 4px solid #90caf9 !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
 }
 
 body.tema-claro .navegacion a {
-    color: #333 !important;
+    color: #1565c0 !important;
 }
 body.tema-claro .navegacion a:hover {
-    background: #eee !important;
+    background: #b3d9f2 !important;
 }
 
 /* 3. Override para JUGADORES (Variables CSS) */
 /* Como jugadores.css usa variables, solo redefinimos las variables aquí */
 body.tema-claro {
-    --bg: #f0f2f5;
-    --card: #ffffff;
-    --primary: #084fdb; /* Mantenemos el azul para botones/acciones */
-    --muted: #65676b;
-    --text: #050505;
+    --bg: #d4e8f7;
+    --card: #e3f2fd;
+    --primary: #1565c0; /* Azul más profundo para botones/acciones */
+    --muted: #5e7f99;
+    --text: #1c3a47;
 }
 
 body.tema-claro a[href*="pagina="], 
 body.tema-claro .page-link {
-    background: #fff !important;
-    color: #333 !important;
-    border: 1px solid #ccc !important;
+    background: #e3f2fd !important;
+    color: #1565c0 !important;
+    border: 1px solid #90caf9 !important;
 }
 
 /* ESTILO DE LOS BOTONES DE CAMBIO DE TEMA */

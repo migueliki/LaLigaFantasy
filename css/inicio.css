@@ -59,26 +59,6 @@ body{
 	padding: 0 16px;
 }
 
-/* Centered logo image with rounded corners using a pseudo-element */
-body::before {
-	content: "";
-	position: fixed;
-	left: 50%;
-	top: 28%;
-	transform: translateX(-50%);
-	width: clamp(320px, 56vmin, 840px);
-	aspect-ratio: 1/1;
-	background-image: url('https://img.asmedia.epimg.net/resizer/v2/AHIMRWACDNBKDHHO2W2V6KCAVE.jpg?auth=992768c257c5b28231153530dc31729ef3340b9bfacedc2360d4f6960b30e1ef&width=1200&height=1200&smart=true');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
-	border-radius: 16px; /* rounded corners */
-	box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-	opacity: 0.98; /* nearly full opacity for crispness */
-	pointer-events: none;
-	z-index: 0;
-	filter: contrast(1.05) saturate(0.98);
-}
 
 /* Ensure page content and navigation appear above the logo */
 .container, .hero { position: relative; z-index: 3; }

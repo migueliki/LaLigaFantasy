@@ -162,7 +162,7 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias Fútbol Español</title>
+    <title>Noticias</title>
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/inicio.css">
@@ -174,23 +174,21 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     <!-- NAVEGACIÓN -->
     <div class="navegacion">
         <nav>
-            <a href="/app/inicio.php">🏠 Inicio</a>
-            <a href="/app/pages/jugadores.php">Lista de Jugadores</a>
+            <a href="/app/inicio.php">Inicio</a>
+            <a href="/app/pages/equipos.php">Equipos</a>
             <a href="/app/pages/plantilla.php">Plantilla</a>
-            <a href="/app/pages/noticias.php" class="nav-active">📰 Noticias</a>
+            <a href="/app/pages/noticias.php" class="nav-active">Noticias</a>
             <a href="/app/logout.php">Cerrar Sesión</a>
         </nav>
     </div>
 
     <!-- CABECERA -->
     <div class="noticias-header">
-        <h1>⚽ Noticias Fútbol Español</h1>
-        <p class="noticias-subtitulo">LaLiga · Copa del Rey · Segunda División · Selección</p>
+        <h1>Noticias Futbol España</h1>
+        <p class="noticias-subtitulo">LaLiga · Copa del Rey · Segunda División</p>
         <?php if ($ultima_actualizacion): ?>
             <p class="noticias-actualizacion">
                 🕐 Última actualización: <strong><?php echo htmlspecialchars($ultima_actualizacion); ?></strong>
-                &nbsp;·&nbsp; Se actualiza automáticamente cada 7 días
-                &nbsp;·&nbsp;
                 <a href="?forzar=1" class="btn-refrescar">🔄 Forzar actualización</a>
             </p>
         <?php endif; ?>

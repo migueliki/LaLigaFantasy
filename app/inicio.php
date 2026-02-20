@@ -12,7 +12,7 @@ if(isset($_SESSION['usuario_id'])) {
 }
 
 $pages = $_GET['pages'] ?? 'inicio';
-$list_pages = ['jugadores', 'plantilla', 'cerrar_sesion'];
+$list_pages = ['equipos', 'plantilla', 'cerrar_sesion'];
 ?>
 
 <!DOCTYPE html>
@@ -32,10 +32,10 @@ $list_pages = ['jugadores', 'plantilla', 'cerrar_sesion'];
 
 <div class="navegacion">
     <nav>
-        <a href="/app/inicio.php">🏠 Inicio</a>
-        <a href="/app/pages/jugadores.php">Lista de Jugadores</a>
+        <a href="/app/inicio.php">Inicio</a>
+        <a href="/app/pages/equipos.php">Equipos</a>
         <a href="/app/pages/plantilla.php">Plantilla</a>
-        <a href="/app/pages/noticias.php">📰 Noticias</a>
+        <a href="/app/pages/noticias.php">Noticias</a>
         <a href="/app/logout.php">Cerrar Sesión</a>
     </nav>
 </div>

@@ -33,8 +33,20 @@ include_once '../plantilla/insert.php';
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <script src="https://kit.fontawesome.com/d3b044a253.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/inicio.css">
 </head>
 <body>
+
+    <!-- NAVEGACIÓN -->
+    <div class="navegacion">
+        <nav>
+            <a href="/app/inicio.php">🏠 Inicio</a>
+            <a href="/app/pages/jugadores.php">Lista de Jugadores</a>
+            <a href="/app/pages/plantilla.php" class="nav-active">Plantilla</a>
+            <a href="/app/pages/noticias.php">📰 Noticias</a>
+            <a href="/app/logout.php">Cerrar Sesión</a>
+        </nav>
+    </div>
 
 <h1>Mi plantilla</h1>
 

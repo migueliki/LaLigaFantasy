@@ -33,7 +33,18 @@ require_once '../csrf.php';
     <link rel="stylesheet" href="/css/cookie_tema.css">
 </head>
 
-<body class="<?php echo $clase_tema; ?>">    
+<body class="<?php echo $clase_tema; ?>">
+
+    <!-- NAVEGACIÓN -->
+    <div class="navegacion">
+        <nav>
+            <a href="/app/inicio.php">🏠 Inicio</a>
+            <a href="/app/pages/jugadores.php" class="nav-active">Lista de Jugadores</a>
+            <a href="/app/pages/plantilla.php">Plantilla</a>
+            <a href="/app/pages/noticias.php">📰 Noticias</a>
+            <a href="/app/logout.php">Cerrar Sesión</a>
+        </nav>
+    </div>
 
     <div class="widget-temas">
         <form method="POST">

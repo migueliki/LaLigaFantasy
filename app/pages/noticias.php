@@ -16,9 +16,7 @@ $_SESSION['last_activity'] = time();
 include_once '../cookie_tema.php';
 require_once '../csrf.php';
 
-// ─────────────────────────────────────────────
 //  SISTEMA DE CACHÉ (se renueva cada 7 días)
-// ─────────────────────────────────────────────
 $cache_dir  = __DIR__ . '/../../cache/';
 $cache_file = $cache_dir . 'noticias_cache.json';
 $cache_ttl  = 7 * 24 * 3600; // 7 días en segundos
@@ -37,9 +35,8 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     $noticias            = $cached['noticias']            ?? [];
     $ultima_actualizacion = $cached['ultima_actualizacion'] ?? null;
 } else {
-    // ─────────────────────────────────────────────
+ 
     //  FUENTES RSS de fútbol español
-    // ─────────────────────────────────────────────
     $feeds = [
         [
             'nombre' => 'Marca',
@@ -224,9 +221,9 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
                         <?php if (!empty($noticia['imagen'])): ?>
                             <div class="noticia-imagen">
                                 <img src="<?php echo htmlspecialchars($noticia['imagen']); ?>"
-                                     alt="<?php echo htmlspecialchars($noticia['titulo']); ?>"
-                                     loading="lazy"
-                                     onerror="this.parentElement.style.display='none'">
+                                    alt="<?php echo htmlspecialchars($noticia['titulo']); ?>"
+                                    loading="lazy"
+                                    onerror="this.parentElement.style.display='none'">
                             </div>
                         <?php endif; ?>
                         <div class="noticia-contenido">
@@ -241,9 +238,9 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
                                 <p class="noticia-desc"><?php echo htmlspecialchars($noticia['descripcion']); ?></p>
                             <?php endif; ?>
                             <a href="<?php echo htmlspecialchars($noticia['link']); ?>"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="noticia-link">
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="noticia-link">
                                 Leer noticia completa →
                             </a>
                         </div>

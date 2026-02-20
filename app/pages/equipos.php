@@ -124,7 +124,7 @@ function foto_entrenador(string $nombre): string {
 ════════════════════════════════════════ -->
 <div class="equipos-header">
     <h1>⚽ Equipos LaLiga</h1>
-    <p class="equipos-subtitulo">Pulsa el escudo de un equipo para ver su plantilla completa</p>
+    <p class="equipos-subtitulo"></p>
 </div>
 
 <div class="equipos-grid">

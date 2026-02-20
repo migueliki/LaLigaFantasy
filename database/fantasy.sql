@@ -619,7 +619,7 @@ INSERT INTO jugadores (nombre, edad, nacionalidad, equipo_id, media_fifa, posici
 
 INSERT INTO entrenadores (nombre, edad, nacionalidad, equipo_id, estilo_juego) VALUES
 -- Real Madrid
-('Xabi Alonso', 43, 'Española', (SELECT id FROM equipos WHERE nombre = 'Real Madrid'), 'Posesión y transiciones rápidas'),
+('Alvaro Arbeloa', 43, 'Española', (SELECT id FROM equipos WHERE nombre = 'Real Madrid'), 'Posesión y transiciones rápidas'),
 
 -- FC Barcelona
 ('Hansi Flick', 60, 'Alemana', (SELECT id FROM equipos WHERE nombre = 'FC Barcelona'), 'Pressing alto y posesión'),

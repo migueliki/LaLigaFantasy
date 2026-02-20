@@ -12,7 +12,7 @@ if(isset($_SESSION['usuario_id'])) {
 }
 
 $pages = $_GET['pages'] ?? 'inicio';
-$list_pages = ['equipos', 'plantilla', 'cerrar_sesion'];
+$list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ $list_pages = ['equipos', 'plantilla', 'cerrar_sesion'];
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
 
     <?php include 'cookie_tema.php'; ?>
-    <title>inicio</title>
+    <title>Inicio</title>
 </head>
 <body>
 

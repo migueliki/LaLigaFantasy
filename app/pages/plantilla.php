@@ -29,6 +29,8 @@ include_once '../cookie_tema.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plantilla</title>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
 </head>
 <body>
     <h1>Plantilla</h1>

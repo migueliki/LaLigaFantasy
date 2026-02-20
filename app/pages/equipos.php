@@ -123,7 +123,7 @@ function foto_entrenador(string $nombre): string {
      VISTA 1 – LISTA DE LOS 20 EQUIPOS
 ════════════════════════════════════════ -->
 <div class="equipos-header">
-    <h1>⚽ Equipos LaLiga</h1>
+    <h1><img src="/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
     <p class="equipos-subtitulo"></p>
 </div>
 

@@ -75,7 +75,7 @@ if (isset($_GET['equipo_id']) && is_numeric($_GET['equipo_id'])) {
 function foto_jugador(string $nombre): string {
     $n = strtolower($nombre);
     $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
+                    ['a','e','i','o','u','n','u','c','_','_','',''], $n);
     $n = preg_replace('/[^a-z0-9_]/', '', $n);
     $path = "/images/jugadores/{$n}.png";
     $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
@@ -85,7 +85,7 @@ function foto_jugador(string $nombre): string {
 function foto_entrenador(string $nombre): string {
     $n = strtolower($nombre);
     $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
+                    ['a','e','i','o','u','n','u','c','_','_','',''], $n);
     $n = preg_replace('/[^a-z0-9_]/', '', $n);
     $path = "/images/entrenadores/{$n}.png";
     $real = __DIR__ . '/../../images/entrenadores/' . $n . '.png';
@@ -119,7 +119,7 @@ function foto_entrenador(string $nombre): string {
 
 <?php if (!$equipo_sel): ?>
 <!-- ════════════════════════════════════════
-     VISTA 1 – LISTA DE LOS 20 EQUIPOS
+    VISTA 1 – LISTA DE LOS 20 EQUIPOS
 ════════════════════════════════════════ -->
 <div class="equipos-header">
     <h1><img src="/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
@@ -134,8 +134,8 @@ function foto_entrenador(string $nombre): string {
     <a href="/app/pages/equipos.php?equipo_id=<?php echo $eq->id; ?>" class="equipo-card">
         <div class="equipo-escudo">
             <img src="<?php echo htmlspecialchars($escudo_url); ?>"
-                 alt="<?php echo htmlspecialchars($eq->nombre); ?>"
-                 loading="lazy">
+                alt="<?php echo htmlspecialchars($eq->nombre); ?>"
+                loading="lazy">
         </div>
         <span class="equipo-nombre"><?php echo htmlspecialchars($eq->nombre); ?></span>
         <span class="equipo-ciudad">📍 <?php echo htmlspecialchars($eq->ciudad ?? ''); ?></span>
@@ -149,14 +149,15 @@ function foto_entrenador(string $nombre): string {
     $escudo_url = $archivo ? '/images/escudos/' . $archivo : '/images/silueta.svg';
 ?>
 <!-- ════════════════════════════════════════
-     VISTA 2 – DETALLE DE UN EQUIPO
+    VISTA 2 – DETALLE DE UN EQUIPO
 ════════════════════════════════════════ -->
 <div class="detalle-header">
     <a href="/app/pages/equipos.php" class="btn-volver">← Volver a equipos</a>
     <div class="detalle-escudo-wrap">
         <img src="<?php echo htmlspecialchars($escudo_url); ?>"
-             alt="<?php echo htmlspecialchars($nombre_eq); ?>"
-             class="detalle-escudo-img">
+            alt="<?php echo htmlspecialchars($nombre_eq); ?>"
+            loading="lazy"
+            class="detalle-escudo-img">
         <div>
             <h1 class="detalle-titulo"><?php echo htmlspecialchars($nombre_eq); ?></h1>
             <p class="detalle-info">

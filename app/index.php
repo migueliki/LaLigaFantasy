@@ -11,44 +11,6 @@ if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
 
 include 'cookie_tema.php'
 
-
-
-
-// Obtener la ruta de la URL (ej. /registro, /inicio, etc.)
-$request = $_SERVER['REQUEST_URI'];
-// Eliminar parámetros de consulta (todo después de ?)
-$request = strtok($request, '?');
-// Eliminar la barra inicial
-$request = ltrim($request, '/');
-
-// Si la ruta está vacía, cargar inicio.php
-if ($request === '') {
-    $request = 'inicio';
-}
-
-// Mapear rutas amigables a archivos reales (inglés/español)
-$routes = [
-    'inicio'   => 'inicio.php',
-    'registro' => 'register.php',
-    'login'    => 'login.php',
-    'logout'   => 'logout.php',
-    // Añade más rutas según necesites
-];
-
-if (isset($routes[$request])) {
-    // Incluir el archivo correspondiente
-    include $routes[$request];
-} else {
-    // Si no existe, mostrar 404
-    header("HTTP/1.0 404 Not Found");
-    echo "Página no encontrada";
-}
-exit;
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>

@@ -43,7 +43,7 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
 <?php
 
 if (in_array($pages, $list_pages)) {
-    header("Location: /app/pages/{$pages}.php");
+    header("Location: /pages/{$pages}.php");
 }
     else {
         http_response_code(404);

@@ -26,6 +26,15 @@ if (!is_dir($cache_dir)) {
     mkdir($cache_dir, 0755, true);
 }
 
+// Forzar actualización ANTES de cargar el caché
+if (isset($_GET['forzar']) && $_GET['forzar'] == '1') {
+    if (file_exists($cache_file)) {
+        unlink($cache_file);
+    }
+    header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
+    exit();
+}
+
 $noticias = [];
 $ultima_actualizacion = null;
 
@@ -212,17 +221,6 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
             </p>
         <?php endif; ?>
     </div>
-
-    <!-- FORZAR REFRESCO MANUAL -->
-    <?php
-    if (isset($_GET['forzar']) && $_GET['forzar'] == '1') {
-        if (file_exists($cache_file)) {
-            unlink($cache_file);
-        }
-        header('Location: /pages/noticias.php');
-        exit();
-    }
-    ?>
 
     <!-- GRID DE NOTICIAS -->
     <div class="noticias-container">

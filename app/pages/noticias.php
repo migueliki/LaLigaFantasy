@@ -86,16 +86,23 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     libxml_use_internal_errors(true);
 
     foreach ($feeds as $feed) {
-        $context = stream_context_create([
-            'http' => [
-                'timeout'     => 8,
-                'user_agent'  => 'Mozilla/5.0 (compatible; LaLigaFantasy/1.0)',
-                'follow_location' => 1,
-            ]
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            => $feed['url'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 10,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 5,
+            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LaLigaFantasy/1.0)',
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_ENCODING       => 'gzip, deflate',
         ]);
+        $xml_raw   = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
-        $xml_raw = @file_get_contents($feed['url'], false, $context);
-        if (!$xml_raw) continue;
+        if (!$xml_raw || $http_code < 200 || $http_code >= 400) continue;
 
         $xml = @simplexml_load_string($xml_raw);
         if (!$xml) continue;

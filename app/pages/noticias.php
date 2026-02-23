@@ -1,14 +1,14 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: /app/index.php');
+    header('Location: /index.php');
     exit();
 }
 // Control de timeout por inactividad
 $timeout = 3600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
     session_unset(); session_destroy();
-    header('Location: /app/index.php?timeout=1');
+    header('Location: /index.php?timeout=1');
     exit();
 }
 $_SESSION['last_activity'] = time();
@@ -174,11 +174,11 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     <!-- NAVEGACIÓN -->
     <div class="navegacion">
         <nav>
-            <a href="/app/inicio.php">Inicio</a>
-            <a href="/app/pages/equipos.php">Equipos</a>
-            <a href="/app/pages/plantilla.php">Plantilla</a>
-            <a href="/app/pages/noticias.php" class="nav-active">Noticias</a>
-            <a href="/app/logout.php">Cerrar Sesión</a>
+            <a href="/inicio.php">Inicio</a>
+            <a href="/pages/equipos.php">Equipos</a>
+            <a href="/pages/plantilla.php">Plantilla</a>
+            <a href="/pages/noticias.php" class="nav-active">Noticias</a>
+            <a href="/logout.php">Cerrar Sesión</a>
         </nav>
     </div>
 
@@ -200,7 +200,7 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
         if (file_exists($cache_file)) {
             unlink($cache_file);
         }
-        header('Location: /app/pages/noticias.php');
+        header('Location: /pages/noticias.php');
         exit();
     }
     ?>

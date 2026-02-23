@@ -5,13 +5,13 @@ ini_set('display_errors', 1);
 session_start();
 
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: /app/index.php');
+    header('Location: /index.php');
     exit;
 }
 $timeout = 3600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
     session_unset(); session_destroy();
-    header('Location: /app/index.php?timeout=1');
+    header('Location: /index.php?timeout=1');
     exit;
 }
 $_SESSION['last_activity'] = time();
@@ -109,11 +109,11 @@ function foto_entrenador(string $nombre): string {
 <!-- NAVEGACIÓN -->
 <div class="navegacion">
     <nav>
-        <a href="/app/inicio.php">Inicio</a>
-        <a href="/app/pages/plantilla.php">Plantilla</a>
-        <a href="/app/pages/equipos.php" class="nav-active"> Equipos</a>
-        <a href="/app/pages/noticias.php">Noticias</a>
-        <a href="/app/logout.php">Cerrar Sesión</a>
+        <a href="/inicio.php">Inicio</a>
+        <a href="/pages/plantilla.php">Plantilla</a>
+        <a href="/pages/equipos.php" class="nav-active"> Equipos</a>
+        <a href="/pages/noticias.php">Noticias</a>
+        <a href="/logout.php">Cerrar Sesión</a>
     </nav>
 </div>
 
@@ -131,7 +131,7 @@ function foto_entrenador(string $nombre): string {
         $archivo = $escudos[$eq->nombre] ?? null;
         $escudo_url = $archivo ? '/images/escudos/' . $archivo : '/images/silueta.svg';
     ?>
-    <a href="/app/pages/equipos.php?equipo_id=<?php echo $eq->id; ?>" class="equipo-card">
+    <a href="/pages/equipos.php?equipo_id=<?php echo $eq->id; ?>" class="equipo-card">
         <div class="equipo-escudo">
             <img src="<?php echo htmlspecialchars($escudo_url); ?>"
                 alt="<?php echo htmlspecialchars($eq->nombre); ?>"
@@ -152,7 +152,7 @@ function foto_entrenador(string $nombre): string {
     VISTA 2 – DETALLE DE UN EQUIPO
 ════════════════════════════════════════ -->
 <div class="detalle-header">
-    <a href="/app/pages/equipos.php" class="btn-volver">← Volver a equipos</a>
+    <a href="/pages/equipos.php" class="btn-volver">← Volver a equipos</a>
     <div class="detalle-escudo-wrap">
         <img src="<?php echo htmlspecialchars($escudo_url); ?>"
             alt="<?php echo htmlspecialchars($nombre_eq); ?>"

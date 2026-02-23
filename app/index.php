@@ -26,9 +26,10 @@ include 'cookie_tema.php'
     <meta property="og:url" content="https://laligafantasy.duckdns.org/">
     <meta property="og:title" content="LaLiga Fantasy">
     <meta property="og:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="698">
+    <meta property="og:image:height" content="441">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 
@@ -36,7 +37,7 @@ include 'cookie_tema.php'
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LaLiga Fantasy">
     <meta name="twitter:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">

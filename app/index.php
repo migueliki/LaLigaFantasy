@@ -21,7 +21,7 @@ include 'cookie_tema.php'
     <title>Inicio De Sesión</title>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">
-    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
 
 </head>
 <body>

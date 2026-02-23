@@ -47,7 +47,7 @@ setcookie(session_name(), '', time()-3600, '/'); // eliminar cookie de sesión
         <h2>Cerrando sesión...</h2>
         <p>¡Esperamos verte pronto!</p>
         <p><small>Serás redirigido en unos segundos.</small></p>
-        <a href="/app/index.php">Haz clic aquí si no te redirige</a>
+        <a href="/index.php">Haz clic aquí si no te redirige</a>
     </div>
 
 </body>

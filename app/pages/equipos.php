@@ -106,8 +106,9 @@ function foto_entrenador(string $nombre): string {
     <meta property="og:title" content="<?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?> - LaLiga Fantasy">
     <meta property="og:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
     <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="698">
+    <meta property="og:image:height" content="441">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 

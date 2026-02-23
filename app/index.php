@@ -27,8 +27,9 @@ include 'cookie_tema.php'
     <meta property="og:title" content="LaLiga Fantasy">
     <meta property="og:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
     <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="698">
+    <meta property="og:image:height" content="441">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 

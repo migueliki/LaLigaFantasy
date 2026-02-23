@@ -13,9 +13,6 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 }
 $_SESSION['last_activity'] = time();
 
-include_once '../cookie_tema.php';
-require_once '../csrf.php';
-
 //  SISTEMA DE CACHÉ (se renueva cada 7 días)
 $cache_dir  = __DIR__ . '/../cache/';
 $cache_file = $cache_dir . 'noticias_cache.json';
@@ -26,7 +23,7 @@ if (!is_dir($cache_dir)) {
     mkdir($cache_dir, 0755, true);
 }
 
-// Forzar actualización ANTES de cargar el caché
+// Forzar actualización ANTES de cualquier output
 if (isset($_GET['forzar']) && $_GET['forzar'] == '1') {
     if (file_exists($cache_file)) {
         unlink($cache_file);
@@ -34,6 +31,10 @@ if (isset($_GET['forzar']) && $_GET['forzar'] == '1') {
     header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
     exit();
 }
+
+// Incluir DESPUÉS del redirect para evitar output prematuro
+include_once '../cookie_tema.php';
+require_once '../csrf.php';
 
 $noticias = [];
 $ultima_actualizacion = null;

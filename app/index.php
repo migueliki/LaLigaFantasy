@@ -16,13 +16,31 @@ include 'cookie_tema.php'
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- <meta charset="UTF-8"> -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio De Sesión</title>
+    <title>LaLiga Fantasy - Inicio De Sesión</title>
+    <meta name="description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
+
+    <!-- Open Graph (WhatsApp, Facebook, Telegram, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://laligafantasy.duckdns.org/">
+    <meta property="og:title" content="LaLiga Fantasy">
+    <meta property="og:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LaLiga Fantasy">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LaLiga Fantasy">
+    <meta name="twitter:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
-
 </head>
 <body>
 

@@ -97,7 +97,26 @@ function foto_entrenador(string $nombre): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?></title>
+    <title><?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?> - LaLiga Fantasy</title>
+    <meta name="description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://laligafantasy.duckdns.org/pages/equipos.php">
+    <meta property="og:title" content="<?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?> - LaLiga Fantasy">
+    <meta property="og:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LaLiga Fantasy">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?> - LaLiga Fantasy">
+    <meta name="twitter:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/inicio.css">

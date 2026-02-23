@@ -28,7 +28,26 @@ include_once '../cookie_tema.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plantilla</title>
+    <title>Plantilla - LaLiga Fantasy</title>
+    <meta name="description" content="Gestiona tu plantilla de LaLiga Fantasy. Selecciona jugadores, consulta estadísticas y monta tu equipo ideal.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://laligafantasy.duckdns.org/pages/plantilla.php">
+    <meta property="og:title" content="Plantilla - LaLiga Fantasy">
+    <meta property="og:description" content="Gestiona tu plantilla de LaLiga Fantasy. Selecciona jugadores, consulta estadísticas y monta tu equipo ideal.">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LaLiga Fantasy">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Plantilla - LaLiga Fantasy">
+    <meta name="twitter:description" content="Gestiona tu plantilla de LaLiga Fantasy. Selecciona jugadores, consulta estadísticas y monta tu equipo ideal.">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
 </head>

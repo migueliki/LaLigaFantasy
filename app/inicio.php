@@ -20,13 +20,32 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaLiga Fantasy - Inicio</title>
+    <meta name="description" content="Panel principal de LaLiga Fantasy. Gestiona tu equipo, consulta estadísticas y sigue las noticias del fútbol español.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://laligafantasy.duckdns.org/inicio.php">
+    <meta property="og:title" content="LaLiga Fantasy - Inicio">
+    <meta property="og:description" content="Panel principal de LaLiga Fantasy. Gestiona tu equipo, consulta estadísticas y sigue las noticias del fútbol español.">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LaLiga Fantasy">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LaLiga Fantasy - Inicio">
+    <meta name="twitter:description" content="Panel principal de LaLiga Fantasy. Gestiona tu equipo, consulta estadísticas y sigue las noticias del fútbol español.">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+
     <link rel="stylesheet" href="/css/inicio.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
 
     <?php include 'cookie_tema.php'; ?>
-    <title>Inicio</title>
 </head>
 <body>
 

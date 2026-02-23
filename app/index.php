@@ -10,6 +10,7 @@ if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
     }
 
 include 'cookie_tema.php'
+
 ?>
 
 <!DOCTYPE html>

@@ -17,7 +17,7 @@ setcookie(session_name(), '', time()-3600, '/'); // eliminar cookie de sesión
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cerrando sesión...</title>
     
-    <meta http-equiv="refresh" content="3;url=/app/index.php">
+    <meta http-equiv="refresh" content="3;url=/index.php">
 
     <style>
         body {

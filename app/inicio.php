@@ -28,7 +28,7 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
     <meta property="og:url" content="https://laligafantasy.duckdns.org/inicio.php">
     <meta property="og:title" content="LaLiga Fantasy - Inicio">
     <meta property="og:description" content="Panel principal de LaLiga Fantasy. Gestiona tu equipo, consulta estadísticas y sigue las noticias del fútbol español.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LaLiga Fantasy">
@@ -38,7 +38,7 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LaLiga Fantasy - Inicio">
     <meta name="twitter:description" content="Panel principal de LaLiga Fantasy. Gestiona tu equipo, consulta estadísticas y sigue las noticias del fútbol español.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
     <link rel="stylesheet" href="/css/inicio.css">
     <link rel="stylesheet" href="/css/cookie_tema.css">

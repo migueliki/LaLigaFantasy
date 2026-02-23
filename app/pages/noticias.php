@@ -170,7 +170,7 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     <meta property="og:url" content="https://laligafantasy.duckdns.org/pages/noticias.php">
     <meta property="og:title" content="Noticias - LaLiga Fantasy">
     <meta property="og:description" content="Últimas noticias de LaLiga, Copa del Rey y Segunda División. Toda la actualidad del fútbol español en un solo lugar.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LaLiga Fantasy">
@@ -180,7 +180,7 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Noticias - LaLiga Fantasy">
     <meta name="twitter:description" content="Últimas noticias de LaLiga, Copa del Rey y Segunda División. Toda la actualidad del fútbol español en un solo lugar.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">

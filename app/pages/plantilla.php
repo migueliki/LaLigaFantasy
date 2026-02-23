@@ -36,7 +36,7 @@ include_once '../cookie_tema.php';
     <meta property="og:url" content="https://laligafantasy.duckdns.org/pages/plantilla.php">
     <meta property="og:title" content="Plantilla - LaLiga Fantasy">
     <meta property="og:description" content="Gestiona tu plantilla de LaLiga Fantasy. Selecciona jugadores, consulta estadísticas y monta tu equipo ideal.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LaLiga Fantasy">
@@ -46,7 +46,7 @@ include_once '../cookie_tema.php';
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Plantilla - LaLiga Fantasy">
     <meta name="twitter:description" content="Gestiona tu plantilla de LaLiga Fantasy. Selecciona jugadores, consulta estadísticas y monta tu equipo ideal.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/og-image.png">
+    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">

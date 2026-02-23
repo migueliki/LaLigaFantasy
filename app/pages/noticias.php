@@ -17,7 +17,7 @@ include_once '../cookie_tema.php';
 require_once '../csrf.php';
 
 //  SISTEMA DE CACHÉ (se renueva cada 7 días)
-$cache_dir  = __DIR__ . '/../../cache/';
+$cache_dir  = __DIR__ . '/../cache/';
 $cache_file = $cache_dir . 'noticias_cache.json';
 $cache_ttl  = 7 * 24 * 3600; // 7 días en segundos
 

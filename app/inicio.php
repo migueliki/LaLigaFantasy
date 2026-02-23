@@ -32,11 +32,11 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
 
 <div class="navegacion">
     <nav>
-        <a href="/app/inicio.php">Inicio</a>
-        <a href="/app/pages/equipos.php">Equipos</a>
-        <a href="/app/pages/plantilla.php">Plantilla</a>
-        <a href="/app/pages/noticias.php">Noticias</a>
-        <a href="/app/logout.php">Cerrar Sesión</a>
+        <a href="/inicio.php">Inicio</a>
+        <a href="/pages/equipos.php">Equipos</a>
+        <a href="/pages/plantilla.php">Plantilla</a>
+        <a href="/pages/noticias.php">Noticias</a>
+        <a href="/logout.php">Cerrar Sesión</a>
     </nav>
 </div>
 

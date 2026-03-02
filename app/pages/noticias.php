@@ -24,13 +24,18 @@ if (!is_dir($cache_dir)) {
     mkdir($cache_dir, 0755, true);
 }
 
-// Forzar actualización ANTES de cualquier output
-if (isset($_GET['forzar']) && $_GET['forzar'] == '1') {
+// Forzar actualización (robusto para entornos con proxy/cache)
+$forzar_actualizacion = isset($_GET['forzar']) && $_GET['forzar'] === '1';
+$mensaje_actualizacion = null;
+
+if ($forzar_actualizacion) {
     if (file_exists($cache_file)) {
-        unlink($cache_file);
+        @unlink($cache_file);
     }
-    header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
-    exit();
+
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
 }
 
 // Incluir DESPUÉS del redirect para evitar output prematuro
@@ -41,7 +46,7 @@ $noticias = [];
 $ultima_actualizacion = null;
 
 // ¿Existe caché válida?
-if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) {
+if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) {
     $cached = json_decode(file_get_contents($cache_file), true);
     $noticias            = $cached['noticias']            ?? [];
     $ultima_actualizacion = $cached['ultima_actualizacion'] ?? null;
@@ -166,13 +171,30 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
         return strtotime(str_replace('/', '-', $b['fecha'])) - strtotime(str_replace('/', '-', $a['fecha']));
     });
 
-    $ultima_actualizacion = date('d/m/Y H:i');
+    if (!empty($noticias)) {
+        $ultima_actualizacion = date('d/m/Y H:i');
 
-    // Guardar en caché
-    file_put_contents($cache_file, json_encode([
-        'noticias'            => $noticias,
-        'ultima_actualizacion' => $ultima_actualizacion,
-    ], JSON_UNESCAPED_UNICODE));
+        // Guardar en caché solo si hay contenido válido
+        file_put_contents($cache_file, json_encode([
+            'noticias'            => $noticias,
+            'ultima_actualizacion' => $ultima_actualizacion,
+        ], JSON_UNESCAPED_UNICODE));
+
+        if ($forzar_actualizacion) {
+            $mensaje_actualizacion = '✅ Noticias actualizadas correctamente';
+        }
+    } else {
+        // Si fallan todas las fuentes, intentar conservar la caché anterior
+        if (file_exists($cache_file)) {
+            $cached = json_decode(file_get_contents($cache_file), true);
+            $noticias             = $cached['noticias'] ?? [];
+            $ultima_actualizacion = $cached['ultima_actualizacion'] ?? null;
+        }
+
+        if ($forzar_actualizacion) {
+            $mensaje_actualizacion = '⚠️ No se pudieron descargar noticias nuevas en este momento';
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -224,10 +246,13 @@ if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) 
     <div class="noticias-header">
         <h1>Noticias Futbol España</h1>
         <p class="noticias-subtitulo">LaLiga · Copa del Rey · Segunda División</p>
+        <?php if ($mensaje_actualizacion): ?>
+            <p class="noticias-actualizacion"><?php echo htmlspecialchars($mensaje_actualizacion); ?></p>
+        <?php endif; ?>
         <?php if ($ultima_actualizacion): ?>
             <p class="noticias-actualizacion">
                 🕐 Última actualización: <strong><?php echo htmlspecialchars($ultima_actualizacion); ?></strong>
-                <a href="?forzar=1" class="btn-refrescar">🔄 Forzar actualización</a>
+                <a href="?forzar=1&amp;t=<?php echo time(); ?>" class="btn-refrescar">🔄 Forzar actualización</a>
             </p>
         <?php endif; ?>
     </div>

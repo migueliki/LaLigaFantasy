@@ -131,6 +131,7 @@ function foto_entrenador(string $nombre): string {
     <nav>
         <a href="/inicio.php">Inicio</a>
         <a href="/pages/equipos.php" class="nav-active"> Equipos</a>
+        <a href="/pages/calendario.php">Calendario</a>
         <a href="/pages/plantilla.php">Plantilla</a>
         <a href="/pages/noticias.php">Noticias</a>
         <a href="/logout.php">Cerrar Sesión</a>

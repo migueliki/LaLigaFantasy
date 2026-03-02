@@ -54,6 +54,7 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
     <nav>
         <a href="/inicio.php">Inicio</a>
         <a href="/pages/equipos.php">Equipos</a>
+        <a href="/pages/calendario.php">Calendario</a>
         <a href="/pages/plantilla.php">Plantilla</a>
         <a href="/pages/noticias.php">Noticias</a>
         <a href="/logout.php">Cerrar Sesión</a>

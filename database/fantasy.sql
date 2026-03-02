@@ -50,6 +50,16 @@ CREATE TABLE entrenadores (
     FOREIGN KEY (equipo_id) REFERENCES equipos(id)
 );
 
+CREATE TABLE partidos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    jornada INT NOT NULL,
+    equipo_local_id INT NOT NULL,
+    equipo_visitante_id INT NOT NULL,
+    fecha_hora DATETIME NOT NULL,
+    FOREIGN KEY (equipo_local_id) REFERENCES equipos(id),
+    FOREIGN KEY (equipo_visitante_id) REFERENCES equipos(id)
+);
+
 INSERT INTO equipos (nombre, ciudad, fundacion, estadio) VALUES
 ('Real Madrid', 'Madrid', 1902, 'Santiago Bernabéu'), 
 ('FC Barcelona', 'Barcelona', 1899, 'Spotify Camp Nou'), 

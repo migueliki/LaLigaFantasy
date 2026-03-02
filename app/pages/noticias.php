@@ -236,6 +236,7 @@ if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($c
         <nav>
             <a href="/inicio.php">Inicio</a>
             <a href="/pages/equipos.php">Equipos</a>
+            <a href="/pages/calendario.php">Calendario</a>
             <a href="/pages/plantilla.php">Plantilla</a>
             <a href="/pages/noticias.php" class="nav-active">Noticias</a>
             <a href="/logout.php">Cerrar Sesión</a>

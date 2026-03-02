@@ -56,6 +56,8 @@ CREATE TABLE partidos (
     equipo_local_id INT NOT NULL,
     equipo_visitante_id INT NOT NULL,
     fecha_hora DATETIME NOT NULL,
+    goles_local INT DEFAULT NULL,
+    goles_visitante INT DEFAULT NULL,
     FOREIGN KEY (equipo_local_id) REFERENCES equipos(id),
     FOREIGN KEY (equipo_visitante_id) REFERENCES equipos(id)
 );

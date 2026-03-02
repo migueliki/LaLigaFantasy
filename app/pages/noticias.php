@@ -245,7 +245,7 @@ if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($c
 
     <!-- CABECERA -->
     <div class="noticias-header">
-        <h1>Noticias Futbol España</h1>
+        <h1>Noticias Fútbol España</h1>
         <p class="noticias-subtitulo">LaLiga · Copa del Rey · Segunda División</p>
         <?php if ($mensaje_actualizacion): ?>
             <p class="noticias-actualizacion"><?php echo htmlspecialchars($mensaje_actualizacion); ?></p>

@@ -29,10 +29,6 @@ $forzar_actualizacion = isset($_GET['forzar']) && $_GET['forzar'] === '1';
 $mensaje_actualizacion = null;
 
 if ($forzar_actualizacion) {
-    if (file_exists($cache_file)) {
-        @unlink($cache_file);
-    }
-
     header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
     header('Pragma: no-cache');
     header('Expires: 0');
@@ -54,7 +50,11 @@ function texto_lowercase(string $texto): string {
     return function_exists('mb_strtolower') ? mb_strtolower($texto, 'UTF-8') : strtolower($texto);
 }
 
-function descargar_feed_individual(string $url): ?string {
+function descargar_feed_individual(string $url, float $deadline): ?string {
+    if (microtime(true) >= $deadline) {
+        return null;
+    }
+
     if (function_exists('curl_init')) {
         $ch = curl_init();
         curl_setopt_array($ch, [
@@ -100,8 +100,12 @@ function descargar_feed_individual(string $url): ?string {
     return null;
 }
 
-function descargar_feeds(array $feeds): array {
+function descargar_feeds(array $feeds, float $deadline): array {
     $resultados = [];
+
+    if (microtime(true) >= $deadline) {
+        return $resultados;
+    }
 
     if (function_exists('curl_multi_init') && function_exists('curl_init')) {
         $mh = curl_multi_init();
@@ -128,6 +132,9 @@ function descargar_feeds(array $feeds): array {
         $running = null;
         do {
             curl_multi_exec($mh, $running);
+            if (microtime(true) >= $deadline) {
+                break;
+            }
             if ($running > 0) {
                 curl_multi_select($mh, 1.0);
             }
@@ -147,8 +154,11 @@ function descargar_feeds(array $feeds): array {
     }
 
     foreach ($feeds as $feed) {
+        if (microtime(true) >= $deadline) {
+            break;
+        }
         if (!isset($resultados[$feed['url']])) {
-            $fallback = descargar_feed_individual($feed['url']);
+            $fallback = descargar_feed_individual($feed['url'], $deadline);
             if ($fallback) {
                 $resultados[$feed['url']] = $fallback;
             }
@@ -161,8 +171,8 @@ function descargar_feeds(array $feeds): array {
 $noticias = [];
 $ultima_actualizacion = null;
 
-// Cargar caché existente para responder rápido
-if (!$forzar_actualizacion && file_exists($cache_file)) {
+// Cargar caché existente para responder rápido (también en forzar, como respaldo)
+if (file_exists($cache_file)) {
     $cached = json_decode(file_get_contents($cache_file), true);
     $noticias            = $cached['noticias']            ?? [];
     $ultima_actualizacion = $cached['ultima_actualizacion'] ?? null;
@@ -211,7 +221,8 @@ if ($forzar_actualizacion || empty($noticias)) {
 
     libxml_use_internal_errors(true);
 
-    $feeds_raw = descargar_feeds($feeds);
+    $deadline = microtime(true) + 8.0;
+    $feeds_raw = descargar_feeds($feeds, $deadline);
 
     foreach ($feeds as $feed) {
         $xml_raw = $feeds_raw[$feed['url']] ?? null;

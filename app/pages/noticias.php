@@ -42,15 +42,134 @@ if ($forzar_actualizacion) {
 include_once '../cookie_tema.php';
 require_once '../csrf.php';
 
+function texto_len(string $texto): int {
+    return function_exists('mb_strlen') ? mb_strlen($texto, 'UTF-8') : strlen($texto);
+}
+
+function texto_sub(string $texto, int $inicio, int $longitud): string {
+    return function_exists('mb_substr') ? mb_substr($texto, $inicio, $longitud, 'UTF-8') : substr($texto, $inicio, $longitud);
+}
+
+function texto_lowercase(string $texto): string {
+    return function_exists('mb_strtolower') ? mb_strtolower($texto, 'UTF-8') : strtolower($texto);
+}
+
+function descargar_feed_individual(string $url): ?string {
+    if (function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 2,
+            CURLOPT_TIMEOUT        => 4,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 3,
+            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LaLigaFantasy/1.0)',
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_ENCODING       => 'gzip, deflate',
+        ]);
+        $xml_raw = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($xml_raw && $http_code >= 200 && $http_code < 400) {
+            return $xml_raw;
+        }
+    }
+
+    if (ini_get('allow_url_fopen')) {
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'timeout' => 4,
+                'header' => "User-Agent: Mozilla/5.0 (compatible; LaLigaFantasy/1.0)\r\n",
+            ],
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ],
+        ]);
+
+        $xml_raw = @file_get_contents($url, false, $context);
+        if ($xml_raw !== false) {
+            return $xml_raw;
+        }
+    }
+
+    return null;
+}
+
+function descargar_feeds(array $feeds): array {
+    $resultados = [];
+
+    if (function_exists('curl_multi_init') && function_exists('curl_init')) {
+        $mh = curl_multi_init();
+        $handles = [];
+
+        foreach ($feeds as $feed) {
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => $feed['url'],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => 2,
+                CURLOPT_TIMEOUT        => 4,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_MAXREDIRS      => 3,
+                CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LaLigaFantasy/1.0)',
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_ENCODING       => 'gzip, deflate',
+            ]);
+            curl_multi_add_handle($mh, $ch);
+            $handles[$feed['url']] = $ch;
+        }
+
+        $running = null;
+        do {
+            curl_multi_exec($mh, $running);
+            if ($running > 0) {
+                curl_multi_select($mh, 1.0);
+            }
+        } while ($running > 0);
+
+        foreach ($handles as $url => $ch) {
+            $contenido = curl_multi_getcontent($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($contenido && $http_code >= 200 && $http_code < 400) {
+                $resultados[$url] = $contenido;
+            }
+
+            curl_multi_remove_handle($mh, $ch);
+            curl_close($ch);
+        }
+        curl_multi_close($mh);
+    }
+
+    foreach ($feeds as $feed) {
+        if (!isset($resultados[$feed['url']])) {
+            $fallback = descargar_feed_individual($feed['url']);
+            if ($fallback) {
+                $resultados[$feed['url']] = $fallback;
+            }
+        }
+    }
+
+    return $resultados;
+}
+
 $noticias = [];
 $ultima_actualizacion = null;
 
-// ¿Existe caché válida?
-if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_ttl) {
+// Cargar caché existente para responder rápido
+if (!$forzar_actualizacion && file_exists($cache_file)) {
     $cached = json_decode(file_get_contents($cache_file), true);
     $noticias            = $cached['noticias']            ?? [];
     $ultima_actualizacion = $cached['ultima_actualizacion'] ?? null;
-} else {
+}
+
+// Solo refrescar remoto si se fuerza manualmente o no hay caché útil
+if ($forzar_actualizacion || empty($noticias)) {
  
     //  FUENTES RSS de fútbol español
     $feeds = [
@@ -92,24 +211,11 @@ if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($c
 
     libxml_use_internal_errors(true);
 
-    foreach ($feeds as $feed) {
-        $ch = curl_init();
-        curl_setopt_array($ch, [
-            CURLOPT_URL            => $feed['url'],
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT        => 10,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS      => 5,
-            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LaLigaFantasy/1.0)',
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_ENCODING       => 'gzip, deflate',
-        ]);
-        $xml_raw   = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+    $feeds_raw = descargar_feeds($feeds);
 
-        if (!$xml_raw || $http_code < 200 || $http_code >= 400) continue;
+    foreach ($feeds as $feed) {
+        $xml_raw = $feeds_raw[$feed['url']] ?? null;
+        if (!$xml_raw) continue;
 
         $xml = @simplexml_load_string($xml_raw);
         if (!$xml) continue;
@@ -128,12 +234,12 @@ if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($c
             // Limpiar etiquetas HTML de la descripción
             $descripcion = strip_tags($descripcion);
             // Truncar a 180 caracteres
-            if (mb_strlen($descripcion) > 180) {
-                $descripcion = mb_substr($descripcion, 0, 177) . '...';
+            if (texto_len($descripcion) > 180) {
+                $descripcion = texto_sub($descripcion, 0, 177) . '...';
             }
 
             // Filtrar por palabras clave (título o descripción)
-            $texto_lower = mb_strtolower($titulo . ' ' . $descripcion);
+            $texto_lower = texto_lowercase($titulo . ' ' . $descripcion);
             $es_relevante = false;
             foreach ($keywords as $kw) {
                 if (strpos($texto_lower, $kw) !== false) {
@@ -175,10 +281,10 @@ if (!$forzar_actualizacion && file_exists($cache_file) && (time() - filemtime($c
         $ultima_actualizacion = date('d/m/Y H:i');
 
         // Guardar en caché solo si hay contenido válido
-        file_put_contents($cache_file, json_encode([
+        @file_put_contents($cache_file, json_encode([
             'noticias'            => $noticias,
             'ultima_actualizacion' => $ultima_actualizacion,
-        ], JSON_UNESCAPED_UNICODE));
+        ], JSON_UNESCAPED_UNICODE), LOCK_EX);
 
         if ($forzar_actualizacion) {
             $mensaje_actualizacion = '✅ Noticias actualizadas correctamente';

@@ -17,8 +17,8 @@ body.tema-claro h2 {
 }
 
 body.tema-claro input {
-    background: #e3f2fd !important;
-    border: 1px solid #90caf9 !important;
+    background: #8abde2 !important;
+    border: 1px solid #4685b9 !important;
     color: #333 !important;
 }
 body.tema-claro input::placeholder {

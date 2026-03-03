@@ -67,6 +67,14 @@ $host_actual = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
 $host_base = preg_replace('/:\\d+$/', '', $host_actual);
 $es_localhost = in_array($host_base, ['localhost', '127.0.0.1', '::1'], true);
 
+// En producción (dominio), usar siempre el caché versionado del proyecto
+if (!$es_localhost) {
+    $cache_file = __DIR__ . '/../cache/noticias_cache.json';
+    $cache_dir = dirname($cache_file) . '/';
+    $cache_escribible = false;
+    $forzar_actualizacion = false;
+}
+
 if (isset($_SESSION['usuario']) && texto_lowercase((string)$_SESSION['usuario']) === 'admin') {
     $es_admin_debug = true;
 }
@@ -76,7 +84,12 @@ if (isset($_SESSION['usuario_id']) && (int)$_SESSION['usuario_id'] === 1) {
 
 $modo_debug = $es_admin_debug && $es_localhost && isset($_GET['debug']) && $_GET['debug'] === '1';
 
-if ($forzar_actualizacion) {
+// Forzar actualización solo permitido para admin en localhost
+if (!($es_admin_debug && $es_localhost)) {
+    $forzar_actualizacion = false;
+}
+
+if ($forzar_actualizacion && $es_localhost) {
     header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
     header('Pragma: no-cache');
     header('Expires: 0');
@@ -307,8 +320,8 @@ if (file_exists($cache_file)) {
     }
 }
 
-// Refrescar remoto solo si se fuerza manualmente o no hay caché útil (nunca auto en carga normal)
-if ($forzar_actualizacion || empty($noticias)) {
+// Refrescar remoto solo en localhost, si se fuerza manualmente o no hay caché útil
+if ($es_localhost && ($forzar_actualizacion || empty($noticias))) {
 try {
 
     // Limpiar caché en memoria para reconstruir desde cero
@@ -632,9 +645,11 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
                 🕐 Última actualización: <strong><?php echo htmlspecialchars($ultima_actualizacion); ?></strong>
             </p>
         <?php endif; ?>
-        <p class="noticias-actualizacion">
-            <a href="?forzar=1&amp;t=<?php echo time(); ?>" class="btn-refrescar">🔄 Forzar actualización</a>
-        </p>
+        <?php if ($es_admin_debug && $es_localhost): ?>
+            <p class="noticias-actualizacion">
+                <a href="?forzar=1&amp;t=<?php echo time(); ?>" class="btn-refrescar">🔄 Forzar actualización</a>
+            </p>
+        <?php endif; ?>
         <?php if ($es_admin_debug && $es_localhost): ?>
             <p class="noticias-actualizacion">
                 <a href="?forzar=<?php echo $forzar_actualizacion ? '1' : '0'; ?>&amp;debug=1&amp;t=<?php echo time(); ?>" class="btn-refrescar">🛠 Ver diagnóstico admin</a>

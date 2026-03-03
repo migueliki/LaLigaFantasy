@@ -1,13 +1,13 @@
 /* 1. Override para el INDEX (Formularios) */
 body.tema-claro {
-    background: #d4e8f7 !important; /* Azul celeste suave */
+    background: #69bbfa !important; /* Azul celeste suave */
     color: #1c1e21 !important;
 }
 
 body.tema-claro .formulario {
-    background: #e3f2fd !important;
+    background: #82c8fa !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-    border: 1px solid #b3d9f2;
+    border: 1px solid #82c6f3;
     backdrop-filter: none !important;
 }
 

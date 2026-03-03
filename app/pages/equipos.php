@@ -3,15 +3,16 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
+require_once '../config.php';
 
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: /index.php');
+    header('Location: ' . BASE_URL . '/index.php');
     exit;
 }
 $timeout = 3600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
     session_unset(); session_destroy();
-    header('Location: /index.php?timeout=1');
+    header('Location: ' . BASE_URL . '/index.php?timeout=1');
     exit;
 }
 $_SESSION['last_activity'] = time();
@@ -77,9 +78,9 @@ function foto_jugador(string $nombre): string {
     $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
     $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $path = "/images/jugadores/{$n}.png";
+    $path = BASE_URL . "/images/jugadores/{$n}.png";
     $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
-    return file_exists($real) ? $path : '/images/jugadores/soccer-player-silhouette-free-png.png';
+    return file_exists($real) ? $path : BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png';
 }
 
 function foto_entrenador(string $nombre): string {
@@ -87,9 +88,9 @@ function foto_entrenador(string $nombre): string {
     $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
     $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $path = "/images/entrenadores/{$n}.png";
+    $path = BASE_URL . "/images/entrenadores/{$n}.png";
     $real = __DIR__ . '/../../images/entrenadores/' . $n . '.png';
-    return file_exists($real) ? $path : '/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png';
+    return file_exists($real) ? $path : BASE_URL . '/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png';
 }
 ?>
 <!DOCTYPE html>
@@ -118,23 +119,23 @@ function foto_entrenador(string $nombre): string {
     <meta name="twitter:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="icon" type="image/png" href="/images/favicon.png">
-    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="/css/inicio.css">
-    <link rel="stylesheet" href="/css/equipos.css">
-    <link rel="stylesheet" href="/css/cookie_tema.css">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/inicio.css">
+    <link rel="stylesheet" href="../css/equipos.css">
+    <link rel="stylesheet" href="../css/cookie_tema.css">
 </head>
 <body class="<?php echo $clase_tema; ?>">
 
 <!-- NAVEGACIÓN -->
 <div class="navegacion">
     <nav>
-        <a href="/inicio.php">Inicio</a>
-        <a href="/pages/equipos.php" class="nav-active"> Equipos</a>
-        <a href="/pages/calendario.php">Calendario</a>
-        <a href="/pages/plantilla.php">Plantilla</a>
-        <a href="/pages/noticias.php">Noticias</a>
-        <a href="/logout.php">Cerrar Sesión</a>
+        <a href="<?= BASE_URL ?>/inicio.php">Inicio</a>
+        <a href="<?= BASE_URL ?>/pages/equipos.php" class="nav-active"> Equipos</a>
+        <a href="<?= BASE_URL ?>/pages/calendario.php">Calendario</a>
+        <a href="<?= BASE_URL ?>/pages/plantilla.php">Plantilla</a>
+        <a href="<?= BASE_URL ?>/pages/noticias.php">Noticias</a>
+        <a href="<?= BASE_URL ?>/logout.php">Cerrar Sesión</a>
     </nav>
 </div>
 
@@ -143,16 +144,16 @@ function foto_entrenador(string $nombre): string {
     VISTA 1 – LISTA DE LOS 20 EQUIPOS
 ════════════════════════════════════════ -->
 <div class="equipos-header">
-    <h1><img src="/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
+    <h1><img src="<?= BASE_URL ?>/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
     <p class="equipos-subtitulo"></p>
 </div>
 
 <div class="equipos-grid">
     <?php foreach ($equipos as $eq):
         $archivo = $escudos[$eq->nombre] ?? null;
-        $escudo_url = $archivo ? '/images/escudos/' . $archivo : '/images/silueta.svg';
+        $escudo_url = $archivo ? BASE_URL . '/images/escudos/' . $archivo : BASE_URL . '/images/silueta.svg';
     ?>
-    <a href="/pages/equipos.php?equipo_id=<?php echo $eq->id; ?>" class="equipo-card">
+    <a href="<?= BASE_URL ?>/pages/equipos.php?equipo_id=<?php echo $eq->id; ?>" class="equipo-card">
         <div class="equipo-escudo">
             <img src="<?php echo htmlspecialchars($escudo_url); ?>"
                 alt="<?php echo htmlspecialchars($eq->nombre); ?>"
@@ -167,13 +168,13 @@ function foto_entrenador(string $nombre): string {
 <?php else:
     $nombre_eq  = $equipo_sel->nombre;
     $archivo    = $escudos[$nombre_eq] ?? null;
-    $escudo_url = $archivo ? '/images/escudos/' . $archivo : '/images/silueta.svg';
+    $escudo_url = $archivo ? BASE_URL . '/images/escudos/' . $archivo : BASE_URL . '/images/silueta.svg';
 ?>
 <!-- ════════════════════════════════════════
     VISTA 2 – DETALLE DE UN EQUIPO
 ════════════════════════════════════════ -->
 <div class="detalle-header">
-    <a href="/pages/equipos.php" class="btn-volver">← Volver a equipos</a>
+    <a href="<?= BASE_URL ?>/pages/equipos.php" class="btn-volver">← Volver a equipos</a>
     <div class="detalle-escudo-wrap">
         <img src="<?php echo htmlspecialchars($escudo_url); ?>"
             alt="<?php echo htmlspecialchars($nombre_eq); ?>"
@@ -202,7 +203,7 @@ function foto_entrenador(string $nombre): string {
     <div class="persona-card" onclick="abrirModal('modal-ent-<?php echo $entrenador->id; ?>')">
         <div class="persona-foto-wrap">
             <img src="<?php echo $foto_ent; ?>" alt="<?php echo htmlspecialchars($entrenador->nombre); ?>"
-                 class="persona-foto" onerror="this.src='/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png'">
+                 class="persona-foto" onerror="this.src='<?= BASE_URL ?>/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png'">
         </div>
         <div class="persona-info">
             <span class="persona-nombre"><?php echo htmlspecialchars($entrenador->nombre); ?></span>
@@ -218,7 +219,7 @@ function foto_entrenador(string $nombre): string {
         <button class="modal-cerrar" onclick="cerrarModal('modal-ent-<?php echo $entrenador->id; ?>')">✕</button>
         <div class="modal-foto-wrap">
             <img src="<?php echo $foto_ent; ?>" alt="<?php echo htmlspecialchars($entrenador->nombre); ?>"
-                 class="modal-foto" onerror="this.src='/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png'">
+                 class="modal-foto" onerror="this.src='<?= BASE_URL ?>/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png'">
         </div>
         <h2 class="modal-nombre"><?php echo htmlspecialchars($entrenador->nombre); ?></h2>
         <span class="persona-badge entrenador-badge">Entrenador</span>
@@ -287,7 +288,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
             <?php endif; ?>
             <div class="persona-foto-wrap">
                 <img src="<?php echo $foto_jug; ?>" alt="<?php echo htmlspecialchars($j->nombre); ?>"
-                     class="persona-foto" onerror="this.src='/images/jugadores/soccer-player-silhouette-free-png.png'">
+                     class="persona-foto" onerror="this.src='<?= BASE_URL ?>/images/jugadores/soccer-player-silhouette-free-png.png'">
             </div>
             <div class="persona-info">
                 <span class="persona-nombre"><?php echo htmlspecialchars($j->nombre); ?></span>
@@ -310,7 +311,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
         <button class="modal-cerrar" onclick="cerrarModal('modal-jug-<?php echo $j->id; ?>')">✕</button>
         <div class="modal-foto-wrap">
             <img src="<?php echo $foto_jug; ?>" alt="<?php echo htmlspecialchars($j->nombre); ?>"
-                 class="modal-foto" onerror="this.src='/images/jugadores/soccer-player-silhouette-free-png.png'">
+                 class="modal-foto" onerror="this.src='<?= BASE_URL ?>/images/jugadores/soccer-player-silhouette-free-png.png'">
         </div>
         <h2 class="modal-nombre"><?php echo htmlspecialchars($j->nombre); ?></h2>
         <div class="modal-badges">

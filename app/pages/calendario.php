@@ -1,11 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario_id'])) { header('Location: /index.php'); exit; }
+require_once '../config.php';
+if (!isset($_SESSION['usuario_id'])) { header('Location: ' . BASE_URL . '/index.php'); exit; }
 
 $timeout = 3600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
     session_unset(); session_destroy();
-    header('Location: /index.php?timeout=1'); exit;
+    header('Location: ' . BASE_URL . '/index.php?timeout=1'); exit;
 }
 $_SESSION['last_activity'] = time();
 
@@ -177,24 +178,24 @@ foreach ($partidos as $p) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario J<?= $jornada ?> - LaLiga Fantasy</title>
-    <link rel="icon" type="image/png" href="/images/favicon.png">
-    <link rel="stylesheet" href="/css/inicio.css">
-    <link rel="stylesheet" href="/css/calendario.css">
-    <link rel="stylesheet" href="/css/cookie_tema.css">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
+    <link rel="stylesheet" href="../css/inicio.css">
+    <link rel="stylesheet" href="../css/calendario.css">
+    <link rel="stylesheet" href="../css/cookie_tema.css">
 </head>
 <body class="<?= $clase_tema ?>">
 
 <div class="navegacion"><nav>
-    <a href="/inicio.php">Inicio</a>
-    <a href="/pages/equipos.php">Equipos</a>
-    <a href="/pages/calendario.php" class="nav-active">Calendario</a>
-    <a href="/pages/plantilla.php">Plantilla</a>
-    <a href="/pages/noticias.php">Noticias</a>
-    <a href="/logout.php">Cerrar Sesión</a>
+    <a href="<?= BASE_URL ?>/inicio.php">Inicio</a>
+    <a href="<?= BASE_URL ?>/pages/equipos.php">Equipos</a>
+    <a href="<?= BASE_URL ?>/pages/calendario.php" class="nav-active">Calendario</a>
+    <a href="<?= BASE_URL ?>/pages/plantilla.php">Plantilla</a>
+    <a href="<?= BASE_URL ?>/pages/noticias.php">Noticias</a>
+    <a href="<?= BASE_URL ?>/logout.php">Cerrar Sesión</a>
 </nav></div>
 
 <div class="calendario-header">
-    <h1><img src="/images/favicon.png" alt="" style="height:1em;vertical-align:middle;margin-right:8px">Calendario de Partidos</h1>
+    <h1><img src="<?= BASE_URL ?>/images/favicon.png" alt="" style="height:1em;vertical-align:middle;margin-right:8px">Calendario de Partidos</h1>
     <p class="calendario-subtitulo">Temporada 2025 / 2026</p>
 </div>
 
@@ -216,8 +217,8 @@ foreach ($partidos as $p) {
             $dt = new DateTime($p->fecha_hora);
             $jugado = $p->goles_local !== null;
             $hoy = $dt->format('Y-m-d') === $hoy_str;
-            $eL = isset($escudos[$p->local_nombre]) ? '/images/escudos/'.$escudos[$p->local_nombre] : '/images/favicon.png';
-            $eV = isset($escudos[$p->visitante_nombre]) ? '/images/escudos/'.$escudos[$p->visitante_nombre] : '/images/favicon.png';
+            $eL = isset($escudos[$p->local_nombre]) ? BASE_URL . '/images/escudos/'.$escudos[$p->local_nombre] : BASE_URL . '/images/favicon.png';
+            $eV = isset($escudos[$p->visitante_nombre]) ? BASE_URL . '/images/escudos/'.$escudos[$p->visitante_nombre] : BASE_URL . '/images/favicon.png';
         ?>
         <div class="partido-card<?= $jugado?' jugado':($hoy?' hoy':'') ?>">
             <div class="partido-local">

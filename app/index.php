@@ -9,7 +9,8 @@ if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
         echo '<p style="color: red; font-weight: bold;">Usuario o contraseña incorrectos.</p>';
     }
 
-include 'cookie_tema.php'
+include 'cookie_tema.php';
+require_once 'config.php';
 
 ?>
 
@@ -39,9 +40,9 @@ include 'cookie_tema.php'
     <meta name="twitter:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/cookie_tema.css">
-    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/cookie_tema.css">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
 </head>
 <body>
 

@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
+require_once 'config.php';
 
 $_SESSION = [];
 session_unset();
@@ -17,7 +18,7 @@ setcookie(session_name(), '', time()-3600, '/'); // eliminar cookie de sesión
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cerrando sesión...</title>
     
-    <meta http-equiv="refresh" content="3;url=/index.php">
+    <meta http-equiv="refresh" content="3;url=<?= BASE_URL ?>/index.php">
 
     <style>
         body {
@@ -47,7 +48,7 @@ setcookie(session_name(), '', time()-3600, '/'); // eliminar cookie de sesión
         <h2>Cerrando sesión...</h2>
         <p>¡Esperamos verte pronto!</p>
         <p><small>Serás redirigido en unos segundos.</small></p>
-        <a href="/index.php">Haz clic aquí si no te redirige</a>
+        <a href="<?= BASE_URL ?>/index.php">Haz clic aquí si no te redirige</a>
     </div>
 
 </body>

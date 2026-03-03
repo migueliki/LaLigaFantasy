@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
+require_once 'config.php';
 
 if(isset($_SESSION['usuario_id'])) {
     // El usuario ya ha iniciado sesión
@@ -41,10 +42,10 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
     <meta name="twitter:description" content="Panel principal de LaLiga Fantasy. Gestiona tu equipo, consulta estadísticas y sigue las noticias del fútbol español.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="stylesheet" href="/css/inicio.css">
-    <link rel="stylesheet" href="/css/cookie_tema.css">
-    <link rel="icon" type="image/png" href="/images/favicon.png">
-    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/inicio.css">
+    <link rel="stylesheet" href="css/cookie_tema.css">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
 
     <?php include 'cookie_tema.php'; ?>
 </head>
@@ -52,19 +53,19 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
 
 <div class="navegacion">
     <nav>
-        <a href="/inicio.php">Inicio</a>
-        <a href="/pages/equipos.php">Equipos</a>
-        <a href="/pages/calendario.php">Calendario</a>
-        <a href="/pages/plantilla.php">Plantilla</a>
-        <a href="/pages/noticias.php">Noticias</a>
-        <a href="/logout.php">Cerrar Sesión</a>
+        <a href="<?= BASE_URL ?>/inicio.php">Inicio</a>
+        <a href="<?= BASE_URL ?>/pages/equipos.php">Equipos</a>
+        <a href="<?= BASE_URL ?>/pages/calendario.php">Calendario</a>
+        <a href="<?= BASE_URL ?>/pages/plantilla.php">Plantilla</a>
+        <a href="<?= BASE_URL ?>/pages/noticias.php">Noticias</a>
+        <a href="<?= BASE_URL ?>/logout.php">Cerrar Sesión</a>
     </nav>
 </div>
 
 <?php
 
 if (in_array($pages, $list_pages)) {
-    header("Location: /pages/{$pages}.php");
+    header("Location: " . BASE_URL . "/pages/{$pages}.php");
 }
     else {
         http_response_code(404);

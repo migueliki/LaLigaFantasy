@@ -2,6 +2,8 @@
 ob_start();
 session_start();
 require_once '../config.php';
+@set_time_limit(60);
+@ini_set('max_execution_time', '60');
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: ' . BASE_URL . '/index.php');
     exit();
@@ -305,8 +307,9 @@ if (file_exists($cache_file)) {
     }
 }
 
-// Refrescar remoto si se fuerza manualmente, no hay caché útil o la caché expiró
-if ($forzar_actualizacion || empty($noticias) || $cache_expirada) {
+// Refrescar remoto solo si se fuerza manualmente o no hay caché útil (nunca auto en carga normal)
+if ($forzar_actualizacion || empty($noticias)) {
+try {
 
     // Limpiar caché en memoria para reconstruir desde cero
     $noticias = [];
@@ -314,45 +317,78 @@ if ($forzar_actualizacion || empty($noticias) || $cache_expirada) {
 
     //  FUENTES RSS de fútbol español
     $feeds = [
+        // ─ LaLiga Primera División ─
         [
             'nombre' => 'Marca',
             'url'    => 'https://www.marca.com/rss/futbol/primera-division.xml',
             'logo'   => '📰',
+            'skip_filter' => false,
         ],
         [
             'nombre' => 'AS',
             'url'    => 'https://as.com/rss/tags/laliga.xml',
             'logo'   => '📰',
-        ],
-        [
-            'nombre' => 'Sport',
-            'url'    => 'https://www.sport.es/rss/futbol/primera-division.xml',
-            'logo'   => '📰',
+            'skip_filter' => false,
         ],
         [
             'nombre' => 'Mundo Deportivo',
             'url'    => 'https://www.mundodeportivo.com/rss/futbol/laliga',
             'logo'   => '📰',
+            'skip_filter' => false,
+        ],
+        [
+            'nombre' => 'Sport',
+            'url'    => 'https://www.sport.es/rss/futbol/primera-division.xml',
+            'logo'   => '📰',
+            'skip_filter' => false,
+        ],
+        // ─ Copa del Rey ─
+        [
+            'nombre' => 'Marca Copa',
+            'url'    => 'https://www.marca.com/rss/futbol/copa-del-rey.xml',
+            'logo'   => '🏆',
+            'skip_filter' => true,
+        ],
+        [
+            'nombre' => 'AS Copa',
+            'url'    => 'https://as.com/rss/tags/copa_del_rey.xml',
+            'logo'   => '🏆',
+            'skip_filter' => true,
+        ],
+        // ─ Segunda División ─
+        [
+            'nombre' => 'Marca 2ª',
+            'url'    => 'https://www.marca.com/rss/futbol/segunda-division.xml',
+            'logo'   => '📊',
+            'skip_filter' => true,
+        ],
+        [
+            'nombre' => 'AS 2ª',
+            'url'    => 'https://as.com/rss/tags/segunda_division.xml',
+            'logo'   => '📊',
+            'skip_filter' => true,
         ],
     ];
 
     // Palabras clave para filtrar noticias de fútbol español
     $keywords = [
         'laliga', 'la liga', 'primera división', 'primera division',
-        'segunda división', 'segunda division', 'segunda b',
-        'copa del rey', 'supercopa', 'rfef',
+        'segunda división', 'segunda division', 'segunda b', '1ª rfef',
+        'copa del rey', 'supercopa', 'rfef', 'eurocopa', 'champions',
         'real madrid', 'barcelona', 'atlético', 'atletico', 'sevilla',
         'valencia', 'betis', 'villarreal', 'athletic', 'osasuna',
         'celta', 'getafe', 'rayo vallecano', 'espanyol', 'girona',
-        'mallorca', 'las palmas', 'leganés', 'leganes', 'alaves',
-        'valladolid', 'real sociedad', 'espanyol', 'almeria',
-        'liga española', 'liga española', 'selección española',
-        'seleccion española', 'fútbol español', 'futbol español'
+        'mallorca', 'las palmas', 'legánés', 'leganes', 'alaves', 'alavés',
+        'valladolid', 'real sociedad', 'almeria', 'almería',
+        'sporting', 'oviedo', 'zaragoza', 'elche', 'levante', 'racing',
+        'tenerife', 'huesca', 'burgos', 'albacete', 'mirandes', 'miranés',
+        'liga española', 'selección española', 'seleccion española',
+        'fútbol español', 'futbol español', 'laliga hypermotion',
     ];
 
     libxml_use_internal_errors(true);
 
-    $deadline = microtime(true) + 8.0;
+    $deadline = microtime(true) + 12.0;
     $feeds_raw = descargar_feeds($feeds, $deadline);
 
     if ($modo_debug) {
@@ -404,7 +440,7 @@ if ($forzar_actualizacion || empty($noticias) || $cache_expirada) {
 
         $count = 0;
         foreach ($items as $item) {
-            if ($count >= 3) break; // máximo 3 noticias por fuente
+            if ($count >= 4) break; // máximo 4 noticias por fuente
 
             $titulo      = html_entity_decode((string)$item->title,       ENT_QUOTES, 'UTF-8');
             $descripcion = html_entity_decode((string)$item->description, ENT_QUOTES, 'UTF-8');
@@ -431,7 +467,7 @@ if ($forzar_actualizacion || empty($noticias) || $cache_expirada) {
                 }
             }
 
-            if (!$es_relevante) continue;
+            if (!$es_relevante && !($feed['skip_filter'] ?? false)) continue;
 
             // Evitar duplicados entre fuentes o dentro de una misma fuente
             $clave_noticia = $link_normalizado !== ''
@@ -511,7 +547,18 @@ if ($forzar_actualizacion || empty($noticias) || $cache_expirada) {
             $mensaje_actualizacion = '⚠️ No se pudieron descargar noticias nuevas en este momento';
         }
     }
+} catch (\Throwable $e) {
+    // Si falla algo inesperado, conservar caché anterior y seguir mostrando la página
+    if (file_exists($cache_file)) {
+        $cached = json_decode(file_get_contents($cache_file), true);
+        $noticias             = array_slice($cached['noticias'] ?? [], 0, 12);
+        $ultima_actualizacion = $cached['ultima_actualizacion'] ?? null;
+    }
+    if ($forzar_actualizacion) {
+        $mensaje_actualizacion = '⚠️ Error al obtener noticias nuevas. Mostrando caché anterior.';
+    }
 }
+} // fin if ($forzar_actualizacion || empty($noticias))
 
 if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnostico_feeds)) {
     $diagnostico_feeds['_info'] = [

@@ -45,6 +45,9 @@ setcookie(session_name(), '', time()-3600, '/'); // eliminar cookie de sesión
 <body>
 
     <div class="mensaje">
+        <img src="<?= BASE_URL ?>/images/favicon.png" alt="LaLiga Fantasy"
+             style="height:64px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;"
+             onerror="this.style.display='none'">
         <h2>Cerrando sesión...</h2>
         <p>¡Esperamos verte pronto!</p>
         <p><small>Serás redirigido en unos segundos.</small></p>

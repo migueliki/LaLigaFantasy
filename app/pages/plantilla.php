@@ -20,48 +20,69 @@ require_once '../conexion.php';
 require_once '../csrf.php';
 include_once '../cookie_tema.php';
 
-// ── Cargar plantilla del usuario ──
-$stmt = $pdo->query("SELECT * FROM plantilla ORDER BY
-    FIELD(posicion,'Portero','Defensa','Centrocampista','Extremo','Delantero'), dorsal");
-$jugadores = $stmt->fetchAll(PDO::FETCH_OBJ);
+$uid = (int)$_SESSION['usuario_id'];
 
-// ── Agrupar por posición ──
-function normalizar_pos_plantilla(string $pos): string {
+// ── Auto-migrar columna formacion si no existe ──
+try {
+    $pdo->exec("ALTER TABLE usuarios_equipos ADD COLUMN formacion VARCHAR(20) NOT NULL DEFAULT '4-3-3'");
+} catch (PDOException $e) { /* ya existe */ }
+
+// ── Datos del equipo del usuario ──
+$stmtEq = $pdo->prepare("SELECT nombre_equipo, saldo, formacion FROM usuarios_equipos WHERE usuario_id = ?");
+$stmtEq->execute([$uid]);
+$miEquipo = $stmtEq->fetch(PDO::FETCH_OBJ);
+$formacionActual = $miEquipo ? ($miEquipo->formacion ?? '4-3-3') : '4-3-3';
+$saldo     = $miEquipo ? (float)$miEquipo->saldo : 0;
+$nombreEq  = $miEquipo ? $miEquipo->nombre_equipo : 'Mi Equipo';
+
+// ── Jugadores del usuario ──
+$stmtJ = $pdo->prepare("
+    SELECT j.id, j.nombre, j.posicion, j.dorsal, j.media_fifa,
+           e.nombre AS equipo,
+           uj.es_titular, uj.es_capitan, uj.precio_compra, m.precio
+    FROM usuarios_jugadores uj
+    JOIN jugadores j ON uj.jugador_id = j.id
+    LEFT JOIN equipos e ON j.equipo_id = e.id
+    LEFT JOIN mercado m ON m.jugador_id = j.id
+    WHERE uj.usuario_id = ?
+    ORDER BY FIELD(j.posicion,'Portero','Defensa','Centrocampista','Extremo','Delantero'), j.nombre
+");
+$stmtJ->execute([$uid]);
+$jugadores = $stmtJ->fetchAll(PDO::FETCH_OBJ);
+
+// ── Formaciones disponibles [DEF, MID, FWD] ──
+$formaciones = [
+    '4-3-3'   => ['Defensa'=>4,'Centrocampista'=>3,'Delantero'=>3],
+    '4-4-2'   => ['Defensa'=>4,'Centrocampista'=>4,'Delantero'=>2],
+    '4-2-3-1' => ['Defensa'=>4,'Centrocampista'=>5,'Delantero'=>1],
+    '3-5-2'   => ['Defensa'=>3,'Centrocampista'=>5,'Delantero'=>2],
+    '5-3-2'   => ['Defensa'=>5,'Centrocampista'=>3,'Delantero'=>2],
+    '4-1-4-1' => ['Defensa'=>4,'Centrocampista'=>5,'Delantero'=>1],
+];
+$slotsFormacion = $formaciones[$formacionActual] ?? $formaciones['4-3-3'];
+
+// ── Normalizar posición ──
+function norm_pos(string $pos): string {
     $pos = trim($pos);
-    if (stripos($pos, 'Extremo') !== false) return 'Delantero';
+    if (stripos($pos,'Extremo') !== false) return 'Delantero';
     return $pos;
 }
 
-$por_posicion = [];
+// ── Agrupar titulares y suplentes ──
+$titulares  = ['Portero'=>[],'Defensa'=>[],'Centrocampista'=>[],'Delantero'=>[]];
+$suplentes  = [];
 foreach ($jugadores as $j) {
-    $grupo = normalizar_pos_plantilla($j->posicion ?? 'Otro');
-    $por_posicion[$grupo][] = $j;
+    $grp = norm_pos($j->posicion ?? 'Otro');
+    if ($j->es_titular && isset($titulares[$grp])) {
+        $titulares[$grp][] = $j;
+    } else {
+        $suplentes[] = $j;
+    }
 }
 
-$orden_pos = ['Portero', 'Defensa', 'Centrocampista', 'Delantero'];
-uksort($por_posicion, function($a, $b) use ($orden_pos) {
-    $ia = ($p = array_search($a, $orden_pos)) !== false ? $p : 99;
-    $ib = ($p = array_search($b, $orden_pos)) !== false ? $p : 99;
-    return $ia - $ib;
-});
-
-$iconos_pos = [
-    'Portero'        => '🧤',
-    'Defensa'        => '🛡️',
-    'Centrocampista' => '⚙️',
-    'Delantero'      => '⚽',
-];
-
-// ── Función foto jugador ──
-function foto_jugador_plantilla(string $nombre): string {
-    $n = strtolower($nombre);
-    $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
-    $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $path = BASE_URL . "/images/jugadores/{$n}.png";
-    $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
-    return file_exists($real) ? $path : BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png';
-}
+$totalJugadores  = count($jugadores);
+$totalTitulares  = array_sum(array_map('count', $titulares));
+$totalSuplentes  = count($suplentes);
 
 // ── Mapa escudo por equipo ──
 $escudos = [
@@ -86,6 +107,18 @@ $escudos = [
     'Real Oviedo'        => 'oviedo.fc.png',
     'Rayo Vallecano'     => 'rayo-vallecano-logo-png-transparent-png.png',
 ];
+
+// Helper: URL foto
+function fotoJugador(string $nombre): string {
+    $n = strtolower($nombre);
+    $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
+                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
+    $n = preg_replace('/[^a-z0-9_]/', '', $n);
+    $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
+    return file_exists($real)
+        ? BASE_URL . "/images/jugadores/{$n}.png"
+        : BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -93,24 +126,21 @@ $escudos = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Plantilla - LaLiga Fantasy</title>
-    <meta name="description" content="Gestiona tu plantilla de LaLiga Fantasy. Consulta tus jugadores, posiciones y equipos.">
-
-    <!-- Open Graph -->
+    <meta name="description" content="Gestiona tu plantilla, elige formación y alinea tus jugadores.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://laligafantasy.site/pages/plantilla.php">
     <meta property="og:title" content="Mi Plantilla - LaLiga Fantasy">
-    <meta property="og:description" content="Gestiona tu plantilla de LaLiga Fantasy.">
     <meta property="og:image" content="https://laligafantasy.site/images/laliga-logo.png">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
-
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/inicio.css">
     <link rel="stylesheet" href="../css/equipos.css">
+    <link rel="stylesheet" href="../css/plantilla.css">
     <link rel="stylesheet" href="../css/cookie_tema.css">
 </head>
-<body class="<?php echo $clase_tema; ?>">
+<body class="<?= $clase_tema ?>">
 
 <!-- NAVEGACIÓN -->
 <div class="navegacion">
@@ -119,141 +149,293 @@ $escudos = [
         <a href="<?= BASE_URL ?>/pages/equipos.php">Equipos</a>
         <a href="<?= BASE_URL ?>/pages/calendario.php">Calendario</a>
         <a href="<?= BASE_URL ?>/pages/plantilla.php" class="nav-active">Plantilla</a>
+        <a href="<?= BASE_URL ?>/pages/mercado.php">Mercado</a>
         <a href="<?= BASE_URL ?>/pages/noticias.php">Noticias</a>
         <a href="<?= BASE_URL ?>/logout.php">Cerrar Sesión</a>
     </nav>
 </div>
 
 <!-- CABECERA -->
-<div class="equipos-header">
+<div class="plantilla-header">
     <h1>
         <img src="<?= BASE_URL ?>/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
         Mi Plantilla Fantasy
     </h1>
-    <p class="equipos-subtitulo"><?php echo count($jugadores); ?> jugador<?php echo count($jugadores) !== 1 ? 'es' : ''; ?> en tu plantilla</p>
+    <p class="equipo-nombre"><?= htmlspecialchars($nombreEq) ?></p>
 </div>
 
-<?php if (empty($jugadores)): ?>
-    <div style="text-align:center;padding:60px 20px;color:var(--texto-secundario,#aaa);">
-        <p style="font-size:3rem;margin:0;">📋</p>
-        <p style="font-size:1.2rem;margin-top:16px;">Tu plantilla está vacía.</p>
+<!-- STATS -->
+<div class="plantilla-stats">
+    <div class="pstat">
+        <span class="pstat-num"><?= $totalJugadores ?></span>
+        <span class="pstat-label">Jugadores</span>
     </div>
+    <div class="pstat">
+        <span class="pstat-num"><?= $totalTitulares ?></span>
+        <span class="pstat-label">Titulares</span>
+    </div>
+    <div class="pstat">
+        <span class="pstat-num"><?= $totalSuplentes ?></span>
+        <span class="pstat-label">Suplentes</span>
+    </div>
+    <div class="pstat">
+        <span class="pstat-num" style="color:<?= $saldo<5000000?'#ef5350':'#66bb6a' ?>"><?= number_format($saldo/1000000,1) ?>M€</span>
+        <span class="pstat-label">Saldo</span>
+    </div>
+</div>
+
+<?php if ($totalJugadores === 0): ?>
+<!-- VACÍO -->
+<div class="plantilla-vacia">
+    <div class="vacia-icon">📋</div>
+    <p>Tu plantilla está vacía.<br>Ve al mercado a fichar jugadores.</p>
+    <a href="<?= BASE_URL ?>/pages/mercado.php">🛒 Ir al Mercado</a>
+</div>
+
 <?php else: ?>
 
-    <?php foreach ($por_posicion as $pos => $lista): ?>
-    <div class="seccion-titulo">
-        <?php echo ($iconos_pos[$pos] ?? '👟') . ' ' . htmlspecialchars($pos) . 's'; ?>
-    </div>
-    <div class="jugadores-grid">
-        <?php foreach ($lista as $j):
-            $foto = foto_jugador_plantilla($j->nombre);
-            $escudo_archivo = $escudos[$j->equipo] ?? null;
-            $escudo_url = $escudo_archivo
-                ? BASE_URL . '/images/escudos/' . $escudo_archivo
-                : BASE_URL . '/images/favicon.png';
+<!-- SELECTOR FORMACIÓN -->
+<div class="formacion-selector">
+    <span class="label-form">Formación:</span>
+    <?php foreach (array_keys($formaciones) as $f): ?>
+    <button class="btn-formacion <?= $f===$formacionActual?'activa':'' ?>"
+            onclick="cambiarFormacion('<?= $f ?>')"><?= $f ?></button>
+    <?php endforeach; ?>
+</div>
+<button class="btn-guardar-formacion" id="btn-guardar" onclick="guardarFormacion()" disabled>
+    💾 Guardar formación
+</button>
+
+<!-- CAMPO -->
+<div class="campo-wrap">
+<div class="campo">
+
+<?php
+// Función helper para renderizar una fila de campo
+function renderFilaCampo(array $lista, int $slots, string $posLabel, string $silhouette): void {
+    echo '<div class="campo-fila">';
+    for ($i = 0; $i < $slots; $i++) {
+        if (isset($lista[$i])) {
+            $j = $lista[$i];
+            $foto = fotoJugador($j->nombre);
+            $pos  = htmlspecialchars(norm_pos($j->posicion ?? ''));
+            $cap  = $j->es_capitan ? ' capitan' : '';
+            $apellido = explode(' ', $j->nombre);
+            $corto = end($apellido);
+            echo "<div class=\"campo-jugador{$cap}\" draggable=\"true\" data-jugador-id=\"{$j->id}\" data-titular=\"1\" onclick=\"toggleTitular({$j->id}, false)\" title=\"Arrastrar al banquillo o clic para hacer suplente\">";
+            echo   "<div class=\"cj-foto-wrap\"><img src=\"{$foto}\" alt=\"\" onerror=\"this.src='{$silhouette}'\"></div>";
+            echo   "<span class=\"cj-nombre\">" . htmlspecialchars($corto) . "</span>";
+            echo   "<span class=\"cj-badge pos-{$pos}\">{$pos}</span>";
+            echo "</div>";
+        } else {
+            echo "<div class=\"campo-slot-vacio\" data-drop-campo=\"1\" title=\"Arrastra un jugador aquí\">";
+            echo   "<div class=\"slot-circulo\">+</div>";
+            echo   "<span class=\"slot-label\">{$posLabel}</span>";
+            echo "</div>";
+        }
+    }
+    echo '</div>';
+}
+
+$sil = htmlspecialchars(BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png');
+
+// Fila Portero (siempre 1)
+renderFilaCampo($titulares['Portero'], 1, 'Portero', $sil);
+// Fila Defensa
+renderFilaCampo($titulares['Defensa'], $slotsFormacion['Defensa'], 'Defensa', $sil);
+// Fila Centrocampista
+renderFilaCampo($titulares['Centrocampista'], $slotsFormacion['Centrocampista'], 'Centrocampista', $sil);
+// Fila Delantero
+renderFilaCampo($titulares['Delantero'], $slotsFormacion['Delantero'], 'Delantero', $sil);
+?>
+
+</div><!-- /campo -->
+</div><!-- /campo-wrap -->
+
+<!-- BANQUILLO -->
+<?php if (!empty($suplentes)): ?>
+<div class="banquillo-section">
+    <div class="banquillo-titulo">🪑 Banquillo (<?= count($suplentes) ?>)</div>
+    <div class="banquillo-grid">
+        <?php foreach ($suplentes as $j):
+            $foto = fotoJugador($j->nombre);
+            $posNorm = norm_pos($j->posicion ?? '');
         ?>
-        <div class="persona-card" onclick="abrirModal('modal-plant-<?php echo $j->id; ?>')">
-            <div class="persona-foto-wrap">
-                <img src="<?php echo $foto; ?>"
-                     alt="<?php echo htmlspecialchars($j->nombre); ?>"
-                     class="persona-foto"
-                     onerror="this.src='<?= BASE_URL ?>/images/jugadores/soccer-player-silhouette-free-png.png'">
+        <div class="bench-card" draggable="true" data-jugador-id="<?= $j->id ?>" data-titular="0" title="Arrastra al campo o clic en Titular">
+            <img src="<?= $foto ?>" alt="" class="bench-foto"
+                 onerror="this.src='<?= BASE_URL ?>/images/jugadores/soccer-player-silhouette-free-png.png'">
+            <div class="bench-info">
+                <div class="bench-nombre"><?= htmlspecialchars($j->nombre) ?></div>
+                <span class="bench-pos pos-<?= htmlspecialchars($posNorm) ?>"><?= htmlspecialchars($posNorm) ?></span>
             </div>
-            <div class="persona-info">
-                <span class="persona-nombre"><?php echo htmlspecialchars($j->nombre); ?></span>
-                <?php if ($j->dorsal): ?>
-                    <span class="persona-dorsal">#<?php echo (int)$j->dorsal; ?></span>
-                <?php endif; ?>
-                <span class="persona-badge pos-badge"><?php echo htmlspecialchars($j->posicion ?? ''); ?></span>
-            </div>
+            <button class="bench-btn-titular" onclick="toggleTitular(<?= $j->id ?>, true)">▶ Titular</button>
         </div>
         <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
-
-    <!-- MODALES -->
-    <?php foreach ($jugadores as $j):
-        $foto = foto_jugador_plantilla($j->nombre);
-        $escudo_archivo = $escudos[$j->equipo] ?? null;
-        $escudo_url = $escudo_archivo
-            ? BASE_URL . '/images/escudos/' . $escudo_archivo
-            : BASE_URL . '/images/favicon.png';
-    ?>
-    <div id="modal-plant-<?php echo $j->id; ?>" class="modal-overlay">
-        <div class="modal-card">
-            <button class="modal-cerrar" onclick="cerrarModal('modal-plant-<?php echo $j->id; ?>')">✕</button>
-            <div class="modal-foto-wrap">
-                <img src="<?php echo $foto; ?>"
-                     alt="<?php echo htmlspecialchars($j->nombre); ?>"
-                     class="modal-foto"
-                     onerror="this.src='<?= BASE_URL ?>/images/jugadores/soccer-player-silhouette-free-png.png'">
-            </div>
-            <h2 class="modal-nombre"><?php echo htmlspecialchars($j->nombre); ?></h2>
-            <div class="modal-badges">
-                <span class="persona-badge pos-badge"><?php echo htmlspecialchars($j->posicion ?? ''); ?></span>
-            </div>
-            <div class="modal-datos">
-                <?php if ($j->dorsal): ?>
-                <div class="dato-item">
-                    <span class="dato-label">👕 Dorsal</span>
-                    <span class="dato-val">#<?php echo (int)$j->dorsal; ?></span>
-                </div>
-                <?php endif; ?>
-                <div class="dato-item">
-                    <span class="dato-label">🏟️ Equipo</span>
-                    <span class="dato-val" style="display:flex;align-items:center;gap:6px;">
-                        <img src="<?php echo htmlspecialchars($escudo_url); ?>"
-                             alt="<?php echo htmlspecialchars($j->equipo); ?>"
-                             style="height:1.4em;vertical-align:middle;"
-                             onerror="this.style.display='none'">
-                        <?php echo htmlspecialchars($j->equipo); ?>
-                    </span>
-                </div>
-                <?php if (!empty($j->nacionalidad)): ?>
-                <div class="dato-item">
-                    <span class="dato-label">🌍 Nacionalidad</span>
-                    <span class="dato-val"><?php echo htmlspecialchars($j->nacionalidad); ?></span>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-    <?php endforeach; ?>
+</div>
+<?php endif; ?>
 
 <?php endif; ?>
 
 <!-- WIDGET TEMAS -->
 <div class="widget-temas">
     <form method="POST">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
         <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
     </form>
 </div>
 
+<!-- TOAST -->
+<div id="toast-plant"></div>
+
 <script>
-function abrirModal(id) {
-    document.querySelectorAll('.modal-overlay.activo').forEach(function(m) {
-        m.classList.remove('activo');
+const BASE_URL = <?= json_encode(BASE_URL) ?>;
+const CSRF     = <?= json_encode($_SESSION['csrf_token'] ?? '') ?>;
+let formacionPendiente = null;
+
+/* ── TOAST ── */
+function toast(msg, esError = false) {
+    const t = document.getElementById('toast-plant');
+    t.textContent = msg;
+    t.classList.toggle('error', esError);
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ── CAMBIO FORMACIÓN ── */
+function cambiarFormacion(f) {
+    formacionPendiente = f;
+    document.querySelectorAll('.btn-formacion').forEach(b => {
+        b.classList.toggle('activa', b.textContent.trim() === f);
     });
-    var el = document.getElementById(id);
-    if (el) {
-        el.classList.add('activo');
-        document.body.style.overflow = 'hidden';
-    }
+    document.getElementById('btn-guardar').disabled = false;
 }
-function cerrarModal(id) {
-    var el = document.getElementById(id);
-    if (el) {
-        el.classList.remove('activo');
-        document.body.style.overflow = '';
-    }
+
+function guardarFormacion() {
+    if (!formacionPendiente) return;
+    const btn = document.getElementById('btn-guardar');
+    btn.disabled = true;
+    btn.textContent = '⏳ Guardando...';
+    fetch(BASE_URL + '/guardar_formacion.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({csrf: CSRF, formacion: formacionPendiente})
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.ok) {
+            toast('✅ Formación ' + formacionPendiente + ' guardada');
+            formacionPendiente = null;
+            btn.textContent = '💾 Guardar formación';
+        } else {
+            toast(d.mensaje || 'Error al guardar', true);
+            btn.disabled = false;
+            btn.textContent = '💾 Guardar formación';
+        }
+    })
+    .catch(() => {
+        toast('Error de conexión', true);
+        btn.disabled = false;
+        btn.textContent = '💾 Guardar formación';
+    });
 }
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal-overlay')) {
-        e.target.classList.remove('activo');
-        document.body.style.overflow = '';
+
+/* ── TOGGLE TITULAR (click y drag) ── */
+function toggleTitular(jugadorId, hacerTitular) {
+    fetch(BASE_URL + '/toggle_titular.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({csrf: CSRF, jugador_id: jugadorId, es_titular: hacerTitular})
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.ok) {
+            toast(hacerTitular ? '▶ Titular' : '🪑 Al banquillo');
+            setTimeout(() => location.reload(), 700);
+        } else {
+            toast(d.mensaje || 'Error', true);
+        }
+    })
+    .catch(() => toast('Error de conexión', true));
+}
+
+/* ── DRAG & DROP ── */
+let dragId      = null;  // jugador_id arrastrado
+let dragTitular = false; // si era titular
+let dragging    = null;  // elemento DOM
+
+document.addEventListener('dragstart', e => {
+    const card = e.target.closest('[data-jugador-id]');
+    if (!card) return;
+    dragId      = parseInt(card.dataset.jugadorId);
+    dragTitular = card.dataset.titular === '1';
+    dragging    = card;
+    card.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Pequeño timeout para que el ghost image se vea antes del estilo
+    setTimeout(() => card.classList.add('drag-ghost'), 0);
+});
+
+document.addEventListener('dragend', e => {
+    if (dragging) {
+        dragging.classList.remove('dragging', 'drag-ghost');
+        dragging = null;
     }
+    // Limpiar todos los drop-over
+    document.querySelectorAll('.drop-over').forEach(el => el.classList.remove('drop-over'));
+});
+
+// ── Hacer que el campo y el banquillo sean drop targets ──
+const campo       = document.querySelector('.campo');
+const benchGrid   = document.querySelector('.banquillo-grid');
+const benchSect   = document.querySelector('.banquillo-section');
+
+function setupDropTarget(el, esCampo) {
+    if (!el) return;
+    el.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        el.classList.add('drop-over');
+    });
+    el.addEventListener('dragleave', e => {
+        // Solo quitar si salimos al exterior real
+        if (!el.contains(e.relatedTarget)) el.classList.remove('drop-over');
+    });
+    el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('drop-over');
+        if (dragId === null) return;
+        if (esCampo && !dragTitular) {
+            // Suplente → campo: hacer titular
+            toggleTitular(dragId, true);
+        } else if (!esCampo && dragTitular) {
+            // Titular → banquillo: hacer suplente
+            toggleTitular(dragId, false);
+        }
+        dragId = null;
+    });
+}
+
+setupDropTarget(campo,     true);
+setupDropTarget(benchGrid, false);
+setupDropTarget(benchSect, false);
+
+// Slots vacíos del campo también son drop targets
+document.querySelectorAll('[data-drop-campo]').forEach(slot => {
+    slot.addEventListener('dragover', e => {
+        e.preventDefault();
+        slot.classList.add('drop-over');
+    });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drop-over'));
+    slot.addEventListener('drop', e => {
+        e.preventDefault();
+        slot.classList.remove('drop-over');
+        if (dragId !== null && !dragTitular) {
+            toggleTitular(dragId, true);
+            dragId = null;
+        }
+    });
 });
 </script>
 

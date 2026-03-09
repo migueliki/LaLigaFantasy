@@ -1,0 +1,500 @@
+/* ──────────────────────────────────────────────
+   PLANTILLA FANTASY — campo, formaciones, bench
+   ────────────────────────────────────────────── */
+
+/* ── CABECERA EQUIPO ── */
+.plantilla-header {
+    text-align: center;
+    padding: 32px 20px 12px;
+}
+.plantilla-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--texto-principal, #fff);
+    margin: 0 0 6px;
+}
+.plantilla-header .equipo-nombre {
+    font-size: 1rem;
+    color: var(--texto-secundario, #a0b4cc);
+    margin: 0;
+}
+
+/* ── SELECTOR FORMACIÓN ── */
+.formacion-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+}
+.formacion-selector .label-form {
+    font-size: 0.85rem;
+    color: var(--texto-secundario, #a0b4cc);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.btn-formacion {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    color: var(--texto-principal, #fff);
+    padding: 6px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all .2s;
+}
+.btn-formacion:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.4);
+}
+.btn-formacion.activa {
+    background: #1565c0;
+    border-color: #42a5f5;
+    color: #fff;
+}
+
+/* ── CAMPO DE FÚTBOL ── */
+.campo-wrap {
+    max-width: 540px;
+    margin: 0 auto 10px;
+    padding: 0 16px;
+}
+.campo {
+    background: linear-gradient(180deg,
+        #1a6b2e 0%, #1e7a33 14.28%,
+        #1a6b2e 14.28%, #1e7a33 28.57%,
+        #1a6b2e 28.57%, #1e7a33 42.85%,
+        #1a6b2e 42.85%, #1e7a33 57.14%,
+        #1a6b2e 57.14%, #1e7a33 71.42%,
+        #1a6b2e 71.42%, #1e7a33 85.71%,
+        #1a6b2e 85.71%, #1e7a33 100%
+    );
+    border: 3px solid rgba(255,255,255,0.35);
+    border-radius: 10px;
+    padding: 16px 10px 20px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+/* Línea central */
+.campo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.campo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: rgba(255,255,255,0.3);
+    pointer-events: none;
+}
+
+/* Línea central horizontal */
+.campo-linea-media {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    right: 6%;
+    height: 2px;
+    background: rgba(255,255,255,0.25);
+    pointer-events: none;
+}
+
+/* ── FILAS DEL CAMPO ── */
+.campo-fila {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
+}
+.campo-fila:last-child {
+    margin-bottom: 0;
+}
+
+/* ── TARJETA JUGADOR EN CAMPO ── */
+.campo-jugador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform .15s;
+    min-width: 68px;
+    max-width: 80px;
+}
+.campo-jugador:hover {
+    transform: scale(1.08);
+}
+.campo-jugador .cj-foto-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.6);
+    overflow: hidden;
+    background: #0d2d4d;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    position: relative;
+}
+.campo-jugador.capitan .cj-foto-wrap::after {
+    content: 'C';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 18px; height: 18px;
+    background: #f9c300;
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+}
+.campo-jugador .cj-foto-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.campo-jugador .cj-nombre {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-top: 3px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    max-width: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+.campo-jugador .cj-badge {
+    font-size: 0.55rem;
+    padding: 1px 6px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    margin-top: 2px;
+    text-shadow: none;
+}
+.cj-badge.pos-Portero        { background: #f9c300; color: #000; }
+.cj-badge.pos-Defensa        { background: #1565c0; }
+.cj-badge.pos-Centrocampista { background: #2e7d32; }
+.cj-badge.pos-Delantero      { background: #c62828; }
+
+/* Slot vacío (hueco) */
+.campo-slot-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 68px;
+    max-width: 80px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity .15s;
+}
+.campo-slot-vacio:hover { opacity: 1; }
+.campo-slot-vacio .slot-circulo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.5);
+}
+.campo-slot-vacio .slot-label {
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 3px;
+    text-align: center;
+}
+
+/* ── BANQUILLO ── */
+.banquillo-section {
+    max-width: 700px;
+    margin: 0 auto 32px;
+    padding: 0 16px;
+}
+.banquillo-titulo {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--texto-secundario, #a0b4cc);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.banquillo-titulo::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+}
+.banquillo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Tarjeta banquillo */
+.bench-card {
+    background: var(--card-bg, rgba(255,255,255,0.07));
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, transform .15s;
+    min-width: 180px;
+}
+.bench-card:hover {
+    background: rgba(255,255,255,0.13);
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+}
+.bench-foto {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: #0d2d4d;
+}
+.bench-info {
+    flex: 1;
+    min-width: 0;
+}
+.bench-nombre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--texto-principal, #fff);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bench-pos {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 8px;
+    margin-top: 2px;
+    display: inline-block;
+    color: #fff;
+}
+.bench-pos.pos-Portero        { background: #f9c300; color: #000; }
+.bench-pos.pos-Defensa        { background: #1565c0; }
+.bench-pos.pos-Centrocampista { background: #2e7d32; }
+.bench-pos.pos-Delantero      { background: #c62828; }
+.bench-btn-titular {
+    background: #1565c0;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .2s;
+}
+.bench-btn-titular:hover { background: #0d47a1; }
+
+/* ── ESTADO VACÍO ── */
+.plantilla-vacia {
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--texto-secundario, #aaa);
+}
+.plantilla-vacia .vacia-icon { font-size: 3.5rem; }
+.plantilla-vacia p { font-size: 1.1rem; margin-top: 14px; }
+.plantilla-vacia a {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 10px 28px;
+    background: #1565c0;
+    color: #fff;
+    border-radius: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .2s;
+}
+.plantilla-vacia a:hover { background: #0d47a1; }
+
+/* ── INFO CONTADORES ── */
+.plantilla-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 8px 20px 16px;
+    flex-wrap: wrap;
+}
+.pstat {
+    text-align: center;
+}
+.pstat-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--texto-principal, #fff);
+    display: block;
+}
+.pstat-label {
+    font-size: 0.72rem;
+    color: var(--texto-secundario, #a0b4cc);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ── BOTÓN GUARDAR ── */
+.btn-guardar-formacion {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 9px 30px;
+    background: #2e7d32;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+}
+.btn-guardar-formacion:hover {
+    background: #1b5e20;
+    transform: scale(1.03);
+}
+.btn-guardar-formacion:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Toast notificación */
+#toast-plant {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1b5e20;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 9999;
+    transition: transform .3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+}
+#toast-plant.error { background: #b71c1c; }
+#toast-plant.show  { transform: translateX(-50%) translateY(0); }
+
+/* ── DRAG & DROP ── */
+.campo-jugador[draggable],
+.bench-card[draggable] {
+    cursor: grab;
+}
+.campo-jugador[draggable]:active,
+.bench-card[draggable]:active {
+    cursor: grabbing;
+}
+
+/* El elemento mientras se arrastra */
+.campo-jugador.dragging,
+.bench-card.dragging {
+    opacity: 0.4;
+}
+
+/* El campo resalta cuando arrastras un suplente encima */
+.campo.drop-over {
+    outline: 3px dashed rgba(255,255,255,0.7);
+    outline-offset: -4px;
+}
+
+/* El slot vacío resalta */
+.campo-slot-vacio.drop-over .slot-circulo {
+    border-color: #fff;
+    color: #fff;
+    background: rgba(255,255,255,0.15);
+}
+
+/* La sección de banquillo resalta cuando arrastras un titular */
+.banquillo-section.drop-over,
+.banquillo-grid.drop-over {
+    outline: 3px dashed rgba(255,255,255,0.6);
+    outline-offset: 2px;
+    border-radius: 10px;
+}
+
+/* ── TEMA CLARO ── */
+body.tema-claro .plantilla-header h1,
+body.tema-claro .pstat-num,
+body.tema-claro .bench-nombre,
+body.tema-claro .banquillo-titulo {
+    color: #1a1a2e;
+}
+body.tema-claro .equipo-nombre,
+body.tema-claro .pstat-label,
+body.tema-claro .label-form,
+body.tema-claro .slot-label {
+    color: #444;
+}
+body.tema-claro .campo {
+    border-color: rgba(0,0,0,0.3);
+}
+body.tema-claro .banquillo-titulo::after {
+    background: rgba(0,0,0,0.15);
+}
+body.tema-claro .bench-card {
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(0,0,0,0.12);
+}
+body.tema-claro .bench-card:hover {
+    background: rgba(0,0,0,0.12);
+}
+body.tema-claro .btn-formacion {
+    background: rgba(0,0,0,0.07);
+    border-color: rgba(0,0,0,0.2);
+    color: #1a1a2e;
+}
+body.tema-claro .btn-formacion:hover {
+    background: rgba(0,0,0,0.13);
+}
+body.tema-claro .btn-formacion.activa {
+    background: #1565c0;
+    color: #fff;
+}
+body.tema-claro .campo-slot-vacio .slot-circulo,
+body.tema-claro .campo-slot-vacio .slot-label {
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.6);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    .campo-jugador { min-width: 52px; }
+    .campo-jugador .cj-foto-wrap { width: 42px; height: 42px; }
+    .campo-slot-vacio .slot-circulo { width: 42px; height: 42px; }
+    .campo-jugador .cj-nombre { font-size: 0.55rem; max-width: 56px; }
+    .bench-card { min-width: 150px; }
+}

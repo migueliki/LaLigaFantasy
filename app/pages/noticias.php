@@ -628,6 +628,7 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
             <a href="<?= BASE_URL ?>/pages/equipos.php">Equipos</a>
             <a href="<?= BASE_URL ?>/pages/calendario.php">Calendario</a>
             <a href="<?= BASE_URL ?>/pages/plantilla.php">Plantilla</a>
+            <a href="<?= BASE_URL ?>/pages/mercado.php">Mercado</a>
             <a href="<?= BASE_URL ?>/pages/noticias.php" class="nav-active">Noticias</a>
             <a href="<?= BASE_URL ?>/logout.php">Cerrar Sesión</a>
         </nav>

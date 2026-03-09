@@ -1,0 +1,299 @@
+/* ═══════════════════════════════════════════════
+   MERCADO - LaLiga Fantasy
+   ═══════════════════════════════════════════════ */
+
+/* ── CABECERA ── */
+.mercado-header {
+    text-align: center;
+    padding: 36px 16px 16px;
+    position: relative;
+    z-index: 3;
+}
+.mercado-header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #e6eef8;
+    margin: 0 0 6px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.mercado-subtitulo {
+    color: #a8c0e0;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* ── SALDO USUARIO ── */
+.saldo-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto 28px;
+    background: rgba(8, 30, 80, 0.82);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 14px 24px;
+    backdrop-filter: blur(10px);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #e6eef8;
+}
+.saldo-valor {
+    color: #4ade80;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+.saldo-banner.saldo-bajo .saldo-valor { color: #f87171; }
+
+/* ── FILTROS Y BÚSQUEDA ── */
+.mercado-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto 28px;
+    padding: 0 16px;
+}
+.mercado-filtros input[type="text"] {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(8, 30, 80, 0.75);
+    color: #e6eef8;
+    font-size: 0.92rem;
+    min-width: 220px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.mercado-filtros input[type="text"]::placeholder { color: #8aa0c0; }
+.mercado-filtros input[type="text"]:focus { border-color: rgba(90,160,255,0.5); }
+
+.btn-filtro {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(8, 30, 80, 0.75);
+    color: #a8c0e0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.btn-filtro:hover, .btn-filtro.activo {
+    background: rgba(30, 90, 220, 0.7);
+    color: #fff;
+    border-color: rgba(90,160,255,0.5);
+}
+
+/* ── TABS MI PLANTILLA / MERCADO ── */
+.mercado-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    max-width: 500px;
+    margin: 0 auto 28px;
+    padding: 0 16px;
+}
+.tab-btn {
+    flex: 1;
+    padding: 11px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(8, 30, 80, 0.75);
+    color: #a8c0e0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+.tab-btn.activo {
+    background: rgba(30, 90, 220, 0.85);
+    color: #fff;
+    border-color: rgba(90,160,255,0.4);
+}
+
+/* ── GRID DE JUGADORES ── */
+.mercado-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 18px;
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 3;
+}
+
+.mercado-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(8, 30, 80, 0.78);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px 12px 14px;
+    text-align: center;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    position: relative;
+}
+.mercado-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(0,80,220,0.38);
+    border-color: rgba(90,160,255,0.35);
+}
+.mercado-card.vendido {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ── FOTO ── */
+.mercado-foto-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.12);
+    margin-bottom: 10px;
+    background: rgba(0,0,0,0.3);
+    flex-shrink: 0;
+}
+.mercado-foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ── BADGES ── */
+.badge-pos {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.pos-Portero { background: rgba(250,204,21,0.25); color: #fde047; }
+.pos-Defensa { background: rgba(59,130,246,0.25); color: #93c5fd; }
+.pos-Centrocampista { background: rgba(168,85,247,0.25); color: #d8b4fe; }
+.pos-Delantero { background: rgba(239,68,68,0.25); color: #fca5a5; }
+.pos-Extremo { background: rgba(249,115,22,0.25); color: #fdba74; }
+
+.mercado-nombre {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #e6eef8;
+    margin: 4px 0 2px;
+    line-height: 1.25;
+}
+.mercado-equipo {
+    font-size: 0.74rem;
+    color: #8aa0c0;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+.mercado-equipo img {
+    height: 16px;
+    object-fit: contain;
+}
+
+/* ── PRECIO ── */
+.mercado-precio {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #4ade80;
+    margin: 6px 0 10px;
+}
+.mercado-precio.caro { color: #f87171; }
+
+/* ── MEDIA FIFA ── */
+.mercado-media {
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-bottom: 10px;
+}
+.media-oro  { background: rgba(250,204,21,0.25); color: #fde047; }
+.media-plata{ background: rgba(156,163,175,0.25); color: #d1d5db; }
+.media-bronce {background: rgba(180,83,9,0.25); color: #fb923c; }
+
+/* ── BOTÓN COMPRAR / VENDER ── */
+.btn-comprar, .btn-vender {
+    width: 100%;
+    padding: 9px 0;
+    border-radius: 9px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.12s;
+}
+.btn-comprar {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #fff;
+}
+.btn-comprar:hover { opacity: 0.88; transform: scale(1.03); }
+.btn-comprar:disabled { background: rgba(30,60,120,0.4); color: #6b7280; cursor: not-allowed; transform: none; opacity: 1; }
+
+.btn-vender {
+    background: linear-gradient(135deg, #b91c1c, #dc2626);
+    color: #fff;
+}
+.btn-vender:hover { opacity: 0.88; transform: scale(1.03); }
+
+/* ── TOAST DE NOTIFICACIÓN ── */
+#toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: rgba(8, 30, 80, 0.96);
+    color: #e6eef8;
+    padding: 13px 26px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    z-index: 9999;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+}
+#toast.mostrar { transform: translateX(-50%) translateY(0); }
+#toast.ok  { border-color: rgba(74,222,128,0.5); }
+#toast.err { border-color: rgba(248,113,113,0.5); }
+
+/* ── SECCIÓN VACÍA ── */
+.mercado-vacio {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7c9c;
+    font-size: 1rem;
+    grid-column: 1 / -1;
+}
+
+/* ── SECCION TITULO ── */
+.seccion-titulo {
+    max-width: 1200px;
+    margin: 0 auto 14px;
+    padding: 0 20px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #a8c0e0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 520px) {
+    .mercado-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .mercado-filtros { flex-direction: column; align-items: stretch; }
+    .mercado-filtros input[type="text"] { min-width: unset; }
+}

@@ -36,8 +36,7 @@ CREATE TABLE usuarios_jugadores (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY uq_usuario_jugador (usuario_id, jugador_id),
     UNIQUE KEY uq_propiedad_jugador (jugador_id),
-    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE,
-    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE
 );
 
 CREATE TABLE mercado (
@@ -45,8 +44,7 @@ CREATE TABLE mercado (
     jugador_id INT NOT NULL UNIQUE,
     precio DECIMAL(12,2) NOT NULL,
     disponible BOOLEAN NOT NULL DEFAULT TRUE,
-    fecha_publicacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
+    fecha_publicacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE transacciones (
@@ -57,8 +55,7 @@ CREATE TABLE transacciones (
     precio DECIMAL(12,2) NOT NULL,
     jornada INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE,
-    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE
 );
 
 CREATE TABLE puntos_jornada (
@@ -763,4 +760,28 @@ INSERT INTO entrenadores (nombre, edad, nacionalidad, equipo_id, estilo_juego) V
 
 -- Rayo Vallecano
 ('Iñigo Pérez', 37, 'Española', (SELECT id FROM equipos WHERE nombre = 'Rayo Vallecano'), 'Posesión y juego combinativo');
+
+ALTER TABLE usuarios_jugadores
+    ADD CONSTRAINT fk_usuarios_jugadores_jugador
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE;
+
+ALTER TABLE mercado
+    ADD CONSTRAINT fk_mercado_jugador
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE;
+
+ALTER TABLE transacciones
+    ADD CONSTRAINT fk_transacciones_jugador
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE;
+
+INSERT INTO mercado (jugador_id, precio, disponible)
+SELECT j.id,
+       CASE
+           WHEN j.media_fifa >= 90 THEN 22000000
+           WHEN j.media_fifa >= 85 THEN 15000000
+           WHEN j.media_fifa >= 80 THEN 9000000
+           WHEN j.media_fifa >= 75 THEN 5500000
+           ELSE 3000000
+       END AS precio,
+       TRUE
+FROM jugadores j;
 

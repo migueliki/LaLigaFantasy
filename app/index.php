@@ -5,9 +5,26 @@ ini_set('display_errors', 1);
 session_start();
 require_once 'csrf.php';
 
-if (isset($_GET['error']) && $_GET['error'] == 'login_fallido') {
-        echo '<p style="color: red; font-weight: bold;">Usuario o contraseña incorrectos.</p>';
+$mensaje_error = '';
+$mensaje_ok = '';
+
+if (isset($_GET['error']) && $_GET['error'] === 'login_fallido') {
+    $mensaje_error = 'Usuario o contraseña incorrectos.';
+}
+
+if (isset($_GET['register']) && $_GET['register'] === 'ok') {
+    $mensaje_ok = 'Usuario registrado correctamente.';
+}
+
+if (isset($_GET['register_error'])) {
+    if ($_GET['register_error'] === 'username_exists') {
+        $mensaje_error = 'Error: el nombre ya está usado.';
+    } elseif ($_GET['register_error'] === 'email_exists') {
+        $mensaje_error = 'Error: este correo ya está registrado.';
+    } elseif ($_GET['register_error'] === 'missing_fields') {
+        $mensaje_error = 'Error: faltan datos del formulario.';
     }
+}
 
 include 'cookie_tema.php';
 require_once 'config.php';
@@ -45,6 +62,14 @@ require_once 'config.php';
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
 </head>
 <body>
+
+<?php if ($mensaje_ok !== ''): ?>
+    <p style="color: #16a34a; font-weight: bold;"><?php echo htmlspecialchars($mensaje_ok); ?></p>
+<?php endif; ?>
+
+<?php if ($mensaje_error !== ''): ?>
+    <p style="color: red; font-weight: bold;"><?php echo htmlspecialchars($mensaje_error); ?></p>
+<?php endif; ?>
 
 <h1>Iniciar Sesión</h1>
 

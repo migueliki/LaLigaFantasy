@@ -23,6 +23,8 @@ if (isset($_GET['register_error'])) {
         $mensaje_error = 'Error: este correo ya está registrado.';
     } elseif ($_GET['register_error'] === 'missing_fields') {
         $mensaje_error = 'Error: faltan datos del formulario.';
+    } elseif ($_GET['register_error'] === 'db_error') {
+        $mensaje_error = 'Error: no se pudo completar el registro. Inténtalo de nuevo.';
     }
 }
 

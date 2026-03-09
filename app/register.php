@@ -41,11 +41,29 @@ if ($stmt->fetch()) {
     exit();
 }
 
-$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+try {
+    $pdo->beginTransaction();
 
-$sql = "INSERT INTO register (username, password, email) VALUES (?, ?, ?)";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$username, $passwordHash, $email]);
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-header("Location: index.php?register=ok");
-exit();
+    $sql = "INSERT INTO register (username, password, email) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$username, $passwordHash, $email]);
+
+    $usuarioId = (int)$pdo->lastInsertId();
+    $nombreEquipo = 'Equipo de ' . $username;
+
+    $sqlEquipo = "INSERT INTO usuarios_equipos (usuario_id, nombre_equipo, saldo) VALUES (?, ?, 100000000.00)";
+    $stmtEquipo = $pdo->prepare($sqlEquipo);
+    $stmtEquipo->execute([$usuarioId, $nombreEquipo]);
+
+    $pdo->commit();
+    header("Location: index.php?register=ok");
+    exit();
+} catch (PDOException $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    header("Location: index.php?register_error=db_error");
+    exit();
+}

@@ -12,9 +12,83 @@ CREATE TABLE equipos (
 
 CREATE TABLE register (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) NOT NULL
+    email VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE usuarios_equipos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL UNIQUE,
+    nombre_equipo VARCHAR(100) NOT NULL,
+    saldo DECIMAL(12,2) NOT NULL DEFAULT 100000000.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE
+);
+
+CREATE TABLE usuarios_jugadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    jugador_id INT NOT NULL,
+    es_titular BOOLEAN DEFAULT FALSE,
+    es_capitan BOOLEAN DEFAULT FALSE,
+    precio_compra DECIMAL(12,2) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_usuario_jugador (usuario_id, jugador_id),
+    UNIQUE KEY uq_propiedad_jugador (jugador_id),
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE,
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
+);
+
+CREATE TABLE mercado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jugador_id INT NOT NULL UNIQUE,
+    precio DECIMAL(12,2) NOT NULL,
+    disponible BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_publicacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
+);
+
+CREATE TABLE transacciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    jugador_id INT NOT NULL,
+    tipo ENUM('compra', 'venta') NOT NULL,
+    precio DECIMAL(12,2) NOT NULL,
+    jornada INT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE,
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
+);
+
+CREATE TABLE puntos_jornada (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    jornada INT NOT NULL,
+    puntos_jornada INT NOT NULL DEFAULT 0,
+    puntos_totales INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_usuario_jornada (usuario_id, jornada),
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ligas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    codigo_invitacion VARCHAR(20) NOT NULL UNIQUE,
+    creador_usuario_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (creador_usuario_id) REFERENCES register(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ligas_usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    liga_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_liga_usuario (liga_id, usuario_id),
+    FOREIGN KEY (liga_id) REFERENCES ligas(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES register(id) ON DELETE CASCADE
 );
 
 CREATE TABLE jugadores (

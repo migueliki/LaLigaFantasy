@@ -84,30 +84,6 @@ $totalJugadores  = count($jugadores);
 $totalTitulares  = array_sum(array_map('count', $titulares));
 $totalSuplentes  = count($suplentes);
 
-// ── Mapa escudo por equipo ──
-$escudos = [
-    'Real Madrid'        => 'realmadrid.png',
-    'FC Barcelona'       => 'barsa.png',
-    'Atletico de Madrid' => 'atletimadrid.png',
-    'Atlético de Madrid' => 'atletimadrid.png',
-    'Sevilla FC'         => 'sevillafc.png',
-    'Real Betis'         => 'Real_Betis.png',
-    'Valencia CF'        => 'valencia-cf-logo-escudo-1.png',
-    'Athletic Club'      => 'Athletic_c_de_bilbao.png',
-    'Real Sociedad'      => 'Real_Sociedad_de_Futbol_logo.png',
-    'Villarreal CF'      => 'villarreal-club-de-futbol-logo-png_seeklogo-243387.png',
-    'CA Osasuna'         => 'osasuna-logo-1.png',
-    'Girona FC'          => 'girona_fc_.png',
-    'Elche CF'           => 'Escudo_Elche_CF.png',
-    'RCD Espanyol'       => 'espanyol-logo.png',
-    'Getafe CF'          => 'Getafe_CF_Logo.png',
-    'RCD Mallorca'       => 'RCD_Mallorca.png',
-    'RC Celta de Vigo'   => 'celta-de-vigo-logo.png',
-    'Deportivo Alavés'   => 'Deportivo_Alaves_logo_(2020).svg.png',
-    'Real Oviedo'        => 'oviedo.fc.png',
-    'Rayo Vallecano'     => 'rayo-vallecano-logo-png-transparent-png.png',
-];
-
 // Helper: URL foto
 function fotoJugador(string $nombre): string {
     $n = strtolower($nombre);
@@ -373,8 +349,6 @@ document.addEventListener('dragstart', e => {
     dragging    = card;
     card.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
-    // Pequeño timeout para que el ghost image se vea antes del estilo
-    setTimeout(() => card.classList.add('drag-ghost'), 0);
 });
 
 document.addEventListener('dragend', e => {

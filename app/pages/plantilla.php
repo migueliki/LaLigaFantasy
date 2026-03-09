@@ -178,10 +178,6 @@ function fotoJugador(string $nombre): string {
             onclick="cambiarFormacion('<?= $f ?>')"><?= $f ?></button>
     <?php endforeach; ?>
 </div>
-<button class="btn-guardar-formacion" id="btn-guardar" onclick="guardarFormacion()" disabled>
-    💾 Guardar formación
-</button>
-
 <!-- CAMPO -->
 <div class="campo-wrap">
 <div class="campo">
@@ -268,7 +264,6 @@ renderFilaCampo($titulares['Delantero'], $slotsFormacion['Delantero'], 'Delanter
 <script>
 const BASE_URL = <?= json_encode(BASE_URL) ?>;
 const CSRF     = <?= json_encode($_SESSION['csrf_token'] ?? '') ?>;
-let formacionPendiente = null;
 
 /* ── TOAST ── */
 function toast(msg, esError = false) {
@@ -279,42 +274,29 @@ function toast(msg, esError = false) {
     setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-/* ── CAMBIO FORMACIÓN ── */
+/* ── CAMBIO FORMACIÓN (guarda y recarga automáticamente) ── */
 function cambiarFormacion(f) {
-    formacionPendiente = f;
     document.querySelectorAll('.btn-formacion').forEach(b => {
         b.classList.toggle('activa', b.textContent.trim() === f);
+        if (b.textContent.trim() === f) b.textContent = '⏳ ' + f;
     });
-    document.getElementById('btn-guardar').disabled = false;
-}
-
-function guardarFormacion() {
-    if (!formacionPendiente) return;
-    const btn = document.getElementById('btn-guardar');
-    btn.disabled = true;
-    btn.textContent = '⏳ Guardando...';
     fetch(BASE_URL + '/guardar_formacion.php', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({csrf: CSRF, formacion: formacionPendiente})
+        body: JSON.stringify({csrf: CSRF, formacion: f})
     })
     .then(r => r.json())
     .then(d => {
         if (d.ok) {
-            toast('✅ Formación ' + formacionPendiente + ' guardada');
-            formacionPendiente = null;
-            btn.textContent = '💾 Guardar formación';
+            location.reload();
         } else {
             toast(d.mensaje || 'Error al guardar', true);
-            btn.disabled = false;
-            btn.textContent = '💾 Guardar formación';
+            document.querySelectorAll('.btn-formacion').forEach(b => {
+                if (b.textContent.includes(f)) b.textContent = f;
+            });
         }
     })
-    .catch(() => {
-        toast('Error de conexión', true);
-        btn.disabled = false;
-        btn.textContent = '💾 Guardar formación';
-    });
+    .catch(() => toast('Error de conexión', true));
 }
 
 /* ── TOGGLE TITULAR (click y drag) ── */

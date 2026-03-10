@@ -119,8 +119,8 @@ function foto_entrenador(string $nombre): string {
     <meta name="twitter:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
     <link rel="stylesheet" href="../css/inicio.css">
     <link rel="stylesheet" href="../css/equipos.css">
     <link rel="stylesheet" href="../css/cookie_tema.css">
@@ -355,7 +355,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
     <form method="POST">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
-        <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+        <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
     </form>
 </div>
 

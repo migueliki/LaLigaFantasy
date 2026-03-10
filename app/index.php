@@ -61,7 +61,7 @@ require_once 'config.php';
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/cookie_tema.css">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
 </head>
 <body>
 
@@ -103,7 +103,7 @@ require_once 'config.php';
     <div class="widget-temas">
         <form method="POST">
             <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
-            <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+            <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
         </form>
     </div>
 

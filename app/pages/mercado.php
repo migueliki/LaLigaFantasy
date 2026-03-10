@@ -141,8 +141,8 @@ function precio_fmt(float $p): string {
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
     <link rel="stylesheet" href="../css/inicio.css">
     <link rel="stylesheet" href="../css/equipos.css">
     <link rel="stylesheet" href="../css/mercado.css">
@@ -299,7 +299,7 @@ function precio_fmt(float $p): string {
     <form method="POST">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
         <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
-        <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+        <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
     </form>
 </div>
 

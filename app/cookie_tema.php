@@ -2,7 +2,7 @@
 
 //  Si pulsan un botón, guardamos la cookie y recargamos
 if (isset($_POST['tema_pref'])) {
-    $tema = $_POST['tema_pref']; // 'tema-original' o 'tema-claro'
+    $tema = $_POST['tema_pref']; // 'tema-original' o 'tema-laliga'
     
     // Cookie por 30 días en todo el sitio
     setcookie("preferencia_tema", $tema, time() + (86400 * 30), "/");

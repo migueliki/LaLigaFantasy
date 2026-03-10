@@ -613,8 +613,8 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
     <meta name="twitter:description" content="Últimas noticias de LaLiga, Copa del Rey y Segunda División. Toda la actualidad del fútbol español en un solo lugar.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
     <link rel="stylesheet" href="../css/inicio.css">
     <link rel="stylesheet" href="../css/noticias.css">
     <link rel="stylesheet" href="../css/cookie_tema.css">
@@ -728,7 +728,7 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
-            <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+            <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
         </form>
     </div>
 

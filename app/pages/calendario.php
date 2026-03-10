@@ -265,7 +265,7 @@ foreach ($partidos as $p) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario J<?= $jornada ?> - LaLiga Fantasy</title>
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
     <link rel="stylesheet" href="../css/inicio.css">
     <link rel="stylesheet" href="../css/calendario.css">
     <link rel="stylesheet" href="../css/cookie_tema.css">
@@ -338,7 +338,7 @@ foreach ($partidos as $p) {
 <div class="widget-temas"><form method="POST">
     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
     <button type="submit" name="tema_pref" value="" title="Modo Azul">🔵</button>
-    <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+    <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
 </form></div>
 
 </body>

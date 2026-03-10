@@ -14,6 +14,7 @@ if(isset($_SESSION['usuario_id'])) {
 
 $pages = $_GET['pages'] ?? 'inicio';
 $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
+include_once 'cookie_tema.php';
 ?>
 
 <!DOCTYPE html>
@@ -44,10 +45,8 @@ $list_pages = ['equipos', 'plantilla', 'noticias', 'cerrar_sesion'];
 
     <link rel="stylesheet" href="css/inicio.css">
     <link rel="stylesheet" href="css/cookie_tema.css">
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/favicon.png">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/favicon.png" type="image/x-icon">
-
-    <?php include 'cookie_tema.php'; ?>
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
 </head>
 <body>
 
@@ -80,7 +79,7 @@ if (in_array($pages, $list_pages)) {
     <div class="widget-temas">
         <form method="POST">
             <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
-            <button type="submit" name="tema_pref" value="tema-claro" title="Modo Claro">⚪</button>
+            <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
         </form>
     </div>
 

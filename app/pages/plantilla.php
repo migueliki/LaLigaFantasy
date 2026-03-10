@@ -155,7 +155,7 @@ function fotoJugador(string $nombre): string {
         <span class="pstat-label">Suplentes</span>
     </div>
     <div class="pstat">
-        <span class="pstat-num" style="color:<?= $saldo<5000000?'#ef5350':'#66bb6a' ?>"><?= number_format($saldo/1000000,1) ?>M€</span>
+        <span class="pstat-num pstat-saldo<?= $saldo<5000000?' pstat-saldo--bajo':'' ?>"><?= number_format($saldo/1000000,1) ?>M€</span>
         <span class="pstat-label">Saldo</span>
     </div>
 </div>

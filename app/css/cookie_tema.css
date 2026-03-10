@@ -79,3 +79,23 @@ body.tema-claro .page-link {
     transition: 0.3s;
 }
 .widget-temas button:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+
+/* ── PLANTILLA: saldo en modo claro ── */
+.pstat-saldo           { color: #66bb6a; }
+.pstat-saldo--bajo     { color: #ef5350; }
+
+body.tema-claro .pstat-saldo       { color: #16a34a !important; }
+body.tema-claro .pstat-saldo--bajo { color: #dc2626 !important; }
+
+/* ── MERCADO: saldo en modo claro ── */
+body.tema-claro .saldo-banner {
+    background: rgba(255,255,255,0.75) !important;
+    border: 1px solid #90caf9 !important;
+    color: #1c3a47 !important;
+}
+body.tema-claro .saldo-valor {
+    color: #16a34a !important; /* verde oscuro, visible en fondo claro */
+}
+body.tema-claro .saldo-banner.saldo-bajo .saldo-valor {
+    color: #dc2626 !important; /* rojo oscuro para saldo bajo */
+}

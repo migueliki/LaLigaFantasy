@@ -636,7 +636,10 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
 
     <!-- CABECERA -->
     <div class="noticias-header">
-        <h1>Noticias Fútbol España</h1>
+        <h1>
+            <img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" class="noticias-logo-inline" loading="lazy">
+            Noticias Fútbol España
+        </h1>
         <p class="noticias-subtitulo">LaLiga · Copa del Rey · Segunda División</p>
         <?php if ($mensaje_actualizacion): ?>
             <p class="noticias-actualizacion"><?php echo htmlspecialchars($mensaje_actualizacion); ?></p>

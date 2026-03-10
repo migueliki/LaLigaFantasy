@@ -8,6 +8,16 @@ body {
   color: #0b1220;
 }
 
+body, button, input, select, textarea {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
 /* Centrar contenido principal */
 body > h1:first-of-type {
   text-align: center;

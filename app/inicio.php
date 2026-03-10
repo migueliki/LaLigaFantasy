@@ -48,7 +48,7 @@ include_once 'cookie_tema.php';
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
 </head>
-<body>
+<body class="<?php echo $clase_tema; ?>">
 
 <div class="navegacion">
     <nav>
@@ -62,6 +62,10 @@ include_once 'cookie_tema.php';
     </nav>
 </div>
 
+<div class="inicio-logo-center" aria-label="Logo central LaLiga Fantasy">
+    <img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" class="inicio-logo-img" loading="lazy">
+</div>
+
 <?php
 
 if (in_array($pages, $list_pages)) {
@@ -73,9 +77,6 @@ if (in_array($pages, $list_pages)) {
     }
 ?>
 
-</body>
-<body class="<?php echo $clase_tema; ?>">    
-
     <div class="widget-temas">
         <form method="POST">
             <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
@@ -83,5 +84,5 @@ if (in_array($pages, $list_pages)) {
         </form>
     </div>
 
-    </body>
+</body>
 </html>

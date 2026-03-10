@@ -241,6 +241,8 @@ function precio_fmt(float $p): string {
         </div>
         <?php endforeach; ?>
     </div>
+    <!-- PAGINADOR MERCADO -->
+    <div class="paginador" id="paginador-disponibles"></div>
     <?php endif; ?>
 </div>
 
@@ -318,8 +320,84 @@ function cambiarTab(tab, btn) {
     btn.classList.add('activo');
 }
 
-// ─── FILTROS ───
+// ─── PAGINACIÓN ───
+const POR_PAGINA = 16;
+let paginaActual = 1;
 let posActiva = '';
+
+function getCardsFiltradas() {
+    const q = document.getElementById('buscador').value.toLowerCase();
+    return Array.from(document.querySelectorAll('#grid-disponibles .mercado-card')).filter(card => {
+        const nombre = card.dataset.nombre || '';
+        const equipo = card.dataset.equipo || '';
+        const pos    = card.dataset.pos    || '';
+        const matchQ = !q || nombre.includes(q) || equipo.includes(q);
+        const matchP = !posActiva || pos.includes(posActiva);
+        return matchQ && matchP;
+    });
+}
+
+function renderPagina(pag) {
+    const todas  = getCardsFiltradas();
+    const total  = todas.length;
+    const pages  = Math.max(1, Math.ceil(total / POR_PAGINA));
+    paginaActual = Math.min(Math.max(1, pag), pages);
+
+    const inicio = (paginaActual - 1) * POR_PAGINA;
+    const fin    = inicio + POR_PAGINA;
+
+    // Ocultar todas; mostrar solo las de esta página
+    document.querySelectorAll('#grid-disponibles .mercado-card').forEach(card => {
+        card.style.display = 'none';
+    });
+    todas.forEach((card, i) => {
+        card.style.display = (i >= inicio && i < fin) ? '' : 'none';
+    });
+
+    // Render paginador
+    const nav = document.getElementById('paginador-disponibles');
+    nav.innerHTML = '';
+    if (pages <= 1) return;
+
+    const btn = (label, page, disabled, active) => {
+        const b = document.createElement('button');
+        b.textContent = label;
+        b.className   = 'pag-btn' + (active ? ' pag-activo' : '');
+        b.disabled    = disabled;
+        b.addEventListener('click', () => { renderPagina(page); nav.scrollIntoView({behavior:'smooth', block:'nearest'}); });
+        return b;
+    };
+
+    nav.appendChild(btn('«', 1, paginaActual === 1, false));
+    nav.appendChild(btn('‹', paginaActual - 1, paginaActual === 1, false));
+
+    // Páginas numeradas (máx 7 botones visibles con elipsis)
+    let start = Math.max(1, paginaActual - 3);
+    let end   = Math.min(pages, start + 6);
+    start     = Math.max(1, end - 6);
+
+    if (start > 1) {
+        nav.appendChild(btn('1', 1, false, false));
+        if (start > 2) { const sp = document.createElement('span'); sp.textContent = '…'; sp.className = 'pag-sep'; nav.appendChild(sp); }
+    }
+    for (let p = start; p <= end; p++) {
+        nav.appendChild(btn(p, p, false, p === paginaActual));
+    }
+    if (end < pages) {
+        if (end < pages - 1) { const sp = document.createElement('span'); sp.textContent = '…'; sp.className = 'pag-sep'; nav.appendChild(sp); }
+        nav.appendChild(btn(pages, pages, false, false));
+    }
+
+    nav.appendChild(btn('›', paginaActual + 1, paginaActual === pages, false));
+    nav.appendChild(btn('»', pages, paginaActual === pages, false));
+
+    // Contador
+    const info = document.createElement('span');
+    info.className = 'pag-info';
+    info.textContent = `Página ${paginaActual} de ${pages} · ${total} jugadores`;
+    nav.appendChild(info);
+}
+
 function setPos(pos, btn) {
     posActiva = pos;
     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
@@ -327,16 +405,11 @@ function setPos(pos, btn) {
     filtrar();
 }
 function filtrar() {
-    const q = document.getElementById('buscador').value.toLowerCase();
-    document.querySelectorAll('#grid-disponibles .mercado-card').forEach(card => {
-        const nombre = card.dataset.nombre || '';
-        const equipo = card.dataset.equipo || '';
-        const pos    = card.dataset.pos    || '';
-        const matchQ = !q || nombre.includes(q) || equipo.includes(q);
-        const matchP = !posActiva || pos.includes(posActiva);
-        card.style.display = (matchQ && matchP) ? '' : 'none';
-    });
+    renderPagina(1);
 }
+
+// Inicializar paginación al cargar
+document.addEventListener('DOMContentLoaded', () => renderPagina(1));
 
 // ─── TOAST ───
 function toast(msg, tipo) {

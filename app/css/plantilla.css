@@ -498,3 +498,100 @@ body.tema-claro .campo-slot-vacio .slot-label {
     .campo-jugador .cj-nombre { font-size: 0.55rem; max-width: 56px; }
     .bench-card { min-width: 150px; }
 }
+
+@media (max-width: 900px) {
+    .plantilla-header {
+        padding-top: 24px;
+    }
+
+    .plantilla-header h1 {
+        font-size: 1.55rem;
+    }
+
+    .formacion-selector {
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .campo-wrap,
+    .banquillo-section {
+        padding: 0 12px;
+    }
+
+    .campo {
+        padding: 12px 8px 14px;
+    }
+}
+
+@media (max-width: 640px) {
+    .formacion-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-formacion {
+        width: 100%;
+        text-align: center;
+    }
+
+    .campo-fila {
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+
+    .campo::after {
+        width: 72px;
+        height: 72px;
+    }
+
+    .campo-jugador,
+    .campo-slot-vacio {
+        min-width: 50px;
+        max-width: 58px;
+    }
+
+    .campo-jugador .cj-foto-wrap,
+    .campo-slot-vacio .slot-circulo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .campo-jugador .cj-nombre {
+        font-size: 0.52rem;
+        max-width: 52px;
+    }
+
+    .bench-card {
+        width: 100%;
+        min-width: 0;
+        padding: 9px 10px;
+    }
+
+    .bench-nombre {
+        font-size: 0.74rem;
+    }
+
+    .bench-btn-titular {
+        font-size: 0.65rem;
+        padding: 4px 8px;
+    }
+
+    .btn-guardar-formacion {
+        width: calc(100% - 24px);
+        max-width: 360px;
+    }
+
+    #toast-plant {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        white-space: normal;
+        text-align: center;
+        transform: translateY(80px);
+        padding: 10px 14px;
+    }
+
+    #toast-plant.show {
+        transform: translateY(0);
+    }
+}

@@ -464,3 +464,73 @@ body.tema-claro .dato-item     { border-bottom-color: rgba(0,0,0,0.08) !importan
     .persona-foto-wrap { width: 56px; height: 56px; }
     .modal-card { padding: 28px 18px 22px; }
 }
+
+@media (max-width: 900px) {
+    .equipos-header {
+        padding-top: 24px;
+    }
+
+    .equipos-grid,
+    .detalle-header,
+    .seccion-titulo,
+    .pos-seccion,
+    .entrenador-wrap {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .equipos-grid {
+        margin-bottom: 44px;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+
+    .detalle-escudo-wrap {
+        gap: 14px;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .equipos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .equipo-card {
+        padding: 16px 8px 12px;
+        border-radius: 12px;
+    }
+
+    .equipo-escudo,
+    .equipo-escudo img {
+        width: 68px;
+        height: 68px;
+        max-width: 68px;
+        max-height: 68px;
+    }
+
+    .detalle-escudo-img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .jugadores-grid,
+    .entrenador-wrap {
+        gap: 8px;
+    }
+
+    .persona-card {
+        width: calc(50% - 4px);
+        max-width: none;
+    }
+
+    .persona-foto-wrap {
+        width: 58px;
+        height: 58px;
+    }
+
+    .modal-card {
+        max-width: 340px;
+        padding: 24px 16px 18px;
+    }
+}

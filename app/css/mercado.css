@@ -356,3 +356,100 @@
     .mercado-filtros { flex-direction: column; align-items: stretch; }
     .mercado-filtros input[type="text"] { min-width: unset; }
 }
+
+@media (max-width: 900px) {
+    .mercado-header {
+        padding-top: 24px;
+    }
+
+    .saldo-banner {
+        margin: 0 12px 20px;
+        padding: 12px 14px;
+        font-size: 0.96rem;
+    }
+
+    .mercado-tabs {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    .mercado-grid {
+        padding: 0 12px;
+        margin-bottom: 56px;
+        grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    }
+
+    .paginador {
+        margin: -28px auto 40px;
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    .mercado-filtros {
+        padding: 0 12px;
+        margin-bottom: 18px;
+    }
+
+    .btn-filtro,
+    .tab-btn {
+        font-size: 0.82rem;
+        padding: 9px 10px;
+    }
+
+    .mercado-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .mercado-card {
+        padding: 14px 8px 10px;
+        border-radius: 12px;
+    }
+
+    .mercado-foto-wrap {
+        width: 62px;
+        height: 62px;
+    }
+
+    .mercado-nombre {
+        font-size: 0.75rem;
+    }
+
+    .mercado-equipo {
+        font-size: 0.68rem;
+        margin-bottom: 6px;
+    }
+
+    .mercado-precio {
+        font-size: 0.82rem;
+    }
+
+    #toast {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        transform: translateY(80px);
+        text-align: center;
+        padding: 12px 14px;
+        font-size: 0.84rem;
+    }
+
+    #toast.mostrar {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 390px) {
+    .mercado-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mercado-tabs {
+        flex-direction: column;
+    }
+
+    .tab-btn {
+        width: 100%;
+    }
+}

@@ -97,3 +97,49 @@ button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 26px rgba(3,7,18,0.45);
 }
+
+@media (max-width: 768px) {
+  body > h1:first-of-type {
+    margin-top: 24px;
+    font-size: 1.35rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    margin-top: 22px;
+  }
+
+  .formulario {
+    width: calc(100% - 24px);
+    padding: 16px;
+    margin-bottom: 18px;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    padding: 11px 12px;
+    font-size: 0.95rem;
+  }
+
+  button[type="submit"],
+  button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  body > h1:first-of-type {
+    font-size: 1.2rem;
+  }
+
+  h1 {
+    font-size: 1.05rem;
+  }
+
+  .formulario {
+    width: calc(100% - 16px);
+    border-radius: 10px;
+    padding: 14px;
+  }
+}

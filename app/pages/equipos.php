@@ -116,8 +116,8 @@ function foto_entrenador(string $nombre): string {
     <meta name="twitter:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>">
+    <link rel="shortcut icon" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">
@@ -142,7 +142,7 @@ function foto_entrenador(string $nombre): string {
     VISTA 1 – LISTA DE LOS 20 EQUIPOS
 ════════════════════════════════════════ -->
 <div class="equipos-header">
-    <h1><img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
+    <h1><img src="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
     <p class="equipos-subtitulo"></p>
 </div>
 

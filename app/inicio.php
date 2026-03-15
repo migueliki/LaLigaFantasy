@@ -164,15 +164,15 @@ function liga_pill_class(array $fila): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio - LaLiga Fantasy</title>
     <meta name="description" content="Panel principal de LaLigaFantasy: crea ligas privadas, únete con código y sincroniza puntuaciones.">
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>">
+    <link rel="shortcut icon" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/ligas.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">
 </head>
 <body class="<?= htmlspecialchars($clase_tema) ?> ligas-page">
 
-<?php $ligaLogoSrc = BASE_URL . '/images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png'); ?>
+<?php $ligaLogoSrc = asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')); ?>
 
 <div class="navegacion">
     <nav>

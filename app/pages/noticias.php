@@ -615,8 +615,8 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
     <meta name="twitter:description" content="Últimas noticias de LaLiga, Copa del Rey y Segunda División. Toda la actualidad del fútbol español en un solo lugar.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>">
+    <link rel="shortcut icon" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/noticias.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">
@@ -639,7 +639,7 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
     <!-- CABECERA -->
     <div class="noticias-header">
         <h1>
-            <img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" class="noticias-logo-inline" loading="lazy">
+            <img src="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" alt="LaLiga" class="noticias-logo-inline" loading="lazy">
             Noticias Fútbol España
         </h1>
         <p class="noticias-subtitulo">LaLiga · Copa del Rey · Segunda División</p>

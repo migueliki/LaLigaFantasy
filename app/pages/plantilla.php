@@ -143,8 +143,8 @@ function fotoJugador(string $nombre): string {
     <meta property="og:image" content="https://laligafantasy.site/images/laliga-logo.png">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>">
+    <link rel="shortcut icon" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/plantilla.css">
@@ -168,7 +168,7 @@ function fotoJugador(string $nombre): string {
 <!-- CABECERA -->
 <div class="plantilla-header">
     <h1>
-        <img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
+        <img src="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
         Mi Plantilla Fantasy
     </h1>
     <p class="equipo-nombre"><?= htmlspecialchars($nombreEq) ?></p>

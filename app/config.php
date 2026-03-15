@@ -12,5 +12,28 @@ if (!defined('BASE_URL')) {
     unset($__host);
 }
 
+if (!function_exists('asset_url')) {
+    function asset_url(string $path): string {
+        $normalized = '/' . ltrim($path, '/');
+        $candidates = [];
+
+        $baseCandidate = rtrim((string)BASE_URL, '/') . $normalized;
+        $candidates[] = $baseCandidate;
+        $candidates[] = $normalized;
+        $candidates[] = '/app' . $normalized;
+
+        $docRoot = rtrim(str_replace('\\', '/', (string)($_SERVER['DOCUMENT_ROOT'] ?? '')), '/');
+        if ($docRoot !== '') {
+            foreach ($candidates as $candidate) {
+                if (@is_file($docRoot . $candidate)) {
+                    return $candidate;
+                }
+            }
+        }
+
+        return $baseCandidate;
+    }
+}
+
 // Alias corto para usar en vistas: echo $base . '/images/...'
 $base = BASE_URL;

@@ -141,8 +141,8 @@ function precio_fmt(float $p): string {
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
-    <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>">
+    <link rel="shortcut icon" href="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/mercado.css">
@@ -166,7 +166,7 @@ function precio_fmt(float $p): string {
 <!-- CABECERA -->
 <div class="mercado-header">
     <h1>
-        <img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
+        <img src="<?= asset_url('images/' . ($clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png')) ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
         Mercado
     </h1>
     <p class="mercado-subtitulo">Compra y vende jugadores para tu equipo</p>

@@ -31,6 +31,7 @@ CREATE TABLE usuarios_jugadores (
     usuario_id INT NOT NULL,
     jugador_id INT NOT NULL,
     es_titular BOOLEAN DEFAULT FALSE,
+    slot_titular TINYINT UNSIGNED DEFAULT NULL,
     es_capitan BOOLEAN DEFAULT FALSE,
     precio_compra DECIMAL(12,2) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -129,8 +130,36 @@ CREATE TABLE partidos (
     fecha_hora DATETIME NOT NULL,
     goles_local INT DEFAULT NULL,
     goles_visitante INT DEFAULT NULL,
+    api_event_id VARCHAR(32) DEFAULT NULL,
+    estado_partido VARCHAR(50) NOT NULL DEFAULT 'Programado',
+    ultima_sync DATETIME DEFAULT NULL,
+    UNIQUE KEY uq_partidos_api_event_id (api_event_id),
     FOREIGN KEY (equipo_local_id) REFERENCES equipos(id),
     FOREIGN KEY (equipo_visitante_id) REFERENCES equipos(id)
+);
+
+CREATE TABLE fantasy_player_match_stats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    partido_id INT NOT NULL,
+    jugador_id INT NOT NULL,
+    api_player_id VARCHAR(32) DEFAULT NULL,
+    nombre_api VARCHAR(120) DEFAULT NULL,
+    titular BOOLEAN NOT NULL DEFAULT FALSE,
+    ha_jugado BOOLEAN NOT NULL DEFAULT FALSE,
+    minutos INT DEFAULT NULL,
+    goles INT NOT NULL DEFAULT 0,
+    asistencias INT NOT NULL DEFAULT 0,
+    amarillas INT NOT NULL DEFAULT 0,
+    rojas INT NOT NULL DEFAULT 0,
+    autogoles INT NOT NULL DEFAULT 0,
+    porteria_cero BOOLEAN NOT NULL DEFAULT FALSE,
+    puntos INT NOT NULL DEFAULT 0,
+    synced_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_partido_jugador (partido_id, jugador_id),
+    KEY idx_fantasy_stats_jugador (jugador_id),
+    KEY idx_fantasy_stats_partido (partido_id),
+    FOREIGN KEY (partido_id) REFERENCES partidos(id) ON DELETE CASCADE,
+    FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE
 );
 
 INSERT INTO equipos (nombre, ciudad, fundacion, estadio) VALUES

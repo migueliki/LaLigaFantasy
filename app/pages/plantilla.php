@@ -27,6 +27,10 @@ try {
     $pdo->exec("ALTER TABLE usuarios_equipos ADD COLUMN formacion VARCHAR(20) NOT NULL DEFAULT '4-3-3'");
 } catch (PDOException $e) { /* ya existe */ }
 
+try {
+    $pdo->exec("ALTER TABLE usuarios_jugadores ADD COLUMN slot_titular TINYINT UNSIGNED NULL DEFAULT NULL");
+} catch (PDOException $e) { /* ya existe */ }
+
 // ── Datos del equipo del usuario ──
 $stmtEq = $pdo->prepare("SELECT nombre_equipo, saldo, formacion FROM usuarios_equipos WHERE usuario_id = ?");
 $stmtEq->execute([$uid]);
@@ -39,7 +43,7 @@ $nombreEq  = $miEquipo ? $miEquipo->nombre_equipo : 'Mi Equipo';
 $stmtJ = $pdo->prepare("
     SELECT j.id, j.nombre, j.posicion, j.dorsal, j.media_fifa,
            e.nombre AS equipo,
-           uj.es_titular, uj.es_capitan, uj.precio_compra, m.precio
+        uj.es_titular, uj.es_capitan, uj.precio_compra, m.precio, uj.slot_titular
     FROM usuarios_jugadores uj
     JOIN jugadores j ON uj.jugador_id = j.id
     LEFT JOIN equipos e ON j.equipo_id = e.id
@@ -69,19 +73,49 @@ function norm_pos(string $pos): string {
 }
 
 // ── Agrupar titulares y suplentes ──
-$titulares  = ['Portero'=>[],'Defensa'=>[],'Centrocampista'=>[],'Delantero'=>[]];
-$suplentes  = [];
+$totalSlots = 1 + $slotsFormacion['Defensa'] + $slotsFormacion['Centrocampista'] + $slotsFormacion['Delantero'];
+$lineupBySlot = [];
+for ($s = 1; $s <= $totalSlots; $s++) {
+    $lineupBySlot[$s] = null;
+}
+
+$suplentes = [];
+$pendientesTitulares = [];
+
 foreach ($jugadores as $j) {
-    $grp = norm_pos($j->posicion ?? 'Otro');
-    if ($j->es_titular && isset($titulares[$grp])) {
-        $titulares[$grp][] = $j;
+    $slot = (int)($j->slot_titular ?? 0);
+    if ($j->es_titular && $slot >= 1 && $slot <= $totalSlots && $lineupBySlot[$slot] === null) {
+        $lineupBySlot[$slot] = $j;
+    } elseif ($j->es_titular) {
+        $pendientesTitulares[] = $j;
     } else {
         $suplentes[] = $j;
     }
 }
 
+if (!empty($pendientesTitulares)) {
+    foreach ($pendientesTitulares as $j) {
+        $insertado = false;
+        for ($s = 1; $s <= $totalSlots; $s++) {
+            if ($lineupBySlot[$s] === null) {
+                $lineupBySlot[$s] = $j;
+                $insertado = true;
+                break;
+            }
+        }
+        if (!$insertado) {
+            $suplentes[] = $j;
+        }
+    }
+}
+
 $totalJugadores  = count($jugadores);
-$totalTitulares  = array_sum(array_map('count', $titulares));
+$totalTitulares  = 0;
+for ($s = 1; $s <= $totalSlots; $s++) {
+    if ($lineupBySlot[$s] !== null) {
+        $totalTitulares++;
+    }
+}
 $totalSuplentes  = count($suplentes);
 
 // Helper: URL foto
@@ -184,41 +218,40 @@ function fotoJugador(string $nombre): string {
 
 <?php
 // Función helper para renderizar una fila de campo
-function renderFilaCampo(array $lista, int $slots, string $posLabel, string $silhouette): void {
+function renderFilaCampo(array $lineupBySlot, int $slots, string $posLabel, string $silhouette, int &$slotCursor): void {
     echo '<div class="campo-fila">';
     for ($i = 0; $i < $slots; $i++) {
-        if (isset($lista[$i])) {
-            $j = $lista[$i];
+        $slotActual = $slotCursor;
+        $j = $lineupBySlot[$slotActual] ?? null;
+        if ($j !== null) {
             $foto = fotoJugador($j->nombre);
             $pos  = htmlspecialchars(norm_pos($j->posicion ?? ''));
             $cap  = $j->es_capitan ? ' capitan' : '';
             $apellido = explode(' ', $j->nombre);
             $corto = end($apellido);
-            echo "<div class=\"campo-jugador{$cap}\" draggable=\"true\" data-jugador-id=\"{$j->id}\" data-titular=\"1\" onclick=\"toggleTitular({$j->id}, false)\" title=\"Arrastrar al banquillo o clic para hacer suplente\">";
+            echo "<div class=\"campo-jugador{$cap}\" draggable=\"true\" data-slot=\"{$slotActual}\" data-jugador-id=\"{$j->id}\" data-titular=\"1\" onclick=\"toggleTitular({$j->id}, false)\" title=\"Arrastrar para mover de posición o clic para enviar al banquillo\">";
             echo   "<div class=\"cj-foto-wrap\"><img src=\"{$foto}\" alt=\"\" onerror=\"this.src='{$silhouette}'\"></div>";
             echo   "<span class=\"cj-nombre\">" . htmlspecialchars($corto) . "</span>";
             echo   "<span class=\"cj-badge pos-{$pos}\">{$pos}</span>";
             echo "</div>";
         } else {
-            echo "<div class=\"campo-slot-vacio\" data-drop-campo=\"1\" title=\"Arrastra un jugador aquí\">";
+            echo "<div class=\"campo-slot-vacio\" data-drop-campo=\"1\" data-slot-target=\"{$slotActual}\" title=\"Arrastra un jugador aquí\">";
             echo   "<div class=\"slot-circulo\">+</div>";
             echo   "<span class=\"slot-label\">{$posLabel}</span>";
             echo "</div>";
         }
+        $slotCursor++;
     }
     echo '</div>';
 }
 
 $sil = htmlspecialchars(BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png');
 
-// Fila Portero (siempre 1)
-renderFilaCampo($titulares['Portero'], 1, 'Portero', $sil);
-// Fila Defensa
-renderFilaCampo($titulares['Defensa'], $slotsFormacion['Defensa'], 'Defensa', $sil);
-// Fila Centrocampista
-renderFilaCampo($titulares['Centrocampista'], $slotsFormacion['Centrocampista'], 'Centrocampista', $sil);
-// Fila Delantero
-renderFilaCampo($titulares['Delantero'], $slotsFormacion['Delantero'], 'Delantero', $sil);
+$slotCursor = 1;
+renderFilaCampo($lineupBySlot, 1, 'Portero', $sil, $slotCursor);
+renderFilaCampo($lineupBySlot, $slotsFormacion['Defensa'], 'Defensa', $sil, $slotCursor);
+renderFilaCampo($lineupBySlot, $slotsFormacion['Centrocampista'], 'Centrocampista', $sil, $slotCursor);
+renderFilaCampo($lineupBySlot, $slotsFormacion['Delantero'], 'Delantero', $sil, $slotCursor);
 ?>
 
 </div><!-- /campo -->
@@ -253,8 +286,8 @@ renderFilaCampo($titulares['Delantero'], $slotsFormacion['Delantero'], 'Delanter
 <div class="widget-temas">
     <form method="POST">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-        <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
         <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
+        <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul (Original)">🔵</button>
     </form>
 </div>
 
@@ -318,9 +351,28 @@ function toggleTitular(jugadorId, hacerTitular) {
     .catch(() => toast('Error de conexión', true));
 }
 
+function moverJugador(jugadorId, slotDestino) {
+    fetch(BASE_URL + '/mover_jugador.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({csrf: CSRF, jugador_id: jugadorId, slot_destino: slotDestino})
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.ok) {
+            toast('Posición actualizada');
+            setTimeout(() => location.reload(), 700);
+        } else {
+            toast(d.mensaje || 'Error al mover jugador', true);
+        }
+    })
+    .catch(() => toast('Error de conexión', true));
+}
+
 /* ── DRAG & DROP ── */
 let dragId      = null;  // jugador_id arrastrado
 let dragTitular = false; // si era titular
+let dragSlot    = null;  // slot actual si era titular
 let dragging    = null;  // elemento DOM
 
 document.addEventListener('dragstart', e => {
@@ -328,6 +380,7 @@ document.addEventListener('dragstart', e => {
     if (!card) return;
     dragId      = parseInt(card.dataset.jugadorId);
     dragTitular = card.dataset.titular === '1';
+    dragSlot    = card.dataset.slot ? parseInt(card.dataset.slot) : null;
     dragging    = card;
     card.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
@@ -377,8 +430,8 @@ setupDropTarget(campo,     true);
 setupDropTarget(benchGrid, false);
 setupDropTarget(benchSect, false);
 
-// Slots vacíos del campo también son drop targets
-document.querySelectorAll('[data-drop-campo]').forEach(slot => {
+// Slots del campo (vacíos y ocupados) como drop targets para mover/intercambiar
+document.querySelectorAll('[data-slot-target], .campo-jugador[data-slot]').forEach(slot => {
     slot.addEventListener('dragover', e => {
         e.preventDefault();
         slot.classList.add('drop-over');
@@ -387,9 +440,16 @@ document.querySelectorAll('[data-drop-campo]').forEach(slot => {
     slot.addEventListener('drop', e => {
         e.preventDefault();
         slot.classList.remove('drop-over');
-        if (dragId !== null && !dragTitular) {
-            toggleTitular(dragId, true);
+        const targetSlot = slot.dataset.slotTarget
+            ? parseInt(slot.dataset.slotTarget)
+            : (slot.dataset.slot ? parseInt(slot.dataset.slot) : null);
+
+        if (dragId !== null && targetSlot !== null) {
+            if (!(dragTitular && dragSlot === targetSlot)) {
+                moverJugador(dragId, targetSlot);
+            }
             dragId = null;
+            dragSlot = null;
         }
     });
 });

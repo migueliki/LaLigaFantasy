@@ -84,8 +84,8 @@ if (isset($_SESSION['usuario_id']) && (int)$_SESSION['usuario_id'] === 1) {
 
 $modo_debug = $es_admin_debug && $es_localhost && isset($_GET['debug']) && $_GET['debug'] === '1';
 
-// Forzar actualización solo permitido para admin en localhost
-if (!($es_admin_debug && $es_localhost)) {
+// Forzar actualización permitido para cualquier usuario en localhost
+if (!$es_localhost) {
     $forzar_actualizacion = false;
 }
 
@@ -649,7 +649,7 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
                 🕐 Última actualización: <strong><?php echo htmlspecialchars($ultima_actualizacion); ?></strong>
             </p>
         <?php endif; ?>
-        <?php if ($es_admin_debug && $es_localhost): ?>
+        <?php if ($es_localhost): ?>
             <p class="noticias-actualizacion">
                 <a href="?forzar=1&amp;t=<?php echo time(); ?>" class="btn-refrescar">🔄 Forzar actualización</a>
             </p>
@@ -730,8 +730,8 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
     <div class="widget-temas">
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-            <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
             <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
+            <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul (Original)">🔵</button>
         </form>
     </div>
 

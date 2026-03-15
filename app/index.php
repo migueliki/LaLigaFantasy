@@ -102,8 +102,8 @@ require_once 'config.php';
 
     <div class="widget-temas">
         <form method="POST">
-            <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
             <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
+            <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul (Original)">🔵</button>
         </form>
     </div>
 

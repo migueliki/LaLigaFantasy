@@ -13,6 +13,37 @@ $_SESSION['last_activity'] = time();
 require_once '../conexion.php';
 require_once '../csrf.php';
 include_once '../cookie_tema.php';
+require_once '../lib/fantasy_bootstrap.php';
+require_once '../lib/league_service.php';
+
+$mensajeActualizacion = trim((string)($_GET['msg'] ?? ''));
+$tipoActualizacion = ($_GET['type'] ?? 'success') === 'error' ? 'error' : 'success';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actualizar_resultados'])) {
+    $jornadaActualizar = max(1, min(38, (int)($_POST['jornada'] ?? 1)));
+
+    if (!csrf_validate_token($_POST['csrf_token'] ?? '')) {
+        $query = http_build_query([
+            'jornada' => $jornadaActualizar,
+            'type' => 'error',
+            'msg' => 'Solicitud no válida.',
+        ]);
+        header('Location: ' . BASE_URL . '/pages/calendario.php?' . $query);
+        exit;
+    }
+
+    fantasy_ensure_schema($pdo);
+    $resultadoSync = fantasy_sync_jornada($pdo, $jornadaActualizar);
+    $query = http_build_query([
+        'jornada' => $jornadaActualizar,
+        'type' => $resultadoSync['ok'] ? 'success' : 'error',
+        'msg' => $resultadoSync['ok']
+            ? $resultadoSync['mensaje'] . ' Partidos: ' . (int)($resultadoSync['partidos'] ?? 0) . '. Jugadores recalculados: ' . (int)($resultadoSync['jugadores'] ?? 0) . '. Valores ajustados: ' . (int)($resultadoSync['valores_ajustados'] ?? 0) . '.'
+            : $resultadoSync['mensaje'],
+    ]);
+    header('Location: ' . BASE_URL . '/pages/calendario.php?' . $query);
+    exit;
+}
 
 $escudos = [
     'Real Madrid'=>'realmadrid.png','FC Barcelona'=>'barsa.png',
@@ -240,6 +271,65 @@ $stmt = $pdo->prepare("SELECT p.*, el.nombre AS local_nombre, ev.nombre AS visit
 $stmt->execute([$jornada]);
 $partidos = $stmt->fetchAll(PDO::FETCH_OBJ);
 
+function calendario_estado_en_directo(string $estadoPartido): bool {
+    $estado = strtolower(trim($estadoPartido));
+    if ($estado === '') {
+        return false;
+    }
+
+    $tokensFinalizado = [
+        'finished',
+        'match finished',
+        'full time',
+        'ft',
+        'aet',
+        'after extra time',
+        'pen',
+        'after penalties',
+        'finalizado',
+        'final',
+        'ended',
+    ];
+    foreach ($tokensFinalizado as $token) {
+        if (str_contains($estado, $token)) {
+            return false;
+        }
+    }
+
+    $tokensDirecto = [
+        'live',
+        'in play',
+        '1h',
+        '2h',
+        '1st half',
+        '2nd half',
+        'halftime',
+        'ht',
+        'extra time',
+        'penalty',
+    ];
+    foreach ($tokensDirecto as $token) {
+        if (str_contains($estado, $token)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+$hayPartidoEnDirecto = false;
+foreach ($partidos as $partidoCheck) {
+    $estadoCheck = strtolower((string)($partidoCheck->estado_partido ?? ''));
+    $enDirectoCheck = $partidoCheck->goles_local !== null && calendario_estado_en_directo($estadoCheck);
+    if ($enDirectoCheck) {
+        $hayPartidoEnDirecto = true;
+        break;
+    }
+}
+
+$autoLiveHabilitado = true;
+$autoLiveSegundos = $hayPartidoEnDirecto ? 45 : 120;
+
 // Agrupar por día
 $dias_es = ['Monday'=>'Lunes','Tuesday'=>'Martes','Wednesday'=>'Miércoles','Thursday'=>'Jueves',
             'Friday'=>'Viernes','Saturday'=>'Sábado','Sunday'=>'Domingo'];
@@ -285,6 +375,14 @@ foreach ($partidos as $p) {
 <div class="calendario-header">
     <h1><img src="<?= BASE_URL ?>/images/favicon.png" alt="" style="height:1em;vertical-align:middle;margin-right:8px">Calendario de Partidos</h1>
     <p class="calendario-subtitulo">Temporada 2025 / 2026</p>
+    <form method="post" class="calendario-actualizar-form">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+        <input type="hidden" name="jornada" value="<?= $jornada ?>">
+        <button type="submit" name="actualizar_resultados" value="1" class="calendario-btn-actualizar">Actualizar resultados</button>
+    </form>
+    <?php if ($mensajeActualizacion !== ''): ?>
+        <p class="calendario-actualizacion-msg <?= $tipoActualizacion ?>"><?= htmlspecialchars($mensajeActualizacion) ?></p>
+    <?php endif; ?>
 </div>
 
 <div class="jornadas-pagination">
@@ -293,22 +391,24 @@ foreach ($partidos as $p) {
     <a href="?jornada=<?= $jornada+1 ?>" class="prev-next<?= $jornada>=38?' disabled':'' ?>">▶</a>
 </div>
 
-<h2 class="jornada-titulo">⚽ Jornada <?= $jornada ?></h2>
+<h2 class="jornada-titulo">Jornada <?= $jornada ?></h2>
 
 <div class="partidos-container">
 <?php if (empty($partidos)): ?>
     <p class="calendario-vacio">No hay partidos para esta jornada.</p>
 <?php else: foreach ($grupos as $dia): ?>
     <div class="partido-fecha-grupo">
-        <div class="partido-fecha-label"><span>📅 <?= htmlspecialchars($dia['label']) ?></span></div>
+        <div class="partido-fecha-label"><span><?= htmlspecialchars($dia['label']) ?></span></div>
         <?php foreach ($dia['partidos'] as $p):
             $dt = new DateTime($p->fecha_hora);
-            $jugado = $p->goles_local !== null;
+            $estado = strtolower((string)($p->estado_partido ?? ''));
+            $enDirecto = $p->goles_local !== null && calendario_estado_en_directo($estado);
+            $jugado = $p->goles_local !== null && !$enDirecto;
             $hoy = $dt->format('Y-m-d') === $hoy_str;
             $eL = isset($escudos[$p->local_nombre]) ? BASE_URL . '/images/escudos/'.$escudos[$p->local_nombre] : BASE_URL . '/images/favicon.png';
             $eV = isset($escudos[$p->visitante_nombre]) ? BASE_URL . '/images/escudos/'.$escudos[$p->visitante_nombre] : BASE_URL . '/images/favicon.png';
         ?>
-        <div class="partido-card<?= $jugado?' jugado':($hoy?' hoy':'') ?>">
+        <div class="partido-card<?= $jugado?' jugado':($enDirecto?' hoy':($hoy?' hoy':'')) ?>">
             <div class="partido-local">
                 <span class="partido-equipo-nombre"><?= htmlspecialchars($p->local_nombre) ?></span>
                 <div class="partido-escudo"><img src="<?= $eL ?>" alt="" loading="lazy"></div>
@@ -317,6 +417,9 @@ foreach ($partidos as $p) {
             <?php if ($jugado): ?>
                 <span class="partido-resultado"><?= $p->goles_local ?> - <?= $p->goles_visitante ?></span>
                 <span class="partido-badge finalizado">Finalizado</span>
+            <?php elseif ($enDirecto): ?>
+                <span class="partido-resultado"><?= $p->goles_local ?> - <?= $p->goles_visitante ?></span>
+                <span class="partido-badge badge-hoy">En directo</span>
             <?php elseif ($hoy): ?>
                 <span class="partido-hora"><?= $dt->format('H:i') ?></span>
                 <span class="partido-badge badge-hoy">Hoy</span>
@@ -337,9 +440,42 @@ foreach ($partidos as $p) {
 
 <div class="widget-temas"><form method="POST">
     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-    <button type="submit" name="tema_pref" value="" title="Modo Azul">🔵</button>
     <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
+    <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul">🔵</button>
 </form></div>
+
+<?php if ($autoLiveHabilitado): ?>
+<script>
+const CAL_BASE_URL = <?= json_encode(BASE_URL) ?>;
+const CAL_CSRF = <?= json_encode($_SESSION['csrf_token'] ?? '') ?>;
+const CAL_JORNADA = <?= (int)$jornada ?>;
+const CAL_INTERVAL_MS = <?= (int)$autoLiveSegundos * 1000 ?>;
+let calSyncInFlight = false;
+
+function calendarioAutoSyncTick() {
+    if (calSyncInFlight) return;
+    calSyncInFlight = true;
+
+    fetch(CAL_BASE_URL + '/live_sync.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ csrf: CAL_CSRF, jornada: CAL_JORNADA, cooldown: 90 })
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d && d.ok && d.synced) {
+            location.reload();
+        }
+    })
+    .catch(() => {})
+    .finally(() => {
+        calSyncInFlight = false;
+    });
+}
+
+setInterval(calendarioAutoSyncTick, CAL_INTERVAL_MS);
+</script>
+<?php endif; ?>
 
 </body>
 </html>

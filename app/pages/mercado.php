@@ -298,8 +298,8 @@ function precio_fmt(float $p): string {
 <div class="widget-temas">
     <form method="POST">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
-        <button type="submit" name="tema_pref" value="" title="Modo Azul (Original)">🔵</button>
         <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
+        <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul (Original)">🔵</button>
     </form>
 </div>
 

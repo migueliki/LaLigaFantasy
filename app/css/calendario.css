@@ -80,6 +80,45 @@ body.tema-claro {
     letter-spacing: 1px; text-transform: uppercase; font-weight: 500;
 }
 
+.calendario-actualizar-form {
+    margin: 14px 0 8px;
+}
+
+.calendario-btn-actualizar {
+    border: 0;
+    border-radius: 999px;
+    padding: 11px 18px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #e10643, #ff3d6d);
+    box-shadow: 0 10px 22px rgba(225, 6, 67, 0.28);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.calendario-btn-actualizar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px rgba(225, 6, 67, 0.35);
+}
+
+.calendario-actualizacion-nota,
+.calendario-actualizacion-msg {
+    max-width: 900px;
+    margin: 8px auto 0;
+    padding: 0 14px;
+    color: var(--c-text2);
+    font-size: 0.92rem;
+}
+
+.calendario-actualizacion-msg.success {
+    color: #86efac;
+}
+
+.calendario-actualizacion-msg.error {
+    color: #fca5a5;
+}
+
 /* === Paginación === */
 .jornadas-pagination {
     display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
@@ -222,6 +261,11 @@ body.tema-claro {
     .partidos-container {
         padding: 0 12px;
         margin-bottom: 38px;
+    }
+
+    .calendario-actualizacion-nota,
+    .calendario-actualizacion-msg {
+        padding: 0 6px;
     }
 }
 

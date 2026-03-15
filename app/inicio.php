@@ -434,12 +434,12 @@ function liga_pill_class(array $fila): string {
 </div>
 
 <div class="widget-temas">
-    <form method="POST">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
-        <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
-        <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul (Original)">🔵</button>
-    </form>
+    <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
+    <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
+<script>
+function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax';location.reload();}
+</script>
 
 <?php if ($autoLiveHabilitado): ?>
 <script>

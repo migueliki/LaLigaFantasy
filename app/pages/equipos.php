@@ -120,7 +120,7 @@ function foto_entrenador(string $nombre): string {
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">
 </head>
 <body class="<?php echo $clase_tema; ?>">
 
@@ -353,7 +353,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
     <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
 <script>
-function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax';location.reload();}
+function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
 </script>
 
 <script>

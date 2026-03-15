@@ -148,7 +148,7 @@ function fotoJugador(string $nombre): string {
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/plantilla.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">
 </head>
 <body class="<?= $clase_tema ?>">
 
@@ -288,7 +288,7 @@ renderFilaCampo($lineupBySlot, $slotsFormacion['Delantero'], 'Delantero', $sil, 
     <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
 <script>
-function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax';location.reload();}
+function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
 </script>
 
 <!-- TOAST -->

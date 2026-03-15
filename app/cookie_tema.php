@@ -7,8 +7,12 @@ if (isset($_POST['tema_pref'])) {
         $tema = 'tema-laliga';
     }
     
-    // Cookie por 30 días en todo el sitio
-    setcookie("preferencia_tema", $tema, time() + (86400 * 30), "/");
+    // Cookie por 30 días en todo el sitio (SameSite=Lax para compatibilidad HTTPS)
+    setcookie("preferencia_tema", $tema, [
+        'expires'  => time() + (86400 * 30),
+        'path'     => '/',
+        'samesite' => 'Lax',
+    ]);
     
     // Recargar para ver cambios
     header("Location: " . $_SERVER['REQUEST_URI']);

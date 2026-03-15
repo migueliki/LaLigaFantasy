@@ -143,10 +143,10 @@ function precio_fmt(float $p): string {
 
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
-    <link rel="stylesheet" href="../css/inicio.css">
-    <link rel="stylesheet" href="../css/equipos.css">
-    <link rel="stylesheet" href="../css/mercado.css">
-    <link rel="stylesheet" href="../css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/mercado.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
 </head>
 <body class="<?= htmlspecialchars($clase_tema) ?>">
 
@@ -166,7 +166,7 @@ function precio_fmt(float $p): string {
 <!-- CABECERA -->
 <div class="mercado-header">
     <h1>
-        <img src="<?= BASE_URL ?>/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
+        <img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;">
         Mercado
     </h1>
     <p class="mercado-subtitulo">Compra y vende jugadores para tu equipo</p>

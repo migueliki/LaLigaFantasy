@@ -67,12 +67,14 @@ $host_actual = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
 $host_base = preg_replace('/:\\d+$/', '', $host_actual);
 $es_localhost = in_array($host_base, ['localhost', '127.0.0.1', '::1'], true);
 
-// En producción (dominio), usar siempre el caché versionado del proyecto
+// En producción, apuntar al caché del proyecto y no permitir forzar desde URL
 if (!$es_localhost) {
     $cache_file = __DIR__ . '/../cache/noticias_cache.json';
-    $cache_dir = dirname($cache_file) . '/';
-    $cache_escribible = false;
-    $forzar_actualizacion = false;
+    $cache_dir  = __DIR__ . '/../cache/';
+    // Re-evaluar si el directorio es escribible en el servidor de producción
+    if (!is_dir($cache_dir)) { @mkdir($cache_dir, 0755, true); }
+    $cache_escribible = is_writable($cache_dir);
+    $forzar_actualizacion = false; // nunca permitir forzar desde URL en producción
 }
 
 if (isset($_SESSION['usuario']) && texto_lowercase((string)$_SESSION['usuario']) === 'admin') {
@@ -320,8 +322,8 @@ if (file_exists($cache_file)) {
     }
 }
 
-// Refrescar remoto solo en localhost, si se fuerza manualmente o no hay caché útil
-if ($es_localhost && ($forzar_actualizacion || empty($noticias))) {
+// Refrescar desde RSS si el caché está vacío, expirado, o se fuerza (solo localhost)
+if ($forzar_actualizacion || empty($noticias) || $cache_expirada) {
 try {
 
     // Limpiar caché en memoria para reconstruir desde cero
@@ -571,7 +573,7 @@ try {
         $mensaje_actualizacion = '⚠️ Error al obtener noticias nuevas. Mostrando caché anterior.';
     }
 }
-} // fin if ($forzar_actualizacion || empty($noticias))
+} // fin if (empty/expirada/forzada)
 
 if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnostico_feeds)) {
     $diagnostico_feeds['_info'] = [
@@ -615,9 +617,9 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
 
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
-    <link rel="stylesheet" href="../css/inicio.css">
-    <link rel="stylesheet" href="../css/noticias.css">
-    <link rel="stylesheet" href="../css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/noticias.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
 </head>
 <body class="<?php echo $clase_tema; ?>">
 

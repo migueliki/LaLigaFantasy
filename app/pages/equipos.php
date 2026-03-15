@@ -121,9 +121,9 @@ function foto_entrenador(string $nombre): string {
 
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
-    <link rel="stylesheet" href="../css/inicio.css">
-    <link rel="stylesheet" href="../css/equipos.css">
-    <link rel="stylesheet" href="../css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/equipos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
 </head>
 <body class="<?php echo $clase_tema; ?>">
 
@@ -145,7 +145,7 @@ function foto_entrenador(string $nombre): string {
     VISTA 1 – LISTA DE LOS 20 EQUIPOS
 ════════════════════════════════════════ -->
 <div class="equipos-header">
-    <h1><img src="<?= BASE_URL ?>/images/favicon.png" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
+    <h1><img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="LaLiga" style="height:1em;vertical-align:middle;margin-right:8px;"> Equipos LaLiga</h1>
     <p class="equipos-subtitulo"></p>
 </div>
 

@@ -166,9 +166,9 @@ function liga_pill_class(array $fila): string {
     <meta name="description" content="Panel principal de LaLigaFantasy: crea ligas privadas, únete con código y sincroniza puntuaciones.">
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
-    <link rel="stylesheet" href="css/inicio.css">
-    <link rel="stylesheet" href="css/cookie_tema.css">
-    <link rel="stylesheet" href="css/ligas.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/ligas.css">
 </head>
 <body class="<?= htmlspecialchars($clase_tema) ?> ligas-page">
 

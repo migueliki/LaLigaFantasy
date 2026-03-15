@@ -356,9 +356,9 @@ foreach ($partidos as $p) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario J<?= $jornada ?> - LaLiga Fantasy</title>
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>">
-    <link rel="stylesheet" href="../css/inicio.css">
-    <link rel="stylesheet" href="../css/calendario.css">
-    <link rel="stylesheet" href="../css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/inicio.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/calendario.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
 </head>
 <body class="<?= $clase_tema ?>">
 
@@ -373,7 +373,7 @@ foreach ($partidos as $p) {
 </nav></div>
 
 <div class="calendario-header">
-    <h1><img src="<?= BASE_URL ?>/images/favicon.png" alt="" style="height:1em;vertical-align:middle;margin-right:8px">Calendario de Partidos</h1>
+    <h1><img src="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" alt="" style="height:1em;vertical-align:middle;margin-right:8px">Calendario de Partidos</h1>
     <p class="calendario-subtitulo">Temporada 2025 / 2026</p>
     <form method="post" class="calendario-actualizar-form">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">

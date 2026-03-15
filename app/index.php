@@ -59,8 +59,8 @@ require_once 'config.php';
     <meta name="twitter:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
     <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
 
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/cookie_tema.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/images/<?= $clase_tema === 'tema-laliga' ? 'LL_RGB_h_color.png' : 'favicon.png' ?>" type="image/x-icon">
 </head>
 <body>

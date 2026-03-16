@@ -41,7 +41,7 @@ if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $cs
     exit();
 }
 
-$formacionesValidas = ['4-3-3','4-4-2','4-2-3-1','3-5-2','5-3-2','4-1-4-1'];
+$formacionesValidas = array_keys(app_formations());
 $formacion = trim($body['formacion'] ?? '');
 
 if (!in_array($formacion, $formacionesValidas, true)) {

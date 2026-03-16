@@ -733,9 +733,7 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
         <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
         <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
     </div>
-    <script>
-    function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
-    </script>
+    <script src="<?= BASE_URL ?>/js/tema.js"></script>
 
 </body>
 </html>

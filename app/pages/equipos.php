@@ -69,26 +69,6 @@ if (isset($_GET['equipo_id']) && is_numeric($_GET['equipo_id'])) {
         $entrenador = $stmt3->fetch(PDO::FETCH_OBJ);
     }
 }
-
-function foto_jugador(string $nombre): string {
-    $n = strtolower($nombre);
-    $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                    ['a','e','i','o','u','n','u','c','_','_','',''], $n);
-    $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $path = BASE_URL . "/images/jugadores/{$n}.png";
-    $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
-    return file_exists($real) ? $path : BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png';
-}
-
-function foto_entrenador(string $nombre): string {
-    $n = strtolower($nombre);
-    $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                    ['a','e','i','o','u','n','u','c','_','_','',''], $n);
-    $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $path = BASE_URL . "/images/entrenadores/{$n}.png";
-    $real = __DIR__ . '/../../images/entrenadores/' . $n . '.png';
-    return file_exists($real) ? $path : BASE_URL . '/images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png';
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -193,7 +173,7 @@ function foto_entrenador(string $nombre): string {
 
 <!-- ── ENTRENADOR ── -->
 <?php if ($entrenador):
-    $foto_ent = foto_entrenador($entrenador->nombre);
+    $foto_ent = coach_photo_url($entrenador->nombre);
 ?>
 <div class="seccion-titulo">🎽 Entrenador</div>
 <div class="entrenador-wrap">
@@ -241,17 +221,9 @@ function foto_entrenador(string $nombre): string {
 
 <!-- ── JUGADORES agrupados por posición ── -->
 <?php
-// Normalizar posiciones: Extremo y variantes → Delantero
-function normalizar_posicion(string $pos): string {
-    $pos = trim($pos);
-    // Cualquier cosa que contenga "Extremo" va a Delanteros
-    if (stripos($pos, 'Extremo') !== false) return 'Delantero';
-    return $pos;
-}
-
 $por_posicion = [];
 foreach ($jugadores as $j) {
-    $grupo = normalizar_posicion($j->posicion ?? 'Otro');
+    $grupo = normalize_position_label($j->posicion ?? 'Otro');
     $por_posicion[$grupo][] = $j;
 }
 $orden = ['Portero','Defensa','Centrocampista','Delantero'];
@@ -272,7 +244,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
     </div>
     <div class="jugadores-grid">
         <?php foreach ($lista as $j):
-            $foto_jug = foto_jugador($j->nombre);
+            $foto_jug = player_photo_url($j->nombre);
             $media    = (int)$j->media_fifa;
             $media_cl = $media >= 85 ? 'media-oro' : ($media >= 75 ? 'media-plata' : 'media-bronce');
         ?>
@@ -300,7 +272,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
 
 <!-- ════ MODALES JUGADORES (fuera del grid, al final del body) ════ -->
 <?php foreach ($jugadores as $j):
-    $foto_jug = foto_jugador($j->nombre);
+    $foto_jug = player_photo_url($j->nombre);
     $media    = (int)$j->media_fifa;
     $media_cl = $media >= 85 ? 'media-oro' : ($media >= 75 ? 'media-plata' : 'media-bronce');
 ?>
@@ -352,9 +324,7 @@ $iconos_pos = ['Portero'=>'🧤','Defensa'=>'🛡️','Centrocampista'=>'⚙️'
     <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
     <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
-<script>
-function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
-</script>
+<script src="<?= BASE_URL ?>/js/tema.js"></script>
 
 <script>
 function abrirModal(id) {

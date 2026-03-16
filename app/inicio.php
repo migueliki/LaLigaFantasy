@@ -339,13 +339,6 @@ function liga_pill_class(array $fila): string {
                         <span class="liga-sync-meta">Fuente: resultados, timeline y lineups públicos de LaLiga 2025-2026.</span>
                     </div>
 
-                    <form action="<?= BASE_URL ?>/sincronizar_jornada.php" method="post" style="margin-bottom: 14px;">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
-                        <input type="hidden" name="liga_id" value="<?= (int)$selectedLeagueId ?>">
-                        <input type="hidden" name="jornada" value="<?= (int)$selectedJornada ?>">
-                        <button class="liga-btn-secondary" type="submit">Forzar actualización</button>
-                    </form>
-
                     <div class="liga-mini-stats">
                         <div class="mini">
                             <strong><?= $partidosSincronizados ?></strong>
@@ -437,9 +430,7 @@ function liga_pill_class(array $fila): string {
     <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
     <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
-<script>
-function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
-</script>
+<script src="<?= BASE_URL ?>/js/tema.js"></script>
 
 <?php if ($autoLiveHabilitado): ?>
 <script>

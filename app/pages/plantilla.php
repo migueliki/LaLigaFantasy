@@ -35,7 +35,7 @@ try {
 $stmtEq = $pdo->prepare("SELECT nombre_equipo, saldo, formacion FROM usuarios_equipos WHERE usuario_id = ?");
 $stmtEq->execute([$uid]);
 $miEquipo = $stmtEq->fetch(PDO::FETCH_OBJ);
-$formacionActual = $miEquipo ? ($miEquipo->formacion ?? '4-3-3') : '4-3-3';
+$formacionActual = $miEquipo ? ($miEquipo->formacion ?? DEFAULT_FORMATION) : DEFAULT_FORMATION;
 $saldo     = $miEquipo ? (float)$miEquipo->saldo : 0;
 $nombreEq  = $miEquipo ? $miEquipo->nombre_equipo : 'Mi Equipo';
 
@@ -54,26 +54,11 @@ $stmtJ = $pdo->prepare("
 $stmtJ->execute([$uid]);
 $jugadores = $stmtJ->fetchAll(PDO::FETCH_OBJ);
 
-// ── Formaciones disponibles [DEF, MID, FWD] ──
-$formaciones = [
-    '4-3-3'   => ['Defensa'=>4,'Centrocampista'=>3,'Delantero'=>3],
-    '4-4-2'   => ['Defensa'=>4,'Centrocampista'=>4,'Delantero'=>2],
-    '4-2-3-1' => ['Defensa'=>4,'Centrocampista'=>5,'Delantero'=>1],
-    '3-5-2'   => ['Defensa'=>3,'Centrocampista'=>5,'Delantero'=>2],
-    '5-3-2'   => ['Defensa'=>5,'Centrocampista'=>3,'Delantero'=>2],
-    '4-1-4-1' => ['Defensa'=>4,'Centrocampista'=>5,'Delantero'=>1],
-];
-$slotsFormacion = $formaciones[$formacionActual] ?? $formaciones['4-3-3'];
-
-// ── Normalizar posición ──
-function norm_pos(string $pos): string {
-    $pos = trim($pos);
-    if (stripos($pos,'Extremo') !== false) return 'Delantero';
-    return $pos;
-}
+$formaciones = app_formations();
+$slotsFormacion = formation_slots($formacionActual);
 
 // ── Agrupar titulares y suplentes ──
-$totalSlots = 1 + $slotsFormacion['Defensa'] + $slotsFormacion['Centrocampista'] + $slotsFormacion['Delantero'];
+$totalSlots = formation_total_slots($formacionActual);
 $lineupBySlot = [];
 for ($s = 1; $s <= $totalSlots; $s++) {
     $lineupBySlot[$s] = null;
@@ -117,18 +102,6 @@ for ($s = 1; $s <= $totalSlots; $s++) {
     }
 }
 $totalSuplentes  = count($suplentes);
-
-// Helper: URL foto
-function fotoJugador(string $nombre): string {
-    $n = strtolower($nombre);
-    $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
-    $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
-    return file_exists($real)
-        ? BASE_URL . "/images/jugadores/{$n}.png"
-        : BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png';
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -224,8 +197,8 @@ function renderFilaCampo(array $lineupBySlot, int $slots, string $posLabel, stri
         $slotActual = $slotCursor;
         $j = $lineupBySlot[$slotActual] ?? null;
         if ($j !== null) {
-            $foto = fotoJugador($j->nombre);
-            $pos  = htmlspecialchars(norm_pos($j->posicion ?? ''));
+            $foto = player_photo_url($j->nombre);
+            $pos  = htmlspecialchars(normalize_position_label($j->posicion ?? ''));
             $cap  = $j->es_capitan ? ' capitan' : '';
             $apellido = explode(' ', $j->nombre);
             $corto = end($apellido);
@@ -263,8 +236,8 @@ renderFilaCampo($lineupBySlot, $slotsFormacion['Delantero'], 'Delantero', $sil, 
     <div class="banquillo-titulo">🪑 Banquillo (<?= count($suplentes) ?>)</div>
     <div class="banquillo-grid">
         <?php foreach ($suplentes as $j):
-            $foto = fotoJugador($j->nombre);
-            $posNorm = norm_pos($j->posicion ?? '');
+            $foto = player_photo_url($j->nombre);
+            $posNorm = normalize_position_label($j->posicion ?? '');
         ?>
         <div class="bench-card" draggable="true" data-jugador-id="<?= $j->id ?>" data-titular="0" title="Arrastra al campo o clic en Titular">
             <img src="<?= $foto ?>" alt="" class="bench-foto"
@@ -287,9 +260,7 @@ renderFilaCampo($lineupBySlot, $slotsFormacion['Delantero'], 'Delantero', $sil, 
     <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
     <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
-<script>
-function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
-</script>
+<script src="<?= BASE_URL ?>/js/tema.js"></script>
 
 <!-- TOAST -->
 <div id="toast-plant"></div>

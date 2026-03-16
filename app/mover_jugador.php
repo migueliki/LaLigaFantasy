@@ -41,47 +41,6 @@ if ($jugadorId <= 0 || $slotDestino <= 0) {
     exit();
 }
 
-function total_slots_por_formacion_mv(?string $formacion): int
-{
-    $formaciones = [
-        '4-3-3'   => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 3, 'Delantero' => 3],
-        '4-4-2'   => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 4, 'Delantero' => 2],
-        '4-2-3-1' => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 5, 'Delantero' => 1],
-        '3-5-2'   => ['Portero' => 1, 'Defensa' => 3, 'Centrocampista' => 5, 'Delantero' => 2],
-        '5-3-2'   => ['Portero' => 1, 'Defensa' => 5, 'Centrocampista' => 3, 'Delantero' => 2],
-        '4-1-4-1' => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 5, 'Delantero' => 1],
-    ];
-
-    $slots = $formaciones[$formacion ?? ''] ?? $formaciones['4-3-3'];
-    return (int)array_sum($slots);
-}
-
-function normalizar_slots_usuario_mv(PDO $pdo, int $uid, int $maxSlots): void
-{
-    $stmt = $pdo->prepare(
-        "SELECT jugador_id, slot_titular
-         FROM usuarios_jugadores
-         WHERE usuario_id = ? AND es_titular = TRUE
-         ORDER BY (slot_titular IS NULL), slot_titular ASC, jugador_id ASC"
-    );
-    $stmt->execute([$uid]);
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $slot = 1;
-    $updSlot = $pdo->prepare("UPDATE usuarios_jugadores SET slot_titular = ? WHERE usuario_id = ? AND jugador_id = ?");
-    $toBench = $pdo->prepare("UPDATE usuarios_jugadores SET es_titular = 0, slot_titular = NULL WHERE usuario_id = ? AND jugador_id = ?");
-
-    foreach ($rows as $row) {
-        $jid = (int)$row['jugador_id'];
-        if ($slot <= $maxSlots) {
-            $updSlot->execute([$slot, $uid, $jid]);
-            $slot++;
-        } else {
-            $toBench->execute([$uid, $jid]);
-        }
-    }
-}
-
 try {
     try {
         $pdo->exec("ALTER TABLE usuarios_jugadores ADD COLUMN slot_titular TINYINT UNSIGNED NULL DEFAULT NULL");
@@ -90,8 +49,8 @@ try {
 
     $stmtForm = $pdo->prepare("SELECT formacion FROM usuarios_equipos WHERE usuario_id = ?");
     $stmtForm->execute([$uid]);
-    $formacion = (string)($stmtForm->fetchColumn() ?: '4-3-3');
-    $totalSlots = total_slots_por_formacion_mv($formacion);
+    $formacion = (string)($stmtForm->fetchColumn() ?: DEFAULT_FORMATION);
+    $totalSlots = formation_total_slots($formacion);
 
     if ($slotDestino > $totalSlots) {
         echo json_encode(['ok' => false, 'mensaje' => 'Ese hueco no existe en la formación actual']);
@@ -109,7 +68,7 @@ try {
         exit();
     }
 
-    normalizar_slots_usuario_mv($pdo, $uid, $totalSlots);
+    normalize_user_lineup_slots($pdo, $uid, $totalSlots);
 
     $stmtOwn->execute([$uid, $jugadorId]);
     $origen = $stmtOwn->fetch(PDO::FETCH_ASSOC);
@@ -142,7 +101,7 @@ try {
         $updTitularSlot->execute([$slotDestino, $uid, $jugadorId]);
     }
 
-    normalizar_slots_usuario_mv($pdo, $uid, $totalSlots);
+    normalize_user_lineup_slots($pdo, $uid, $totalSlots);
     $pdo->commit();
 
     echo json_encode(['ok' => true, 'mensaje' => 'Posición actualizada']);

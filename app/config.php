@@ -81,5 +81,114 @@ if (!function_exists('theme_logo_url')) {
     }
 }
 
+if (!defined('DEFAULT_FORMATION')) {
+    define('DEFAULT_FORMATION', '4-3-3');
+}
+
+if (!function_exists('normalize_asset_basename')) {
+    function normalize_asset_basename(string $value): string {
+        $normalized = strtolower($value);
+        $normalized = str_replace(
+            ['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', 'ç', ' ', '-', '.', '\''],
+            ['a', 'e', 'i', 'o', 'u', 'n', 'u', 'c', '_', '_', '', ''],
+            $normalized
+        );
+
+        return preg_replace('/[^a-z0-9_]/', '', $normalized) ?? '';
+    }
+}
+
+if (!function_exists('image_variant_url')) {
+    function image_variant_url(string $folder, string $name, string $fallback): string {
+        $basename = normalize_asset_basename($name);
+        $relative = "images/{$folder}/{$basename}.png";
+
+        if ($basename !== '' && asset_exists($relative)) {
+            return asset_url($relative);
+        }
+
+        return asset_url($fallback);
+    }
+}
+
+if (!function_exists('player_photo_url')) {
+    function player_photo_url(string $name): string {
+        return image_variant_url('jugadores', $name, 'images/jugadores/soccer-player-silhouette-free-png.png');
+    }
+}
+
+if (!function_exists('coach_photo_url')) {
+    function coach_photo_url(string $name): string {
+        return image_variant_url(
+            'entrenadores',
+            $name,
+            'images/entrenadores/silhouette-of-standing-man-with-hands-in-pockets-isolated-on-transparent-background-simple-black-illustration-suitable-for-design-business-or-presentation-concepts-png.png'
+        );
+    }
+}
+
+if (!function_exists('normalize_position_label')) {
+    function normalize_position_label(string $position): string {
+        $position = trim($position);
+        return stripos($position, 'Extremo') !== false ? 'Delantero' : $position;
+    }
+}
+
+if (!function_exists('app_formations')) {
+    function app_formations(): array {
+        static $formations = [
+            '4-3-3' => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 3, 'Delantero' => 3],
+            '4-4-2' => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 4, 'Delantero' => 2],
+            '4-2-3-1' => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 5, 'Delantero' => 1],
+            '3-5-2' => ['Portero' => 1, 'Defensa' => 3, 'Centrocampista' => 5, 'Delantero' => 2],
+            '5-3-2' => ['Portero' => 1, 'Defensa' => 5, 'Centrocampista' => 3, 'Delantero' => 2],
+            '4-1-4-1' => ['Portero' => 1, 'Defensa' => 4, 'Centrocampista' => 5, 'Delantero' => 1],
+        ];
+
+        return $formations;
+    }
+}
+
+if (!function_exists('formation_slots')) {
+    function formation_slots(?string $formation): array {
+        $formations = app_formations();
+        return $formations[$formation ?? ''] ?? $formations[DEFAULT_FORMATION];
+    }
+}
+
+if (!function_exists('formation_total_slots')) {
+    function formation_total_slots(?string $formation): int {
+        return (int)array_sum(formation_slots($formation));
+    }
+}
+
+if (!function_exists('normalize_user_lineup_slots')) {
+    function normalize_user_lineup_slots(PDO $pdo, int $userId, int $maxSlots): void {
+        $stmt = $pdo->prepare(
+            "SELECT jugador_id, slot_titular
+             FROM usuarios_jugadores
+             WHERE usuario_id = ? AND es_titular = TRUE
+             ORDER BY (slot_titular IS NULL), slot_titular ASC, jugador_id ASC"
+        );
+        $stmt->execute([$userId]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $nextSlot = 1;
+        $updateSlot = $pdo->prepare("UPDATE usuarios_jugadores SET slot_titular = ? WHERE usuario_id = ? AND jugador_id = ?");
+        $moveToBench = $pdo->prepare("UPDATE usuarios_jugadores SET es_titular = 0, slot_titular = NULL WHERE usuario_id = ? AND jugador_id = ?");
+
+        foreach ($rows as $row) {
+            $playerId = (int)$row['jugador_id'];
+            if ($nextSlot <= $maxSlots) {
+                $updateSlot->execute([$nextSlot, $userId, $playerId]);
+                $nextSlot++;
+                continue;
+            }
+
+            $moveToBench->execute([$userId, $playerId]);
+        }
+    }
+}
+
 // Alias corto para usar en vistas: echo $base . '/images/...'
 $base = BASE_URL;

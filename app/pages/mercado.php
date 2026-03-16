@@ -84,17 +84,6 @@ $escudos = [
     'Rayo Vallecano'     => 'rayo-vallecano-logo-png-transparent-png.png',
 ];
 
-function foto_jugador_mercado(string $nombre): string {
-    $n = strtolower($nombre);
-    $n = str_replace(['á','é','í','ó','ú','ñ','ü','ç',' ','-','.','\''],
-                     ['a','e','i','o','u','n','u','c','_','_','',''], $n);
-    $n = preg_replace('/[^a-z0-9_]/', '', $n);
-    $real = __DIR__ . '/../../images/jugadores/' . $n . '.png';
-    return file_exists($real)
-        ? BASE_URL . "/images/jugadores/{$n}.png"
-        : BASE_URL . '/images/jugadores/soccer-player-silhouette-free-png.png';
-}
-
 function escudo_url_mercado(string $equipo, array $escudos): string {
     return isset($escudos[$equipo])
         ? BASE_URL . '/images/escudos/' . $escudos[$equipo]
@@ -204,7 +193,7 @@ function precio_fmt(float $p): string {
     <?php else: ?>
     <div class="mercado-grid" id="grid-disponibles">
         <?php foreach ($jugadoresMercado as $j):
-            $foto   = foto_jugador_mercado($j->nombre);
+            $foto   = player_photo_url($j->nombre);
             $escudo = escudo_url_mercado($j->equipo_nombre, $escudos);
             $pos    = badge_pos($j->posicion ?? '');
             $media  = (int)$j->media_fifa;
@@ -253,7 +242,7 @@ function precio_fmt(float $p): string {
     <?php else: ?>
     <div class="mercado-grid">
         <?php foreach ($miPlantilla as $j):
-            $foto      = foto_jugador_mercado($j->nombre);
+            $foto      = player_photo_url($j->nombre);
             $escudo    = escudo_url_mercado($j->equipo_nombre, $escudos);
             $pos       = badge_pos($j->posicion ?? '');
             $media     = (int)$j->media_fifa;
@@ -299,9 +288,7 @@ function precio_fmt(float $p): string {
     <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
     <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
 </div>
-<script>
-function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
-</script>
+<script src="<?= BASE_URL ?>/js/tema.js"></script>
 
 <!-- TOAST -->
 <div id="toast"></div>

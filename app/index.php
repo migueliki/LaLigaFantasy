@@ -63,14 +63,24 @@ require_once 'config.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">
     <link rel="shortcut icon" href="<?= theme_logo_url($clase_tema) ?>" type="image/x-icon">
 </head>
-<body>
+<body class="<?php echo htmlspecialchars($clase_tema); ?> auth-page">
+
+<div class="auth-brand" aria-label="Marca LaLiga Fantasy">
+    <img
+        src="<?= theme_logo_url($clase_tema) ?>"
+        onerror="this.onerror=null;this.src='<?= asset_url('images/favicon.png') ?>';"
+        alt="LaLiga"
+        class="auth-brand-logo"
+    >
+    <span class="auth-brand-title">LaLiga Fantasy</span>
+</div>
 
 <?php if ($mensaje_ok !== ''): ?>
-    <p style="color: #16a34a; font-weight: bold;"><?php echo htmlspecialchars($mensaje_ok); ?></p>
+    <p class="auth-msg auth-msg-ok"><?php echo htmlspecialchars($mensaje_ok); ?></p>
 <?php endif; ?>
 
 <?php if ($mensaje_error !== ''): ?>
-    <p style="color: red; font-weight: bold;"><?php echo htmlspecialchars($mensaje_error); ?></p>
+    <p class="auth-msg auth-msg-error"><?php echo htmlspecialchars($mensaje_error); ?></p>
 <?php endif; ?>
 
 <h1>Iniciar Sesión</h1>
@@ -96,16 +106,13 @@ require_once 'config.php';
     </form>
 </div>
 
+<div class="widget-temas">
+    <button type="button" onclick="__llSetTema('tema-laliga')" title="Modo LaLiga">🔴</button>
+    <button type="button" onclick="__llSetTema('tema-original')" title="Modo Azul (Original)">🔵</button>
+</div>
+<script>
+function __llSetTema(t){var e=new Date();e.setTime(e.getTime()+30*24*60*60*1000);var sec=location.protocol==='https:'?';Secure':'';document.cookie='preferencia_tema='+t+';expires='+e.toUTCString()+';path=/;SameSite=Lax'+sec;location.reload();}
+</script>
+
 </body>
-
-<body class="<?php echo $clase_tema; ?>">    
-
-    <div class="widget-temas">
-        <form method="POST">
-            <button type="submit" name="tema_pref" value="tema-laliga" title="Modo LaLiga">🔴</button>
-            <button type="submit" name="tema_pref" value="tema-original" title="Modo Azul (Original)">🔵</button>
-        </form>
-    </div>
-
-    </body>
 </html>

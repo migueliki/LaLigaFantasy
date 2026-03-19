@@ -110,7 +110,7 @@ Recomendaciones para producción:
 - Desactivar `display_errors` en producción.
 - Configurar HTTPS y cookies de sesión seguras.
 
-## Troubleshooting rápido
+## Resolucion de posibles errores:
 
 - Error de conexión DB:
 	- Revisa `app/conexion.php`, usuario/clave/host/puerto.
@@ -121,6 +121,4 @@ Recomendaciones para producción:
 - Redirecciones al login:
 	- La sesión pudo expirar (timeout).
 
-## Estado del proyecto
 
-Proyecto funcional orientado a entorno académico/demo, con módulos de fantasy, ligas y sincronización de jornada ya integrados.

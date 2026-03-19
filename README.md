@@ -110,7 +110,7 @@ Recomendaciones para producción:
 - Desactivar `display_errors` en producción.
 - Configurar HTTPS y cookies de sesión seguras.
 
-## Resolucion de posibles errores:
+## Resolución de posibles errores:
 
 - Error de conexión DB:
 	- Revisa `app/conexion.php`, usuario/clave/host/puerto.

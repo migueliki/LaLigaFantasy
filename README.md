@@ -24,6 +24,7 @@ Permite registrarse, crear o unirse a ligas privadas, gestionar plantilla, compr
 
 ## Estructura del proyecto
 
+```text
 app/
 	index.php              # Login/registro
 	inicio.php             # Dashboard principal y ranking de ligas
@@ -42,7 +43,8 @@ app/
 	images/
 database/
 	fantasy.sql            # Esquema + datos iniciales
-    
+```
+
 ## Requisitos
 
 - PHP 8.0 o superior

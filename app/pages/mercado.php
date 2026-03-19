@@ -126,7 +126,7 @@ function precio_fmt(float $p): string {
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mercado - LaLiga Fantasy">
     <meta property="og:description" content="Compra y vende jugadores en el mercado de LaLiga Fantasy.">
-    <meta property="og:image" content="https://laligafantasy.site/images/laliga-logo.png">
+    <meta property="og:image" content="https://laligafantasy.site/images/metatag.jpg">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 

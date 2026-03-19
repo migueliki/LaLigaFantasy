@@ -80,13 +80,13 @@ if (isset($_GET['equipo_id']) && is_numeric($_GET['equipo_id'])) {
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://laligafantasy.duckdns.org/pages/equipos.php">
+    <meta property="og:url" content="https://laligafantasy.site/pages/equipos.php">
     <meta property="og:title" content="<?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?> - LaLiga Fantasy">
     <meta property="og:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="698">
-    <meta property="og:image:height" content="441">
+    <meta property="og:image" content="https://laligafantasy.site/images/metatag.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 
@@ -94,7 +94,7 @@ if (isset($_GET['equipo_id']) && is_numeric($_GET['equipo_id'])) {
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo $equipo_sel ? htmlspecialchars($equipo_sel->nombre) : 'Equipos LaLiga'; ?> - LaLiga Fantasy">
     <meta name="twitter:description" content="Consulta los equipos de LaLiga, sus plantillas, estadísticas y toda la información del fútbol español.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
+    <meta name="twitter:image" content="https://laligafantasy.site/images/metatag.jpg">
 
     <link rel="icon" type="image/png" href="<?= theme_logo_url($clase_tema) ?>">
     <link rel="shortcut icon" href="<?= theme_logo_url($clase_tema) ?>" type="image/x-icon">

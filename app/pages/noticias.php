@@ -599,13 +599,13 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://laligafantasy.duckdns.org/pages/noticias.php">
+    <meta property="og:url" content="https://laligafantasy.site/pages/noticias.php">
     <meta property="og:title" content="Noticias - LaLiga Fantasy">
     <meta property="og:description" content="Últimas noticias de LaLiga, Copa del Rey y Segunda División. Toda la actualidad del fútbol español en un solo lugar.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="698">
-    <meta property="og:image:height" content="441">
+    <meta property="og:image" content="https://laligafantasy.site/images/metatag.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 
@@ -613,7 +613,7 @@ if ($modo_debug && !$forzar_actualizacion && !empty($noticias) && empty($diagnos
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Noticias - LaLiga Fantasy">
     <meta name="twitter:description" content="Últimas noticias de LaLiga, Copa del Rey y Segunda División. Toda la actualidad del fútbol español en un solo lugar.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
+    <meta name="twitter:image" content="https://laligafantasy.site/images/metatag.jpg">
 
     <link rel="icon" type="image/png" href="<?= theme_logo_url($clase_tema) ?>">
     <link rel="shortcut icon" href="<?= theme_logo_url($clase_tema) ?>" type="image/x-icon">

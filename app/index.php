@@ -43,13 +43,13 @@ require_once 'config.php';
 
     <!-- Open Graph (WhatsApp, Facebook, Telegram, etc.) -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://laligafantasy.duckdns.org/">
+    <meta property="og:url" content="https://laligafantasy.site/">
     <meta property="og:title" content="LaLiga Fantasy">
     <meta property="og:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
-    <meta property="og:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="698">
-    <meta property="og:image:height" content="441">
+    <meta property="og:image" content="https://laligafantasy.site/images/metatag.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
 
@@ -57,7 +57,7 @@ require_once 'config.php';
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LaLiga Fantasy">
     <meta name="twitter:description" content="Gestiona tu equipo de fantasía de LaLiga. Consulta equipos, jugadores, plantillas y noticias del fútbol español.">
-    <meta name="twitter:image" content="https://laligafantasy.duckdns.org/images/laliga-logo.png">
+    <meta name="twitter:image" content="https://laligafantasy.site/images/metatag.jpg">
 
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/cookie_tema.css?v=20260315-1">

@@ -113,7 +113,7 @@ $totalSuplentes  = count($suplentes);
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://laligafantasy.site/pages/plantilla.php">
     <meta property="og:title" content="Mi Plantilla - LaLiga Fantasy">
-    <meta property="og:image" content="https://laligafantasy.site/images/laliga-logo.png">
+    <meta property="og:image" content="https://laligafantasy.site/images/metatag.jpg">
     <meta property="og:site_name" content="LaLiga Fantasy">
     <meta property="og:locale" content="es_ES">
     <link rel="icon" type="image/png" href="<?= theme_logo_url($clase_tema) ?>">

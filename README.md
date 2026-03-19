@@ -1,4 +1,4 @@
-# LaLiga Fantasy
+# La Liga Fantasy
 
 Aplicación web estilo fantasy de LaLiga desarrollada en PHP + MySQL.
 Permite registrarse, crear o unirse a ligas privadas, gestionar plantilla, comprar/vender jugadores en mercado y consultar equipos, calendario y noticias.
